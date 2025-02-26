@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminDataCenterMapper">
+    <select id="userCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
+                              UNION ALL
+                              SELECT 'Tuesday'
+                              UNION ALL
+                              SELECT 'Wednesday'
+                              UNION ALL
+                              SELECT 'Thursday'
+                              UNION ALL
+                              SELECT 'Friday'
+                              UNION ALL
+                              SELECT 'Saturday'
+                              UNION ALL
+                              SELECT 'Sunday')
+        SELECT d.day_of_week,
+               COALESCE(COUNT(l.create_time), 0) AS count
+        FROM days_of_week d
+                 LEFT JOIN
+             user l
+             ON
+                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
+                                     WHEN 2 THEN 'Monday'
+                                     WHEN 3 THEN 'Tuesday'
+                                     WHEN 4 THEN 'Wednesday'
+                                     WHEN 5 THEN 'Thursday'
+                                     WHEN 6 THEN 'Friday'
+                                     WHEN 7 THEN 'Saturday'
+                                     WHEN 1 THEN 'Sunday'
+                     END
+        GROUP BY d.day_of_week
+        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+    </select>
+
+    <select id="noticeCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
+                              UNION ALL
+                              SELECT 'Tuesday'
+                              UNION ALL
+                              SELECT 'Wednesday'
+                              UNION ALL
+                              SELECT 'Thursday'
+                              UNION ALL
+                              SELECT 'Friday'
+                              UNION ALL
+                              SELECT 'Saturday'
+                              UNION ALL
+                              SELECT 'Sunday')
+        SELECT d.day_of_week,
+               COALESCE(COUNT(l.create_time), 0) AS count
+        FROM days_of_week d
+                 LEFT JOIN
+             notice l
+             ON
+                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
+                                     WHEN 2 THEN 'Monday'
+                                     WHEN 3 THEN 'Tuesday'
+                                     WHEN 4 THEN 'Wednesday'
+                                     WHEN 5 THEN 'Thursday'
+                                     WHEN 6 THEN 'Friday'
+                                     WHEN 7 THEN 'Saturday'
+                                     WHEN 1 THEN 'Sunday'
+                     END
+        GROUP BY d.day_of_week
+        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+    </select>
+
+    <select id="operLogCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
+                              UNION ALL
+                              SELECT 'Tuesday'
+                              UNION ALL
+                              SELECT 'Wednesday'
+                              UNION ALL
+                              SELECT 'Thursday'
+                              UNION ALL
+                              SELECT 'Friday'
+                              UNION ALL
+                              SELECT 'Saturday'
+                              UNION ALL
+                              SELECT 'Sunday')
+        SELECT d.day_of_week,
+               COALESCE(COUNT(l.oper_time), 0) AS count
+        FROM days_of_week d
+                 LEFT JOIN
+             oper_log l
+             ON
+                 d.day_of_week = CASE DAYOFWEEK(l.oper_time)
+                                     WHEN 2 THEN 'Monday'
+                                     WHEN 3 THEN 'Tuesday'
+                                     WHEN 4 THEN 'Wednesday'
+                                     WHEN 5 THEN 'Thursday'
+                                     WHEN 6 THEN 'Friday'
+                                     WHEN 7 THEN 'Saturday'
+                                     WHEN 1 THEN 'Sunday'
+                     END
+        GROUP BY d.day_of_week
+        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+    </select>
+
+    <select id="permissionCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
+                              UNION ALL
+                              SELECT 'Tuesday'
+                              UNION ALL
+                              SELECT 'Wednesday'
+                              UNION ALL
+                              SELECT 'Thursday'
+                              UNION ALL
+                              SELECT 'Friday'
+                              UNION ALL
+                              SELECT 'Saturday'
+                              UNION ALL
+                              SELECT 'Sunday')
+        SELECT d.day_of_week,
+               COALESCE(COUNT(l.create_time), 0) AS count
+        FROM days_of_week d
+                 LEFT JOIN
+             permission l
+             ON
+                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
+                                     WHEN 2 THEN 'Monday'
+                                     WHEN 3 THEN 'Tuesday'
+                                     WHEN 4 THEN 'Wednesday'
+                                     WHEN 5 THEN 'Thursday'
+                                     WHEN 6 THEN 'Friday'
+                                     WHEN 7 THEN 'Saturday'
+                                     WHEN 1 THEN 'Sunday'
+                     END
+        GROUP BY d.day_of_week
+        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+    </select>
+</mapper>

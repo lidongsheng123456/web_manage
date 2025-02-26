@@ -1,0 +1,130 @@
+// 定义颜色变量
+$aside-bg-color: #314056;
+$header-margin: 10px;
+$main-bg-color: #ffffff;
+$shadow-color: rgba(0, 0, 0, 0.2);
+$shadow-size: 5px 1px 10px $shadow-color;
+$focus-color: #4f9bfe;
+a {
+  color: black;
+  text-decoration: none;
+}
+
+/* 添加过渡效果的样式 */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+}
+
+.container {
+  height: 100vh;
+
+  .el-aside {
+    background: $aside-bg-color;
+    color: white;
+    box-shadow: $shadow-size;
+
+    .aside-logo {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      margin: $header-margin 0;
+    }
+
+    .el-menu {
+      background-color: $aside-bg-color !important;
+      border: none !important;
+
+      .el-menu-item, .el-sub-menu__title {
+        color: white !important;
+      }
+
+      .el-menu-item:focus {
+        color: $focus-color !important;
+      }
+
+      .el-menu-item:hover, .el-sub-menu__title:hover {
+        background-color: #021428 !important;
+      }
+
+      .el-sub-menu .el-menu-item {
+        background-color: #202d3d !important;
+      }
+
+      .el-sub-menu .el-menu-item:hover {
+        background-color: #021428 !important;
+      }
+    }
+  }
+
+  .el-header {
+    margin-left: $header-margin;
+    margin-top: $header-margin;
+    height: 100px;
+
+
+    .el-header-left {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: $shadow-size;
+    }
+
+    .el-header-right {
+      box-shadow: 1px 1px 10px $shadow-color;
+      height: 20px;
+
+      .el-tabs {
+        --el-tabs-header-height: 20px;
+
+        .el-tabs__item {
+          padding: 5px;
+        }
+
+        .el-tabs__header {
+          border: none !important;
+          margin: 0;
+
+          .el-tabs__nav-prev, .el-tabs__nav-next {
+            height: 20px;
+            line-height: 20px;
+          }
+
+          .el-tabs__new-tab {
+            display: none;
+          }
+        }
+      }
+
+      .el-tabs--card > .el-tabs__header .el-tabs__nav {
+        border: 1px solid #e4e7ed;
+      }
+    }
+
+    //去掉下拉框链接的聚焦样式
+    .el-dropdown .el-dropdown-link:focus-visible {
+      outline: none !important;
+    }
+
+    .el-divider {
+      margin: 5px 0;
+    }
+  }
+
+  .el-main {
+    background: $main-bg-color;
+    margin-left: $header-margin;
+    padding-top: 0;
+
+    .el-textarea__inner {
+      height: 200px;
+    }
+  }
+}
+
+

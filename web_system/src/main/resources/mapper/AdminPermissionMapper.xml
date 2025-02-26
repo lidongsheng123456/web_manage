@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminPermissionMapper">
+    <insert id="addPermission">
+        insert into permission
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="permissionCode != null &amp; permissionCode != ''">permission_code,</if>
+            <if test="permissionName != null &amp; permissionName != ''">permission_name,</if>
+            <if test="description != null &amp; description != ''">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="permissionCode != null &amp; permissionCode != ''">#{permissionCode},</if>
+            <if test="permissionName != null &amp; permissionName != ''">#{permissionName},</if>
+            <if test="description != null &amp; description != ''">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deletePermission">
+        delete
+        from permission
+        where id = #{id}
+    </delete>
+
+    <delete id="batchDeletePermission">
+        delete
+        from permission
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updatePermission">
+        update permission
+        <set>
+            <if test="permissionCode != null &amp; permissionCode != ''">permission_code=#{permissionCode},</if>
+            <if test="permissionName != null &amp; permissionName != ''">permission_name=#{permissionName},</if>
+            <if test="description != null &amp; description != ''">description=#{description},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryPermission" resultType="com.example.system.domain.Permission">
+        select * from permission
+        <trim prefix="where " prefixOverrides="and">
+            <if test="permissionCode != null &amp; permissionCode != ''">and permission_code like
+                concat('%',#{permissionCode},'%')
+            </if>
+            <if test="permissionName != null &amp; permissionName != ''">and permission_name like
+                concat('%',#{permissionName},'%')
+            </if>
+            <if test="description != null &amp; description != ''">and description like concat('%',#{description},'%')
+            </if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="queryPermissionById" resultType="com.example.system.domain.Permission">
+        select *
+        from permission
+        where id = #{id};
+    </select>
+
+    <select id="queryAllPermission" resultType="com.example.system.domain.Permission">
+        select *
+        from permission
+        order by id asc
+    </select>
+
+    <select id="queryRoleNotPermissionId" resultType="com.example.system.domain.Role">
+        select *
+        from role
+        where id not in (select role_permission.role_id as role_id from role_permission where permission_id = #{id})
+        <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
+        <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
+        <if test="description != null &amp; description != ''">and description like concat('%',#{description},'%')
+        </if>
+    </select>
+
+    <select id="queryRoleByPermissionId" resultType="com.example.system.domain.Role">
+        select * from role where id in (select role_permission.role_id as role_id from role_permission where
+        permission_id = #{id})
+        <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
+        <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
+        <if test="description != null &amp; description != ''">and description like concat('%',#{description},'%')
+        </if>
+    </select>
+</mapper>

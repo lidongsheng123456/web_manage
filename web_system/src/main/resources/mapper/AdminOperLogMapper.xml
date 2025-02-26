@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.system.mapper.AdminOperLogMapper">
+    <insert id="addOperLog">
+        insert into oper_log(title, business_type, method, request_method, oper_name, oper_url,
+                             oper_param, json_result, status, error_msg, oper_time, cost_time)
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operName}, #{operUrl},
+                #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{operTime},
+                #{costTime})
+    </insert>
+
+    <delete id="deleteOperLog">
+        delete
+        from oper_log
+        where id = #{id}
+    </delete>
+
+    <delete id="batchDeleteOperLog">
+        delete
+        from oper_log
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updateOperLog">
+        update oper_log
+        <set>
+            <if test="title != null &amp; title != ''">
+                title = #{title},
+            </if>
+            <if test="businessType != null &amp; businessType != ''">
+                business_type = #{businessType},
+            </if>
+            <if test="method != null &amp; method != ''">
+                method = #{method},
+            </if>
+            <if test="requestMethod != null &amp; requestMethod != ''">
+                request_method = #{requestMethod},
+            </if>
+            <if test="operName != null &amp; operName != ''">
+                oper_name = #{operName},
+            </if>
+            <if test="operUrl != null &amp; operUrl != ''">
+                oper_url = #{operUrl},
+            </if>
+            <if test="operParam != null &amp; operParam != ''">
+                oper_param = #{operParam},
+            </if>
+            <if test="jsonResult != null &amp; jsonResult != ''">
+                json_result = #{jsonResult},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="errorMsg != null &amp; errorMsg != ''">
+                error_msg = #{errorMsg},
+            </if>
+            <if test="operTime != null">
+                oper_time = #{operTime},
+            </if>
+            <if test="costTime != null">
+                cost_time = #{costTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryOperLog" resultType="com.example.system.domain.OperLog">
+        select *
+        from oper_log
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null &amp; title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="businessType  &amp; businessType != ''">
+                and business_type = #{businessType}
+            </if>
+            <if test="method != null  &amp; method != ''">
+                and method = #{method}
+            </if>
+            <if test="requestMethod != null &amp; requestMethod != ''">
+                and request_method = #{requestMethod}
+            </if>
+            <if test="operName != null &amp; operName != ''">
+                and oper_name = #{operName}
+            </if>
+            <if test="operUrl != null &amp; operUrl != ''">
+                and oper_url = #{operUrl}
+            </if>
+            <if test="operParam != null &amp; operParam != ''">
+                and oper_param = #{operParam}
+            </if>
+            <if test="jsonResult != null &amp; jsonResult != ''">
+                and json_result = #{jsonResult}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="errorMsg != null &amp; errorMsg != ''">
+                and error_msg = #{errorMsg}
+            </if>
+            <if test="operTime != null">
+                and oper_time = #{operTime}
+            </if>
+            <if test="costTime != null">
+                and cost_time = #{costTime}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="queryAllOperLog" resultType="com.example.system.domain.OperLog">
+        select *
+        from oper_log
+        order by id asc
+    </select>
+
+    <select id="queryOperLogById" resultType="com.example.system.domain.OperLog">
+        select *
+        from oper_log
+        where id = #{id}
+    </select>
+</mapper>

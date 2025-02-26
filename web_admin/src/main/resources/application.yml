@@ -1,0 +1,97 @@
+server:
+  port: ${blog.local.datasource.port}
+  host: ${blog.local.datasource.host}
+
+spring:
+  # 激活配置文件
+  profiles:
+    # 不同环境下的配置文件名 例：application-develop.yml
+    # 根据"-"后面的名字来决定加载哪个环境配置文件
+    active: develop
+  # 允许Spring Boot 或其他 YAML 解析器会允许对象之间的循环引用关系(我引用你的属性，你引用我的属性)
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${blog.datasource.driver-class-name}
+    url: jdbc:mysql://${blog.datasource.host}:${blog.datasource.port}/${blog.datasource.database}?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+    username: ${blog.datasource.username}
+    password: ${blog.datasource.password}
+  data:
+    redis:
+      host: ${blog.redis.host}
+      port: ${blog.redis.port}
+      password: ${blog.redis.password}
+      database: ${blog.redis.database}
+  servlet:
+    multipart:
+      #单个文件大小
+      max-file-size: 10MB
+      #总文件上传的大小
+      max-request-size: 100MB
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.system.domain
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: satoken
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
+  is-print: false
+
+# 配置Springdoc的属性，用于生成和管理Swagger API文档
+springdoc:
+  # Swagger UI页面的配置
+  swagger-ui:
+    # Swagger UI页面的访问路径
+    path: /swagger-ui.html
+    # 标签的排序方式，这里选择字母排序
+    tags-sorter: alpha
+    # 操作的排序方式，这里选择字母排序
+    operations-sorter: alpha
+  # API文档的路径配置
+  api-docs:
+    # API文档的访问路径
+    path: /v3/api-docs
+    enabled: true
+  # API文档的组配置
+  group-configs:
+    - group: '客户端'   # API分组名称
+      paths-to-match: '/**'  # 匹配所有路径
+      packages-to-scan: com.example.controller.user  # 扫描的包，用于自动发现API
+
+    - group: '管理端'   # API分组名称
+      paths-to-match: '/**'  # 匹配所有路径
+      packages-to-scan: com.example.controller.admin  # 扫描的包，用于自动发现API
+
+    - group: '通用接口'   # API分组名称
+      paths-to-match: '/**'  # 匹配所有路径
+      packages-to-scan: com.example.controller.common  # 扫描的包，用于自动发现API
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true    #开启knife4j,无需添加@EnableKnife4j注解
+  setting:
+    language: zh_cn   #中文
+    swagger-model-name: 实体列表   #默认为：Swagger Models
+#  #开启Swagger的Basic认证功能,默认是false,开启后访问文档页面时会弹出用户名和密码输入框
+#  basic:
+#    enable: true
+#    # Basic认证用户名
+#    username: user
+#    # Basic认证密码
+#    password: 123456

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminRoleAndPermissionMapper">
+    <delete id="deleteRoleAndPermissionByRoleId">
+        delete
+        from role_permission
+        where role_id = #{id}
+    </delete>
+
+    <delete id="batchDeleteRoleAndPermissionByRoleId">
+        delete
+        from role_permission
+        where role_id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRoleAndPermissionByPermissionId">
+        delete
+        from role_permission
+        where permission_id = #{id}
+    </delete>
+
+    <delete id="batchDeleteRoleAndPermissionByPermissionId">
+        delete
+        from role_permission
+        where permission_id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <delete id="removePermission">
+        delete from role_permission
+        where role_id in
+        <foreach collection="roleId" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+        and permission_id = #{permissionId}
+    </delete>
+
+    <insert id="assignPermission">
+        insert into role_permission (role_id, permission_id)
+        VALUES
+        <foreach collection="roleId" item="roleId" separator=",">
+            (#{roleId}, #{permissionId})
+        </foreach>
+    </insert>
+
+    <select id="validateIsExistByRoleId" resultType="java.lang.Integer">
+        select count(*)
+        from role_permission
+        where role_id = #{roleId}
+          and permission_id = #{permissionId}
+    </select>
+</mapper>

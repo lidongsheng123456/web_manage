@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminUserAndRoleMapper">
+    <insert id="addUserAndRoleId">
+        insert into user_role (user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+
+    <delete id="deleteUserAndRoleByUserId">
+        delete
+        from user_role
+        where user_id = #{userId}
+    </delete>
+
+    <delete id="batchDeleteUserAndRoleByUserId">
+        delete
+        from user_role
+        where user_id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUserAndRoleByRoleId">
+        delete
+        from user_role
+        where role_id = #{roleId}
+    </delete>
+
+    <delete id="batchDeleteUserAndRoleByRoleId">
+        delete
+        from user_role
+        where role_id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <delete id="removeRole">
+        delete from user_role
+        where user_id in
+        <foreach collection="userId" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        and role_id = #{roleId}
+    </delete>
+
+    <insert id="assignRole">
+        insert into user_role (user_id, role_id)
+        VALUES
+        <foreach collection="userId" item="userId" separator=",">
+            (#{userId}, #{roleId})
+        </foreach>
+    </insert>
+
+    <select id="validateIsExistByUserId" resultType="java.lang.Integer">
+        select count(*)
+        from user_role
+        where user_id = #{userId}
+          and role_id = #{roleId}
+    </select>
+</mapper>

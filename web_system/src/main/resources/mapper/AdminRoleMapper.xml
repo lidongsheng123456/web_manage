@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminRoleMapper">
+    <insert id="addRole">
+        insert into role
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="roleCode != null &amp; roleCode != ''">role_code,</if>
+            <if test="roleName != null &amp; roleName != ''">role_name,</if>
+            <if test="description != null &amp; description != ''">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="roleCode != null &amp; roleCode != ''">#{roleCode},</if>
+            <if test="roleName != null &amp; roleName != ''">#{roleName},</if>
+            <if test="description != null &amp; description != ''">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteRole">
+        delete
+        from role
+        where id = #{id}
+    </delete>
+
+    <delete id="batchDeleteRole">
+        delete
+        from role
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updateRole">
+        update role
+        <set>
+            <if test="roleCode != null &amp; roleCode != ''">role_code=#{roleCode},</if>
+            <if test="roleName != null &amp; roleName != ''">role_name=#{roleName},</if>
+            <if test="description != null &amp; description != ''">description=#{description},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryRole" resultType="com.example.system.domain.Role">
+        select * from role
+        <trim prefix="where " prefixOverrides="and">
+            <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
+            <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
+            <if test="description != null &amp; description != ''">and description like concat('%',#{description},'%')
+            </if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="queryRoleById" resultType="com.example.system.domain.Role">
+        select *
+        from role
+        where id = #{id};
+    </select>
+
+    <select id="queryAllRole" resultType="com.example.system.domain.Role">
+        select *
+        from role
+        order by id asc
+    </select>
+
+    <select id="queryUserNotRoleId" resultType="com.example.system.domain.vo.UserVo">
+        select *
+        from user
+        where id not in (select user_role.user_id as role_id from user_role where role_id = #{id})
+        <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
+        <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
+        <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
+        <if test="email != null &amp; email != ''">and email like concat('%',#{email},'%')</if>
+    </select>
+
+    <select id="queryUserByRoleId" resultType="com.example.system.domain.vo.UserVo">
+        select * from user where id in (select user_role.user_id as user_id from user_role where role_id = #{id})
+        <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
+        <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
+        <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
+        <if test="email != null &amp; email != ''">and email like concat('%',#{email},'%')</if>
+    </select>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminUserMapper">
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="username != null &amp; username != ''">username,</if>
+            <if test="password != null &amp; password != ''">password,</if>
+            <if test="name != null &amp; name != ''">name,</if>
+            <if test="phone != null &amp; phone != ''">phone,</if>
+            <if test="email != null &amp; email != ''">email,</if>
+            <if test="imgUrl != null &amp; imgUrl != ''">img_url,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="username != null &amp; username != ''">#{username},</if>
+            <if test="password != null &amp; password != ''">#{password},</if>
+            <if test="name != null &amp; name != ''">#{name},</if>
+            <if test="phone != null &amp; phone != ''">#{phone},</if>
+            <if test="email != null &amp; email != ''">#{email},</if>
+            <if test="imgUrl != null &amp; imgUrl != ''">#{imgUrl},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+
+    <delete id="batchDeleteUser">
+        delete
+        from user
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="username != null &amp; username != ''">username=#{username},</if>
+            <if test="password != null &amp; password != ''">password=#{password},</if>
+            <if test="name != null &amp; name != ''">name=#{name},</if>
+            <if test="phone != null &amp; phone != ''">phone=#{phone},</if>
+            <if test="email != null &amp; email != ''">email=#{email},</if>
+            <if test="imgUrl != null &amp; imgUrl != ''">img_url=#{imgUrl},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryUser" resultType="com.example.system.domain.vo.UserVo">
+        select * from user
+        <trim prefix="where " prefixOverrides="and">
+            <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
+            <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
+            <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
+            <if test="email != null &amp; email != ''">and email like concat('%',#{email},'%')</if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="queryUserById" resultType="com.example.system.domain.User">
+        select *
+        from user
+        where id = #{id};
+    </select>
+
+    <select id="queryAllUser" resultType="com.example.system.domain.User">
+        select *
+        from user
+        order by id asc
+    </select>
+
+    <select id="queryCurrentUser" resultType="com.example.system.domain.vo.UserVo">
+        select *
+        from user
+        where id = #{id}
+    </select>
+</mapper>
