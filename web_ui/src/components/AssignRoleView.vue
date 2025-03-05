@@ -105,7 +105,6 @@
 
 <script setup>
 import {ref} from "vue";
-import {ElMessage} from "element-plus";
 import {queryUserByRoleId, queryUserNotRoleId} from "@/api/request/RoleRequest";
 import noImage from "@/assets/img/no_image.png";
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
@@ -146,23 +145,19 @@ const getList = (params1, params2) => {
   if (isAssign.value === 'assign') {
     loading.value = true;
     queryUserNotRoleId({...queryParams.value, id: id.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
+    }).catch(error => {
+      console.log(error)
     });
   } else {
     queryUserByRoleId({...queryParams.value, id: id.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
+    }).catch(error => {
+      console.log(error)
     });
   }
 }

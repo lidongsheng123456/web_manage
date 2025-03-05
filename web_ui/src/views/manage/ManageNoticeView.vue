@@ -172,10 +172,6 @@ const submitForm = () => {
     if (valid) {
       if (form.value.id != null) {
         updateNotice(form.value).then(res => {
-          if (res.code !== 200) {
-            ElMessage.error(res.msg);
-            return;
-          }
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -184,10 +180,6 @@ const submitForm = () => {
         });
       } else {
         addNotice(form.value).then(res => {
-          if (res.code !== 200) {
-            ElMessage.error(res.msg);
-            return;
-          }
           ElMessage.success("新增成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -208,18 +200,13 @@ const handleDelete = (row) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    return batchDeleteNotice(idsToDelete.join(', ')).catch(error => {
+    batchDeleteNotice(idsToDelete.join(', ')).then(res => {
+      ElMessage.success("删除成功");
+      getList();
+    }).catch(error => {
       console.log(error)
     });
-  }).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
-    ElMessage.success("删除成功");
-    getList();
   }).catch(error => {
-    console.log(error);
   });
 };
 // 控制更新
@@ -227,10 +214,6 @@ const handleUpdate = (row) => {
   resetFrom();
   const id = row.id || ids.value;
   queryNoticeById(id).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg)
-      return
-    }
     form.value = res.data
     dialogOverflowVisible.value = true;
     title.value = "修改通知";
@@ -242,10 +225,6 @@ const handleUpdate = (row) => {
 const getList = () => {
   loading.value = true;
   queryNotice(queryParams.value).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
     tableData.value = res.data.list;
     total.value = res.data.total;
     loading.value = false;

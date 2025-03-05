@@ -45,9 +45,10 @@
 import {onMounted, ref} from 'vue';
 import {captcha, login} from "@/api/request/WebRequest";
 import router from "@/router";
-import {queryNotice} from "@/api/request/NoticeRequest";
 import {ElMessage} from "element-plus";
+import axios from "axios";
 
+const uploadUrl = process.env.VUE_APP_BASEURL
 const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);
@@ -74,10 +75,6 @@ const logIn = () => {
     if (valid) {
       loading.value = true;
       login(form.value).then(res => {
-        if (res.code !== 200) {
-          ElMessage.error(res.msg);
-          return
-        }
         ElMessage.success('登录成功');
         router.push('/Manage');
       }).catch(error => {
@@ -101,8 +98,8 @@ const getCaptcha = () => {
 };
 
 const getNotice = () => {
-  queryNotice().then(res => {
-    if (res.code === 200) {
+  axios.get(uploadUrl + '/admin/notice').then(res => {
+    if (res.data.code === 200) {
       router.push('/Manage');
     }
   }).catch(error => {

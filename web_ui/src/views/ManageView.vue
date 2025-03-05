@@ -134,7 +134,13 @@
           </div>
         </el-header>
         <el-main>
-          <router-view @updateUserInfo="getUserInfo"/>
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
+                <component :is="Component"/>
+              </transition>
+            </keep-alive>
+          </router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -211,17 +217,14 @@ const logoutLogin = () => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    return logout();
-  }).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return
-    }
-    ElMessage.success('退出成功');
-    router.push('/');
-    window.location.reload(true);
+    logout().then(res => {
+      ElMessage.success('退出成功');
+      router.push('/');
+      window.location.reload(true);
+    }).catch(error => {
+      console.log(error)
+    });
   }).catch(error => {
-    console.log(error);
   })
 };
 

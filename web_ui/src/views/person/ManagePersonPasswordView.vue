@@ -36,10 +36,6 @@ const form = ref({
 
 const formerPassword = (rule, confirmPwd, callback) => {
   validateFormerPassword(confirmPwd).then(res => {
-    if (res.code !== 200) {
-      callback(new Error("原密码错误"));
-      return
-    }
     callback();
   }).catch(error => {
     console.log(error)
@@ -72,16 +68,8 @@ const submitForm = () => {
   formRef.value.validate(valid => {
     if (valid) {
       updatePerson({password: form.value.confirmPassword}).then(res => {
-        if (res.code !== 200) {
-          ElMessage.error(res.msg);
-          return;
-        }
         ElMessage.success('修改成功');
         logout().then(res => {
-          if (res.code !== 200) {
-            ElMessage.error(res.msg);
-            return
-          }
           router.push('/');
           window.location.reload(true);
         }).catch(error => {

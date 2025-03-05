@@ -217,10 +217,6 @@ const submitForm = () => {
     if (valid) {
       if (form.value.id != null) {
         updateRole(form.value).then(res => {
-          if (res.code !== 200) {
-            ElMessage.error(res.msg);
-            return;
-          }
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -229,10 +225,6 @@ const submitForm = () => {
         });
       } else {
         addRole(form.value).then(res => {
-          if (res.code !== 200) {
-            ElMessage.error(res.msg);
-            return;
-          }
           ElMessage.success("新增成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -247,10 +239,6 @@ const submitForm = () => {
 const handleSubmitAssignForm = (ids, isAssign) => {
   if (isAssign === 'assign') {
     assignRole({userId: ids, roleId: assignId.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       ElMessage.success('分配角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
@@ -259,10 +247,6 @@ const handleSubmitAssignForm = (ids, isAssign) => {
     });
   } else {
     removeRole({userId: ids, roleId: assignId.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       ElMessage.success('移除角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
@@ -281,17 +265,13 @@ const handleDelete = (row) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    return batchDeleteRole(idsToDelete.join(', ')).catch(error => {
+    batchDeleteRole(idsToDelete.join(', ')).then(res => {
+      ElMessage.success("删除成功");
+      getList();
+    }).catch(error => {
       console.log(error)
     });
-  }).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
-    ElMessage.success("删除成功");
-    getList();
-  }).catch(() => {
+  }).catch(error => {
   });
 };
 // 控制更新
@@ -336,10 +316,6 @@ const handleRemove = (row) => {
 const getList = () => {
   loading.value = true;
   queryRole(queryParams.value).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
     tableData.value = res.data.list;
     total.value = res.data.total;
     loading.value = false;

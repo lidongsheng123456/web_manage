@@ -58,7 +58,6 @@
 
 <script setup>
 import {ref} from "vue";
-import {ElMessage} from "element-plus";
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import {Refresh, Search} from "@element-plus/icons-vue";
 import {queryRoleByPermissionId, queryRoleNotPermissionId} from "@/api/request/PermissionRequest";
@@ -97,23 +96,19 @@ const getList = (params1, params2) => {
   if (isAssign.value === 'assign') {
     loading.value = true;
     queryRoleNotPermissionId({...queryParams.value, id: id.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
+    }).catch(error => {
+      console.log(error)
     });
   } else {
     queryRoleByPermissionId({...queryParams.value, id: id.value}).then(res => {
-      if (res.code !== 200) {
-        ElMessage.error(res.msg);
-        return;
-      }
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
+    }).catch(error => {
+      console.log(error)
     });
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="formRef" :inline="true" :model="form" :rules="rules" label-width="65px">
+    <el-form ref="formRef" :model="form" :rules="rules" label-width="65px">
       <el-form-item label="用户名" prop="username">
         <el-input
             v-model="form.username"
@@ -110,10 +110,6 @@ const submitForm = () => {
   formRef.value.validate(valid => {
     if (valid) {
       updatePerson(form.value).then(res => {
-        if (res.code !== 200) {
-          ElMessage.error(res.msg);
-          return;
-        }
         ElMessage.success('修改成功');
         emit('updateUserInfo');
       }).catch(error => {

@@ -1,4 +1,3 @@
-import {ElMessage} from "element-plus";
 import {queryCurrentUser} from "@/api/request/UserRequest";
 
 const state = {
@@ -16,11 +15,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             queryCurrentUser()
                 .then(res => {
-                    if (res.code !== 200) {
-                        ElMessage.error(res.msg);
-                        reject(new Error(res.msg));
-                        return
-                    }
                     commit("SET_USERINFO", res.data);
                     resolve(res);
                 })

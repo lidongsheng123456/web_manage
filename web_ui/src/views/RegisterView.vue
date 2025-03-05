@@ -82,10 +82,6 @@ const registe = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       register(form.value).then(res => {
-        if (res.code !== 200) {
-          ElMessage.error(res.msg);
-          return
-        }
         router.push('/');
         ElMessage.success('注册成功');
       }).catch(error => {

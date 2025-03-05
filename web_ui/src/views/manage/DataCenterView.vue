@@ -10,7 +10,6 @@ import StatisticView from "@/views/dashboard/StatisticView.vue";
 import LineChartView from "@/views/dashboard/LineChartView.vue";
 import {onMounted, ref} from "vue";
 import {queryData} from "@/api/request/DataCenterRequest";
-import {ElMessage} from "element-plus";
 // 表格数据
 let lineChartDataS = ref({
   user: [0, 0, 0, 0, 0, 0, 0],
@@ -27,10 +26,6 @@ const handleSetLineChartData = (type) => {
 // 初始化
 const init = () => {
   queryData().then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg)
-      return
-    }
     let data = res.data
     lineChartDataS.value.user = data.user.map(item => item.count)
     lineChartDataS.value.notice = data.notice.map(item => item.count)

@@ -198,10 +198,6 @@ let queryParams = ref({
 // 控制详细
 const handleDetail = (row) => {
   queryOperLogById(row.id).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg)
-      return
-    }
 
     from.value = res.data
 
@@ -226,28 +222,19 @@ const handleDelete = (row) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    return batchDeleteOperLog(idsToDelete.join(', ')).catch(error => {
+    batchDeleteOperLog(idsToDelete.join(', ')).then(res => {
+      ElMessage.success("删除成功");
+      getList();
+    }).catch(error => {
       console.log(error)
     });
-  }).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
-    ElMessage.success("删除成功");
-    getList();
   }).catch(error => {
-    console.log(error);
   });
 };
 // 获取数据列表
 const getList = () => {
   loading.value = true;
   queryOperLog(queryParams.value).then(res => {
-    if (res.code !== 200) {
-      ElMessage.error(res.msg);
-      return;
-    }
     tableData.value = res.data.list;
     total.value = res.data.total;
     loading.value = false;

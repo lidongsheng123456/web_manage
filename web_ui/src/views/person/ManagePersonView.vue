@@ -150,10 +150,6 @@ const handleAvatarSuccess = (response, uploadFile) => {
   }
   userInfo.value.imgUrl = response.data;
   updatePerson({id: userInfo.value.id, imgUrl: userInfo.value.imgUrl}).then(response => {
-    if (response.code !== 200) {
-      ElMessage.error(response.msg)
-      return
-    }
     getUserInfo()
     emit('updateUserInfo');
   }).catch(error => {
