@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminRoleServiceImpl implements AdminRoleService {
@@ -222,6 +223,14 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         for (Long l : assignRoleDTO.getUserId()) {
             if (l == 1) {
                 throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
+            }
+        }
+
+        // 当用户只有最后一个角色时不允许操作
+        for (Long userId : assignRoleDTO.getUserId()) {
+            List<Map<Long, Long>> list = adminUserAndRoleMapper.getUserAndRoleByUserId(userId);
+            if (list.size() == 1) {
+                throw new BusinessException(4005, "序号为：" + userId + "的用户只剩余一个角色,禁止删除");
             }
         }
 

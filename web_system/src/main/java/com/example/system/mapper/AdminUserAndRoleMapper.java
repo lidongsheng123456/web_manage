@@ -1,8 +1,10 @@
 package com.example.system.mapper;
 
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminUserAndRoleMapper {
@@ -69,4 +71,13 @@ public interface AdminUserAndRoleMapper {
      * @return
      */
     int removeRole(List<Long> userId, Long roleId);
+
+    /**
+     * 查询用户分配了多少个角色
+     *
+     * @param userId
+     * @return
+     */
+    @MapKey("user_id")
+    List<Map<Long, Long>> getUserAndRoleByUserId(Long userId);
 }

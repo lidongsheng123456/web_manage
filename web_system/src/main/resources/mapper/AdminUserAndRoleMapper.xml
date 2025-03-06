@@ -62,4 +62,10 @@
         where user_id = #{userId}
           and role_id = #{roleId}
     </select>
+
+    <select id="getUserAndRoleByUserId" resultType="java.util.Map">
+        select *
+        from user_role
+        where user_id = #{userId}
+    </select>
 </mapper>
