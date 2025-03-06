@@ -8,13 +8,13 @@ const request = axios.create({
     withCredentials: true
 })
 
+/**
+ * 后端使用sa-token不需要手动指定请求头token
+ * 响应时会将token自动注入到Cookie
+ * 请求时网络请求携带着Cookie，sa-token会自动提取Cookie中的token验证
+ */
 request.interceptors.request.use(config => {
-    config.headers['Content-Type'] = 'application/json;charset=utf-8';
-
     return config
-}, error => {
-    console.log(error)
-    return Promise.reject(error)
 })
 
 request.interceptors.response.use(response => {
@@ -39,10 +39,6 @@ request.interceptors.response.use(response => {
         } else {
             return res
         }
-    },
-    error => {
-        console.log(error)
-        return Promise.reject(error)
     }
 )
 
