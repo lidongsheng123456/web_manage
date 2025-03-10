@@ -38,7 +38,7 @@ const formerPassword = (rule, confirmPwd, callback) => {
   validateFormerPassword(confirmPwd).then(res => {
     callback();
   }).catch(error => {
-    console.log(error)
+    callback(new Error('原密码错误'));
   });
 };
 

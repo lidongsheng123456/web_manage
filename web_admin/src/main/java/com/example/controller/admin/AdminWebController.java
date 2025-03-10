@@ -136,7 +136,7 @@ public class AdminWebController {
     @Operation(summary = "验证密码正确")
     @Log(title = "验证密码正确", businessType = BusinessType.OTHER)
     @PostMapping("/validate/formerPassword")
-    public Result validateFormerPassword(@RequestBody String formerPassword) {
+    public Result validateFormerPassword(String formerPassword) {
         adminWebService.validateFormerPassword(formerPassword);
         return Result.success();
     }

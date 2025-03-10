@@ -4,8 +4,6 @@ import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
 public interface AdminWebMapper {
     /**
@@ -32,10 +30,10 @@ public interface AdminWebMapper {
     int updatePerson(User user);
 
     /**
-     * 验证密码正确
+     * 根据用户id查询
      *
-     * @param password
+     * @param loginIdAsLong
      * @return
      */
-    List<User> validateFormerPassword(String password, Long loginId);
+    User selectByUserId(Long loginIdAsLong);
 }

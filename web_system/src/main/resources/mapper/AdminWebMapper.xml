@@ -10,11 +10,10 @@
         where username = #{username}
     </select>
 
-    <select id="validateFormerPassword" resultType="com.example.system.domain.User">
+    <select id="selectByUserId" resultType="com.example.system.domain.User">
         select *
         from user
-        where password = #{password}
-          and id = #{loginId}
+        where id = #{id}
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id">

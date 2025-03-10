@@ -58,6 +58,8 @@ export function validateFormerPassword(data) {
     return request({
         url: '/admin/validate/formerPassword',
         method: 'POST',
-        data: data
+        params: {
+            formerPassword: data
+        }
     })
 }

@@ -161,7 +161,6 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         user.setId(loginIdAsLong);
 
-
         if (adminWebMapper.updatePerson(user) == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
         }
@@ -182,9 +181,8 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         String password = DigestUtils.md5DigestAsHex(formerPassword.getBytes());
 
-        List<User> user = adminWebMapper.validateFormerPassword(password, loginIdAsLong);
-
-        if (ObjectUtil.isEmpty(user)) {
+        User user = adminWebMapper.selectByUserId(loginIdAsLong);
+        if (!user.getPassword().equals(password)) {
             throw new BusinessException(ResultCodeEnum.PASSWORD_ERROR);
         }
     }
