@@ -98,7 +98,11 @@ const getCaptcha = () => {
 };
 
 const getNotice = () => {
-  axios.get(uploadUrl + '/admin/notice').then(res => {
+  // 不配置的话session携带不了
+  const request = axios.create({
+    withCredentials: true
+  })
+  request.get(uploadUrl + '/admin/notice').then(res => {
     if (res.data.code === 200) {
       router.push('/Manage');
     }

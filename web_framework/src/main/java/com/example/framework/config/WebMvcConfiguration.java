@@ -23,13 +23,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验 缓存中没有登录信息则抛出NotLoginException。
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
-                .addPathPatterns("/**")
-                .excludePathPatterns("/")
+                .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login")
                 .excludePathPatterns("/admin/register")
                 .excludePathPatterns("/admin/captcha")
-                .excludePathPatterns("/admin/logout/**")
-                .excludePathPatterns("/common/files/**");
+                .excludePathPatterns("/admin/logout/**");
     }
 
     /**
