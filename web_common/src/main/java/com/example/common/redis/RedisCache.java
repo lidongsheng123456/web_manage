@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  **/
-@SuppressWarnings(value = { "unchecked", "rawtypes" })
+@SuppressWarnings(value = { "unchecked", "rawtypes" })//抑制编译器对未检查类型转换和原始类型使用的警告。
 @Component
 public class RedisCache
 {

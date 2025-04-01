@@ -2,11 +2,9 @@ package com.example.system.mapper;
 
 import com.example.system.domain.Role;
 import com.example.system.domain.vo.UserVo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface AdminRoleMapper {
     /**
      * 新增角色

@@ -1,10 +1,7 @@
 package com.example.system.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
 
-@Mapper
 public interface AdminRoleAndPermissionMapper {
     void deleteRoleAndPermissionByRoleId(Long id);
 

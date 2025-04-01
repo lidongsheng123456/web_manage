@@ -2,11 +2,9 @@ package com.example.system.mapper;
 
 import com.example.system.domain.Notice;
 import com.example.system.domain.vo.NoticeVo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface AdminNoticeMapper {
     /**
      * 新增通知

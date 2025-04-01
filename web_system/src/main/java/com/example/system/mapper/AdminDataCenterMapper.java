@@ -1,11 +1,9 @@
 package com.example.system.mapper;
 
 import com.example.system.domain.vo.DataCountTypeVo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface AdminDataCenterMapper {
     /**
      * 统计用户总数

@@ -2,11 +2,9 @@ package com.example.system.mapper;
 
 import com.example.system.domain.User;
 import com.example.system.domain.vo.UserVo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface AdminUserMapper {
     /**
      * 新增用户

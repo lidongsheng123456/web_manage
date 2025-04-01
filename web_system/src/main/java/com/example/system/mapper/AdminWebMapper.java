@@ -2,9 +2,7 @@ package com.example.system.mapper;
 
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
 public interface AdminWebMapper {
     /**
      * 根据用户名查询

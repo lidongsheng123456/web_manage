@@ -1,11 +1,9 @@
 package com.example.system.mapper;
 
 import com.example.system.domain.OperLog;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
 public interface AdminOperLogMapper {
     /**
      * 新增日志
