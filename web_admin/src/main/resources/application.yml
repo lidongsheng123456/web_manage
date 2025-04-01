@@ -29,12 +29,12 @@ spring:
       #总文件上传的大小
       max-request-size: 100MB
 
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.system.domain
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto # 全局id类型为自增长
 
 sa-token:
   # token 名称（同时也是 cookie 名称）

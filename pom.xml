@@ -27,37 +27,24 @@
     <properties>
         <spring-boot.version>3.0.6</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.5.10</mybatis-plus-boot-starter.version>
         <hutool-all.version>5.8.26</hutool-all.version>
-        <aliyun-sdk-oss.version>3.15.1</aliyun-sdk-oss.version>
         <poi-ooxml.version>5.2.3</poi-ooxml.version>
         <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
         <lombok.version>1.18.30</lombok.version>
-        <jjwt>0.9.1</jjwt>
         <java.version>17</java.version>
         <pagehelper.version>1.4.6</pagehelper.version>
         <sa-token-spring-boot3-starter.version>1.38.0</sa-token-spring-boot3-starter.version>
         <sa-token-jwt.version>1.38.0</sa-token-jwt.version>
         <sa-token-redis-jackson.version>1.38.0</sa-token-redis-jackson.version>
+        <knife4j.version>4.3.0</knife4j.version>
         <web_common.version>0.0.1-SNAPSHOT</web_common.version>
         <web_framework.version>0.0.1-SNAPSHOT</web_framework.version>
         <web_system.version>0.0.1-SNAPSHOT</web_system.version>
-        <commons-lang3.version>3.12.0</commons-lang3.version>
-        <UserAgentUtils.version>1.21</UserAgentUtils.version>
-        <httpclient.version>4.5.14</httpclient.version>
-        <knife4j.version>4.3.0</knife4j.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- MyBatis Spring Boot Starter: 用于集成MyBatis框架 -->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis-spring-boot-starter.version}</version>
-            </dependency>
-
-
             <!-- MySQL Connector/J: 用于连接MySQL数据库 -->
             <dependency>
                 <groupId>mysql</groupId>
@@ -80,28 +67,12 @@
                 <version>${hutool-all.version}</version>
             </dependency>
 
-            <!-- 阿里云OSS SDK: 用于访问阿里云对象存储服务 -->
-            <dependency>
-                <groupId>com.aliyun.oss</groupId>
-                <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun-sdk-oss.version}</version>
-            </dependency>
-
             <!-- Apache POI: 用于操作Excel文件 -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
             </dependency>
-
-            <!-- MyBatis Spring Boot Starter Test: 用于测试MyBatis配置 -->
-            <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter-test</artifactId>
-                <version>${mybatis-spring-boot-starter.version}</version>
-                <scope>test</scope>
-            </dependency>
-
 
             <!-- 内部模块：web_common -->
             <dependency>
@@ -122,13 +93,6 @@
                 <groupId>com.example</groupId>
                 <artifactId>web_system</artifactId>
                 <version>${web_system.version}</version>
-            </dependency>
-
-            <!-- JJWT: 用于生成和解析JWT令牌 -->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt}</version>
             </dependency>
 
             <!-- Sa-Token Spring Boot Starter: 用于集成Sa-Token权限认证框架 -->
@@ -165,32 +129,18 @@
                 </exclusions>
             </dependency>
 
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-
-            <!-- 解析客户端操作系统、浏览器等 -->
-            <dependency>
-                <groupId>eu.bitwalker</groupId>
-                <artifactId>UserAgentUtils</artifactId>
-                <version>${UserAgentUtils.version}</version>
-            </dependency>
-
-            <!-- 客服端请求工具 -->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-                <scope>compile</scope>
-            </dependency>
-
             <!-- knife4j在线文档 -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
