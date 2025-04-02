@@ -22,6 +22,20 @@
             <groupId>com.example</groupId>
             <artifactId>web_framework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -29,9 +43,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.example.WebManageApplication</mainClass>
+                    <!-- 关键配置：覆盖父模块的skip设置 -->
+                    <skip>false</skip> <!-- 显式设置为false -->
                 </configuration>
                 <executions>
                     <execution>
@@ -43,4 +58,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

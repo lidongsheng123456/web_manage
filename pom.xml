@@ -41,6 +41,8 @@
         <web_common.version>0.0.1-SNAPSHOT</web_common.version>
         <web_framework.version>0.0.1-SNAPSHOT</web_framework.version>
         <web_system.version>0.0.1-SNAPSHOT</web_system.version>
+        <native.buildtools.skip>true</native.buildtools.skip>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencyManagement>
@@ -144,4 +146,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <!-- 阻止其他没有主类的模块尝试打包成可执行的jar包 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

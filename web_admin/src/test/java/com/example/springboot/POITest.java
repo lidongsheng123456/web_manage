@@ -85,9 +85,4 @@ public class POITest {
         in.close();
         excel.close();
     }
-
-    public static void main(String[] args) throws Exception {
-        write(); // 调用写入方法
-        read(); // 调用读取方法
-    }
 }
