@@ -41,8 +41,6 @@
         <web_common.version>0.0.1-SNAPSHOT</web_common.version>
         <web_framework.version>0.0.1-SNAPSHOT</web_framework.version>
         <web_system.version>0.0.1-SNAPSHOT</web_system.version>
-        <native.buildtools.skip>true</native.buildtools.skip> <!-- 禁用GraalVM原生镜像构建 -->
-        <skipTests>true</skipTests> <!-- 跳过测试 -->
     </properties>
 
     <dependencyManagement>
