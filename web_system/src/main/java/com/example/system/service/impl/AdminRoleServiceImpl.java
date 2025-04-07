@@ -15,6 +15,7 @@ import com.example.system.mapper.AdminUserAndRoleMapper;
 import com.example.system.service.AdminRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,18 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class AdminRoleServiceImpl implements AdminRoleService {
+
     private final AdminRoleMapper adminRoleMapper;
     private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final AdminRoleAndPermissionMapper adminRoleAndPermissionMapper;
     private final AdminRbacMapper adminRbacMapper;
-
-    public AdminRoleServiceImpl(AdminRoleMapper adminRoleMapper, AdminRoleAndPermissionMapper adminRoleAndPermissionMapper, AdminUserAndRoleMapper adminUserAndRoleMapper, AdminRbacMapper adminRbacMapper) {
-        this.adminRoleMapper = adminRoleMapper;
-        this.adminRoleAndPermissionMapper = adminRoleAndPermissionMapper;
-        this.adminUserAndRoleMapper = adminUserAndRoleMapper;
-        this.adminRbacMapper = adminRbacMapper;
-    }
 
     /**
      * 新增角色

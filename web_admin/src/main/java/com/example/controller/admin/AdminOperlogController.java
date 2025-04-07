@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +21,10 @@ import java.util.List;
 @Tag(name = "日志相关接口")
 @RestController
 @RequestMapping("/admin/operLog")
-@Slf4j
+@RequiredArgsConstructor
 public class AdminOperlogController {
-    private final AdminOperLogService adminOperLogService;
 
-    public AdminOperlogController(AdminOperLogService adminOperLogService) {
-        this.adminOperLogService = adminOperLogService;
-    }
+    private final AdminOperLogService adminOperLogService;
 
     /**
      * 删除日志

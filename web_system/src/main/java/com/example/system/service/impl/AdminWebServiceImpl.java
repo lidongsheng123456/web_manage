@@ -16,6 +16,7 @@ import com.example.system.mapper.AdminUserAndRoleMapper;
 import com.example.system.mapper.AdminWebMapper;
 import com.example.system.service.AdminWebService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +26,12 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminWebServiceImpl implements AdminWebService {
+
     private final AdminWebMapper adminWebMapper;
     private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final AdminRbacMapper adminRbacMapper;
-
-    public AdminWebServiceImpl(AdminWebMapper adminWebMapper, AdminUserAndRoleMapper adminUserAndRoleMapper, AdminRbacMapper adminRbacMapper) {
-        this.adminWebMapper = adminWebMapper;
-        this.adminUserAndRoleMapper = adminUserAndRoleMapper;
-        this.adminRbacMapper = adminRbacMapper;
-    }
 
     /**
      * 登录后台

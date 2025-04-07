@@ -12,17 +12,17 @@ import com.example.system.mapper.AdminNoticeMapper;
 import com.example.system.service.AdminNoticeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminNoticeServiceImpl implements AdminNoticeService {
+
     private final AdminNoticeMapper adminNoticeMapper;
 
-    public AdminNoticeServiceImpl(AdminNoticeMapper adminNoticeMapper) {
-        this.adminNoticeMapper = adminNoticeMapper;
-    }
 
     /**
      * 新增通知

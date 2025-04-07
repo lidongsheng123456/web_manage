@@ -8,17 +8,16 @@ import com.example.system.mapper.AdminOperLogMapper;
 import com.example.system.service.AdminOperLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminOperLogServiceImpl implements AdminOperLogService {
-    private final AdminOperLogMapper adminOperLogMapper;
 
-    public AdminOperLogServiceImpl(AdminOperLogMapper adminOperLogMapper) {
-        this.adminOperLogMapper = adminOperLogMapper;
-    }
+    private final AdminOperLogMapper adminOperLogMapper;
 
     /**
      * 删除日志

@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +25,10 @@ import java.util.List;
 @Tag(name = "角色相关接口")
 @RestController
 @RequestMapping("/admin/role")
-@Slf4j
+@RequiredArgsConstructor
 public class AdminRoleController {
-    private final AdminRoleService adminRoleService;
 
-    public AdminRoleController(AdminRoleService adminRoleService) {
-        this.adminRoleService = adminRoleService;
-    }
+    private final AdminRoleService adminRoleService;
 
     /**
      * 新增角色

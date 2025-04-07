@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,10 @@ import java.util.Date;
 @Tag(name = "web相关接口")
 @RequestMapping("/admin")
 @RestController
-@Slf4j
+@RequiredArgsConstructor
 public class AdminWebController {
-    private final AdminWebService adminWebService;
 
-    public AdminWebController(AdminWebService adminWebService) {
-        this.adminWebService = adminWebService;
-    }
+    private final AdminWebService adminWebService;
 
     /**
      * 登录后台

@@ -17,6 +17,7 @@ import com.example.system.mapper.AdminUserMapper;
 import com.example.system.service.AdminUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,18 +26,13 @@ import org.springframework.util.DigestUtils;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService {
+
     private final AdminUserMapper adminUserMapper;
     private final AdminNoticeMapper adminNoticeMapper;
     private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final AdminRbacMapper adminRbacMapper;
-
-    public AdminUserServiceImpl(AdminUserMapper adminUserMapper, AdminNoticeMapper adminNoticeMapper, AdminUserAndRoleMapper adminUserAndRoleMapper, AdminRbacMapper adminRbacMapper) {
-        this.adminUserMapper = adminUserMapper;
-        this.adminNoticeMapper = adminNoticeMapper;
-        this.adminUserAndRoleMapper = adminUserAndRoleMapper;
-        this.adminRbacMapper = adminRbacMapper;
-    }
 
     /**
      * 新增用户

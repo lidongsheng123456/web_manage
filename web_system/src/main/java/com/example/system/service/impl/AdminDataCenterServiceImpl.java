@@ -3,15 +3,14 @@ package com.example.system.service.impl;
 import com.example.system.domain.vo.DataVo;
 import com.example.system.mapper.AdminDataCenterMapper;
 import com.example.system.service.AdminDataCenterService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AdminDataCenterServiceImpl implements AdminDataCenterService {
-    private final AdminDataCenterMapper adminDataCenterMapper;
 
-    public AdminDataCenterServiceImpl(AdminDataCenterMapper adminDataCenterMapper) {
-        this.adminDataCenterMapper = adminDataCenterMapper;
-    }
+    private final AdminDataCenterMapper adminDataCenterMapper;
 
     /**
      * 查询数据

@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,13 +25,10 @@ import java.util.List;
 @Tag(name = "访问权限相关接口")
 @RestController
 @RequestMapping("/admin/permission")
-@Slf4j
+@RequiredArgsConstructor
 public class AdminPermissionController {
-    private final AdminPermissionService adminPermissionService;
 
-    public AdminPermissionController(AdminPermissionService adminPermissionService) {
-        this.adminPermissionService = adminPermissionService;
-    }
+    private final AdminPermissionService adminPermissionService;
 
     /**
      * 新增权限

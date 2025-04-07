@@ -25,6 +25,7 @@
     <description>后台管理系统</description>
 
     <properties>
+        <java.version>17</java.version>
         <spring-boot.version>3.0.6</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mybatis-plus-boot-starter.version>3.5.10</mybatis-plus-boot-starter.version>
@@ -32,7 +33,6 @@
         <poi-ooxml.version>5.2.3</poi-ooxml.version>
         <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
         <lombok.version>1.18.30</lombok.version>
-        <java.version>17</java.version>
         <pagehelper.version>1.4.6</pagehelper.version>
         <sa-token-spring-boot3-starter.version>1.38.0</sa-token-spring-boot3-starter.version>
         <sa-token-jwt.version>1.38.0</sa-token-jwt.version>
@@ -145,7 +145,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- 阻止其他没有主类的模块尝试打包成可执行的jar包 -->
+    <!-- 阻止其他没有主类的模块尝试打包成可执行的jar包 不然其他通用模块会报错Unable to find main class -->
     <build>
         <plugins>
             <plugin>

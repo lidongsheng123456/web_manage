@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +24,10 @@ import java.util.List;
 @Tag(name = "通知相关接口")
 @RestController
 @RequestMapping("/admin/notice")
-@Slf4j
+@RequiredArgsConstructor
 public class AdminNoticeController {
-    private final AdminNoticeService adminNoticeService;
 
-    public AdminNoticeController(AdminNoticeService adminNoticeService) {
-        this.adminNoticeService = adminNoticeService;
-    }
+    private final AdminNoticeService adminNoticeService;
 
     /**
      * 新增通知

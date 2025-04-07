@@ -13,20 +13,18 @@ import com.example.system.mapper.AdminRoleAndPermissionMapper;
 import com.example.system.service.AdminPermissionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AdminPermissionServiceImpl implements AdminPermissionService {
+
     private final AdminPermissionMapper adminPermissionMapper;
     private final AdminRoleAndPermissionMapper adminRoleAndPermissionMapper;
-
-    public AdminPermissionServiceImpl(AdminPermissionMapper adminPermissionMapper, AdminRoleAndPermissionMapper adminRoleAndPermissionMapper) {
-        this.adminPermissionMapper = adminPermissionMapper;
-        this.adminRoleAndPermissionMapper = adminRoleAndPermissionMapper;
-    }
 
     /**
      * 新增权限
