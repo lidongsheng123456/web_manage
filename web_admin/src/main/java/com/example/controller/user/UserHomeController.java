@@ -7,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +33,6 @@ public class UserHomeController {
     public Result<PageInfo<NoticeVo>> queryNotice(NoticeVo noticeVo,
                                                   @RequestParam(defaultValue = "1") Integer currentPage,
                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
-        log.info("分页查询{}，{}，{}", noticeVo, currentPage, pageSize);
         PageInfo<NoticeVo> page = userHomeService.queryNotice(noticeVo, currentPage, pageSize);
         return Result.success(page);
     }
