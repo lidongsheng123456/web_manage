@@ -1,6 +1,6 @@
 server:
-  port: ${blog.local.datasource.port}
-  host: ${blog.local.datasource.host}
+  port: ${web.local.datasource.port}
+  host: ${web.local.datasource.host}
 
 spring:
   # 激活配置文件
@@ -12,16 +12,16 @@ spring:
   main:
     allow-circular-references: true
   datasource:
-    driver-class-name: ${blog.datasource.driver-class-name}
-    url: jdbc:mysql://${blog.datasource.host}:${blog.datasource.port}/${blog.datasource.database}?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
-    username: ${blog.datasource.username}
-    password: ${blog.datasource.password}
+    driver-class-name: ${web.datasource.driver-class-name}
+    url: jdbc:mysql://${web.datasource.host}:${web.datasource.port}/${web.datasource.database}?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+    username: ${web.datasource.username}
+    password: ${web.datasource.password}
   data:
     redis:
-      host: ${blog.redis.host}
-      port: ${blog.redis.port}
-      password: ${blog.redis.password}
-      database: ${blog.redis.database}
+      host: ${web.redis.host}
+      port: ${web.redis.port}
+      password: ${web.redis.password}
+      database: ${web.redis.database}
   servlet:
     multipart:
       #单个文件大小

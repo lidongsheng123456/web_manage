@@ -1,4 +1,4 @@
-blog:
+web:
   #数据库数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
