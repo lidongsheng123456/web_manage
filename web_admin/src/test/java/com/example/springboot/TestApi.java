@@ -1,6 +1,7 @@
 package com.example.springboot;
 
 
+import com.example.common.util.StpUserUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,17 +14,8 @@ public class TestApi {
 
     @Test
     public void test() {
-        List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
-        names.stream()
-                .filter(new Predicate<String>() {
-                    @Override
-                    public boolean test(String s) {
-                        return s.startsWith("A");
-                    }
-                })
-                .forEach(System.out::println);
-
-        names.stream().filter(s -> false);
-
+           // 校验当前账号是否以 User 身份进行登录
+//        StpUserUtil.getSession();    // 获取当前 User 账号的 Access-Session 对象
+//        StpUserUtil.checkPermission("xx");    // 校验当前登录的 user 账号是否具有 xx 权限
     }
 }

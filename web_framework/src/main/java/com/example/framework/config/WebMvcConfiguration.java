@@ -3,6 +3,7 @@ package com.example.framework.config;
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
+import com.example.common.util.StpUserUtil;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -28,6 +29,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/admin/register")
                 .excludePathPatterns("/admin/captcha")
                 .excludePathPatterns("/admin/logout/**");
+
+        registry.addInterceptor(new SaInterceptor(handle -> StpUserUtil.checkLogin()))
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/user/captcha")
+                .excludePathPatterns("/user/logout/**");
     }
 
     /**
@@ -62,7 +70,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 添加静态资源映射规则
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
         //配置 knife4j 的静态资源请求映射地址
         registry.addResourceHandler("/doc.html")
                 .addResourceLocations("classpath:/META-INF/resources/");
