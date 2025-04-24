@@ -3,7 +3,7 @@
     <el-container class="container">
       <el-aside width="200px">
         <div class="aside-logo">
-          <img alt="管理" src="@/assets/img/管理.png">
+          <img alt="管理" src="../../assets/img/管理.png">
           <h1>
             东神后台
           </h1>
@@ -152,7 +152,7 @@ import {ArrowDown, Avatar, Bell, Comment, List, Promotion, Stamp, Tools, Unlock,
 import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import router from "@/router";
-import {logout} from "@/api/request/WebRequest";
+import {logout} from "@/api/admin_request/WebRequest";
 import {ElMessage, ElMessageBox} from "element-plus";
 import store from "@/store";
 
@@ -256,5 +256,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import "@/assets/css/manager.scss";
+@import "@/assets/css/manager";
 </style>

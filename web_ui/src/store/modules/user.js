@@ -1,4 +1,4 @@
-import {queryCurrentUser} from "@/api/request/UserRequest";
+import {queryCurrentUser} from "@/api/admin_request/UserRequest";
 
 const state = {
     userInfo: {}

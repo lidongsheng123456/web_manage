@@ -60,7 +60,7 @@
 import {ref} from "vue";
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import {Refresh, Search} from "@element-plus/icons-vue";
-import {queryRoleByPermissionId, queryRoleNotPermissionId} from "@/api/request/PermissionRequest";
+import {queryRoleByPermissionId, queryRoleNotPermissionId} from "@/api/admin_request/PermissionRequest";
 // 定义事件
 const emit = defineEmits(['handleAssignReset', 'submitAssignForm'])
 // 表格数据

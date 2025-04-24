@@ -6,10 +6,10 @@
 </template>
 
 <script setup>
-import StatisticView from "@/views/dashboard/StatisticView.vue";
-import LineChartView from "@/views/dashboard/LineChartView.vue";
+import StatisticView from "@/components/manage/StatisticView.vue";
+import LineChartView from "@/components/manage/LineChartView.vue";
 import {onMounted, ref} from "vue";
-import {queryData} from "@/api/request/DataCenterRequest";
+import {queryData} from "@/api/admin_request/DataCenterRequest";
 // 表格数据
 let lineChartDataS = ref({
   user: [0, 0, 0, 0, 0, 0, 0],

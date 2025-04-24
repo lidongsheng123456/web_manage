@@ -41,7 +41,7 @@
 // 表单
 import {defineProps, ref, watch} from "vue";
 import router from "@/router";
-import {updatePerson} from "@/api/request/WebRequest";
+import {updatePerson} from "@/api/admin_request/WebRequest";
 import {ElMessage} from "element-plus";
 
 // 获取父组件自定义事件

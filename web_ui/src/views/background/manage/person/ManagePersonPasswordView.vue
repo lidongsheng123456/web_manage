@@ -24,7 +24,7 @@
 <script setup>
 import {ref} from "vue";
 import router from "@/router";
-import {logout, updatePerson, validateFormerPassword} from "@/api/request/WebRequest";
+import {logout, updatePerson, validateFormerPassword} from "@/api/admin_request/WebRequest";
 import {ElMessage} from "element-plus";
 
 const formRef = ref(null);

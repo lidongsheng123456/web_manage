@@ -166,7 +166,7 @@ import {onMounted, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import {batchDeleteOperLog, queryOperLog, queryOperLogById} from "@/api/request/OperLogRequest";
+import {batchDeleteOperLog, queryOperLog, queryOperLogById} from "@/api/admin_request/OperLogRequest";
 import {Bottom, Delete, Refresh, Search, View} from "@element-plus/icons-vue";
 
 // 表格数据

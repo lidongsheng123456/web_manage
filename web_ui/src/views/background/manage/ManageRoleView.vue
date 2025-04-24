@@ -1,17 +1,17 @@
 <template>
   <div>
-    <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="100px">
-      <el-form-item label="访问权限代码" prop="permissionCode">
+    <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="70px">
+      <el-form-item label="角色代码" prop="roleCode">
         <el-input
-            v-model="queryParams.permissionCode"
-            placeholder="请输入访问权限代码"
+            v-model="queryParams.roleCode"
+            placeholder="请输入角色代码"
             style="width: 200px"
         />
       </el-form-item>
-      <el-form-item label="访问权限名称" prop="permissionName">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input
-            v-model="queryParams.permissionName"
-            placeholder="请输入访问权限名称"
+            v-model="queryParams.roleName"
+            placeholder="请输入角色名称"
             style="width: 200px"
         />
       </el-form-item>
@@ -45,9 +45,9 @@
               @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55"/>
       <el-table-column align="center" label="序号" prop="id" sortable width="100"/>
-      <el-table-column align="center" label="访问权限代码" prop="permissionCode" show-overflow-tooltip/>
-      <el-table-column align="center" label="访问权限名称" prop="permissionName" show-overflow-tooltip/>
-      <el-table-column align="center" label="访问权限描述" prop="description" show-overflow-tooltip/>
+      <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip/>
+      <el-table-column align="center" label="角色名称" prop="roleName" show-overflow-tooltip/>
+      <el-table-column align="center" label="角色描述" prop="description" show-overflow-tooltip/>
       <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip/>
       <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
       <el-table-column align="center" fixed="right" label="操作" width="300">
@@ -63,11 +63,11 @@
           <el-button v-no-more-click v-permission="'admin:role:assign'" :icon="CircleCheck" link size="small"
                      type="primary"
                      @click="handleAssign(scope.row)">
-            分配权限
+            分配角色
           </el-button>
           <el-button v-no-more-click v-permission="'admin:role:remove'" :icon="Delete" link size="small" type="primary"
                      @click="handleRemove(scope.row)">
-            移除权限
+            移除角色
           </el-button>
         </template>
       </el-table-column>
@@ -93,25 +93,25 @@
         overflow
         width="500"
     >
-      <el-form ref="formRef" :inline="true" :model="form" :rules="rules" align="center" label-width="120px">
-        <el-form-item label="访问权限代码" prop="permissionCode">
+      <el-form ref="formRef" :inline="true" :model="form" :rules="rules" align="center" label-width="80px">
+        <el-form-item label="角色代码" prop="roleCode">
           <el-input
-              v-model="form.permissionCode"
-              placeholder="请输入访问权限代码"
+              v-model="form.roleCode"
+              placeholder="请输入角色代码"
               style="width: 350px"
           />
         </el-form-item>
-        <el-form-item label="访问权限名称" prop="permissionName">
+        <el-form-item label="角色名称" prop="roleName">
           <el-input
-              v-model="form.permissionName"
-              placeholder="请输入访问权限名称"
+              v-model="form.roleName"
+              placeholder="请输入角色名称"
               style="width: 350px"
           />
         </el-form-item>
-        <el-form-item label="访问权限描述" prop="description">
+        <el-form-item label="角色描述" prop="description">
           <el-input
               v-model="form.description"
-              placeholder="请输入访问权限描述"
+              placeholder="请输入角色描述"
               style="width: 350px"
           />
         </el-form-item>
@@ -133,8 +133,8 @@
         overflow
         width="850"
     >
-      <AssignPermissionView ref="assignPermissionViewRef" @handleAssignReset="handleAssignReset"
-                            @submitAssignForm="handleSubmitAssignForm"/>
+      <AssignRoleView ref="assignRoleViewRef" @handleAssignReset="handleAssignReset"
+                      @submitAssignForm="handleSubmitAssignForm"/>
     </el-dialog>
   </div>
 </template>
@@ -145,28 +145,28 @@ import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import {
-  addPermission,
-  assignPermission,
-  batchDeletePermission,
-  queryPermission,
-  queryPermissionById,
-  removePermission,
-  updatePermission
-} from "@/api/request/PermissionRequest";
+  addRole,
+  assignRole,
+  batchDeleteRole,
+  queryRole,
+  queryRoleById,
+  removeRole,
+  updateRole
+} from "@/api/admin_request/RoleRequest";
 import {Bottom, CircleCheck, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
-import AssignPermissionView from "@/components/AssignPermissionView.vue";
+import AssignRoleView from "@/components/manage/AssignRoleView.vue";
 
 // 表格数据
 const tableData = ref([])
 // 复选框选中ids
 const ids = ref([]);
-// 权限选中id
+// 角色选中id
 const assignId = ref(null);
 // 数据总数
 const total = ref(0);
 // 对话框标题
 const title = ref("");
-// 分配权限对话框标题
+// 分配角色对话框标题
 const assignTitle = ref("");
 // 查询表单元素
 const queryFormRef = ref(null);
@@ -180,35 +180,35 @@ const multiple = ref(true)
 const loading = ref(true);
 // 对话框显示
 const dialogOverflowVisible = ref(false)
-// 分配权限对话框显示
+// 分配角色对话框显示
 const assignDialogOverflowVisible = ref(false)
 // 引用子组件实例
-const assignPermissionViewRef = ref(null);
+const assignRoleViewRef = ref(null);
 // 上传的ip和端口号
 const uploadUrl = process.env.VUE_APP_BASEURL
 // 表单
 const form = ref({
-  permissionCode: null,
-  permissionName: null,
+  roleCode: null,
+  roleName: null,
   description: null
 });
 // 查询参数
 let queryParams = ref({
   currentPage: 1,
   pageSize: 10,
-  permissionCode: null,
-  permissionName: null,
+  roleCode: null,
+  roleName: null,
 });
 // 验证规则
 const rules = {
-  permissionCode: [
-    {required: true, message: "访问权限代码不能为空", trigger: "blur"}
+  roleCode: [
+    {required: true, message: "角色代码不能为空", trigger: "blur"}
   ],
-  permissionName: [
-    {required: true, message: "访问权限名称不能为空", trigger: "blur"}
+  roleName: [
+    {required: true, message: "角色名称不能为空", trigger: "blur"}
   ],
   description: [
-    {required: true, message: "访问权限描述不能为空", trigger: "blur"}
+    {required: true, message: "角色描述不能为空", trigger: "blur"}
   ],
 };
 // 提交表单
@@ -216,7 +216,7 @@ const submitForm = () => {
   formRef.value.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updatePermission(form.value).then(res => {
+        updateRole(form.value).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -224,7 +224,7 @@ const submitForm = () => {
           console.log(error)
         });
       } else {
-        addPermission(form.value).then(res => {
+        addRole(form.value).then(res => {
           ElMessage.success("新增成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -235,19 +235,19 @@ const submitForm = () => {
     }
   });
 };
-// 提交分配权限表单
+// 提交分配角色表单
 const handleSubmitAssignForm = (ids, isAssign) => {
   if (isAssign === 'assign') {
-    assignPermission({roleId: ids, permissionId: assignId.value}).then(res => {
-      ElMessage.success('分配权限成功');
+    assignRole({userId: ids, roleId: assignId.value}).then(res => {
+      ElMessage.success('分配角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
     }).catch(error => {
       console.log(error)
     });
   } else {
-    removePermission({roleId: ids, permissionId: assignId.value}).then(res => {
-      ElMessage.success('移除权限成功');
+    removeRole({userId: ids, roleId: assignId.value}).then(res => {
+      ElMessage.success('移除角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
     }).catch(error => {
@@ -260,12 +260,12 @@ const handleDelete = (row) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
-  ElMessageBox.confirm(`是否确认删除访问权限编号为"${idsToDelete.join(', ')}"的数据项？`, '提示', {
+  ElMessageBox.confirm(`是否确认删除角色编号为"${idsToDelete.join(', ')}"的数据项？`, '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   }).then(() => {
-    batchDeletePermission(idsToDelete.join(', ')).then(res => {
+    batchDeleteRole(idsToDelete.join(', ')).then(res => {
       ElMessage.success("删除成功");
       getList();
     }).catch(error => {
@@ -278,10 +278,10 @@ const handleDelete = (row) => {
 const handleUpdate = (row) => {
   resetFrom();
   const id = row.id || ids.value;
-  queryPermissionById(id).then(res => {
+  queryRoleById(id).then(res => {
     Object.assign(form.value, res.data);
     dialogOverflowVisible.value = true;
-    title.value = "修改访问权限";
+    title.value = "修改角色";
   }).catch(error => {
     console.log(error)
   });
@@ -294,8 +294,8 @@ const handleAssign = (row) => {
   assignId.value = row.id
   // nextTick 确保在 DOM 更新后调用 getList 方法,避免在子组件还未完全挂载时调用方法。
   nextTick(() => {
-    if (assignPermissionViewRef.value) {
-      assignPermissionViewRef.value.getList('assign', row.id);
+    if (assignRoleViewRef.value) {
+      assignRoleViewRef.value.getList('assign', row.id);
     }
   });
 }
@@ -303,19 +303,19 @@ const handleAssign = (row) => {
 const handleRemove = (row) => {
   handleAssignReset()
   assignDialogOverflowVisible.value = true
-  assignTitle.value = '移除权限'
+  assignTitle.value = '移除角色'
   assignId.value = row.id
   // nextTick 确保在 DOM 更新后调用 getList 方法,避免在子组件还未完全挂载时调用方法。
   nextTick(() => {
-    if (assignPermissionViewRef.value) {
-      assignPermissionViewRef.value.getList('remove', row.id);
+    if (assignRoleViewRef.value) {
+      assignRoleViewRef.value.getList('remove', row.id);
     }
   });
 }
 // 获取数据列表
 const getList = () => {
   loading.value = true;
-  queryPermission(queryParams.value).then(res => {
+  queryRole(queryParams.value).then(res => {
     tableData.value = res.data.list;
     total.value = res.data.total;
     loading.value = false;
@@ -325,13 +325,13 @@ const getList = () => {
 };
 // 控制导出
 const handleExport = () => {
-  window.location.href = uploadUrl + '/admin/permission/export'
+  window.location.href = uploadUrl + '/admin/role/export'
 };
 // 控制添加
 const handleAdd = () => {
   resetFrom();
   dialogOverflowVisible.value = true;
-  title.value = "添加访问权限";
+  title.value = "添加角色";
 };
 // 控制表格复选框
 const handleSelectionChange = (selection) => {
@@ -354,7 +354,7 @@ const handleCurrentChange = (val) => {
   queryParams.value.currentPage = val
   getList()
 }
-// 控制重置分配权限表单
+// 控制重置分配角色表单
 const handleAssignReset = () => {
   assignDialogOverflowVisible.value = false;
   assignId.value = null
@@ -367,8 +367,8 @@ const handleReset = () => {
 // 重置表单
 const resetFrom = () => {
   form.value = {
-    permissionCode: null,
-    permissionName: null,
+    roleCode: null,
+    roleName: null,
     description: null
   }
   // 重置表单验证状态
@@ -381,8 +381,8 @@ const resetQuery = () => {
   queryParams.value = {
     currentPage: 1,
     pageSize: 10,
-    permissionCode: null,
-    permissionName: null,
+    roleCode: null,
+    roleName: null,
   }
   handleQuery();
 };

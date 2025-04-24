@@ -13,7 +13,7 @@ import cn.dev33.satoken.stp.StpLogic;
 import java.util.List;
 
 /**
- * 自定义前台用户的token生成
+ * 自定义认证方式为前台用户
  */
 public class StpUserUtil {
     /**

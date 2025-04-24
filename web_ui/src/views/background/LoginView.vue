@@ -7,15 +7,12 @@
           <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="Lock" show-password></el-input>
-        </el-form-item>
-        <el-form-item prop="confirmPwd">
-          <el-input v-model="form.confirmPwd" placeholder="请确认密码" prefix-icon="Lock" show-password></el-input>
+          <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="Lock"></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <div style="display: flex">
             <el-input v-model="form.code" placeholder="验证码" prefix-icon="Postcard"
-                      @keyup.enter="registe"></el-input>
+                      @keyup.enter="logIn"></el-input>
             <div class="login-code">
               <img id="verificationCodeImg" :src="codeUrl" alt="点击一下试试" title="看不清？换一张"
                    @click="getCaptcha"/>
@@ -23,14 +20,20 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button v-no-more-click style="width: 100%; background: pink; border-color: #ff7b7b; color: white"
-                     @click="registe">注 册
+          <el-button
+              v-no-more-click
+              :loading="loading"
+              style="width: 100%; background: pink; border-color: #ff7b7b; color: white"
+              @click="logIn"
+          >
+            <span v-if="!loading">登 录</span>
+            <span v-else>登 录 中...</span>
           </el-button>
         </el-form-item>
         <div style="display: flex; align-items: center">
           <div style="flex: 1"></div>
           <div style="flex: 1; text-align: right">
-            已有账号？请<a href="/login">登录</a>
+            还没有账号？请<a href="/register">注册</a>
           </div>
         </div>
       </el-form>
@@ -40,54 +43,45 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import {ElMessage} from 'element-plus';
-import {captcha, register} from "@/api/request/WebRequest";
+import {captcha, login} from "@/api/admin_request/WebRequest";
 import router from "@/router";
+import {ElMessage} from "element-plus";
+import axios from "axios";
 
-const formRef = ref(null);
+const uploadUrl = process.env.VUE_APP_BASEURL
 const codeUrl = ref('');
+const loading = ref(false);
+const formRef = ref(null);
 const form = ref({
-  username: '',
-  password: '',
-  confirmPwd: '',
+  username: 'lidongsheng',
+  password: '123456',
   code: ''
 });
 
-const validatePassword = (rule, confirmPwd, callback) => {
-  if (confirmPwd === '') {
-    callback(new Error("请确认密码"));
-  } else if (confirmPwd !== form.value.password) {
-    callback(new Error("两次输入的密码不一致"));
-  } else {
-    callback();
-  }
-};
-
 const rules = {
   username: [
-    {required: true, message: '请输入账号', trigger: 'blur'}
+    {required: true, message: '请输入账号', trigger: 'blur'},
   ],
   password: [
-    {required: true, message: '请输入密码', trigger: 'blur'}
-  ],
-  confirmPwd: [
-    {validator: validatePassword, trigger: 'blur'}
+    {required: true, message: '请输入密码', trigger: 'blur'},
   ],
   code: [
     {required: true, message: '请输入验证码', trigger: 'change'},
   ],
 };
 
-const registe = () => {
+const logIn = () => {
   formRef.value.validate((valid) => {
     if (valid) {
-      register(form.value).then(res => {
-        router.push('/');
-        ElMessage.success('注册成功');
+      loading.value = true;
+      login(form.value).then(res => {
+        ElMessage.success('登录成功');
+        router.push('/Manage');
       }).catch(error => {
         console.log(error);
       }).finally(() => {
         getCaptcha();
+        loading.value = false;
       })
     }
   });
@@ -103,10 +97,24 @@ const getCaptcha = () => {
   });
 };
 
+const getNotice = () => {
+  // 不配置的话session携带不了
+  const request = axios.create({
+    withCredentials: true
+  })
+  request.get(uploadUrl + '/admin/notice').then(res => {
+    if (res.data.code === 200) {
+      router.push('/Manage');
+    }
+  }).catch(error => {
+    console.log(error)
+  });
+}
+
 onMounted(() => {
   getCaptcha();
+  getNotice()
 });
-
 </script>
 
 <style scoped>

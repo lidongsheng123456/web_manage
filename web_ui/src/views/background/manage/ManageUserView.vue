@@ -193,7 +193,7 @@ import {onMounted, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import {Bottom, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
-import {addUser, batchDeleteUser, queryUser, queryUserById, updateUser} from "@/api/request/UserRequest";
+import {addUser, batchDeleteUser, queryUser, queryUserById, updateUser} from "@/api/admin_request/UserRequest";
 
 // 表格数据
 const tableData = ref([])

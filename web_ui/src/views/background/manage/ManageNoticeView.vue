@@ -120,7 +120,7 @@ import {onMounted, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import {addNotice, batchDeleteNotice, queryNotice, queryNoticeById, updateNotice} from "@/api/request/NoticeRequest";
+import {addNotice, batchDeleteNotice, queryNotice, queryNoticeById, updateNotice} from "@/api/admin_request/NoticeRequest";
 import {Bottom, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
 
 // 表格数据

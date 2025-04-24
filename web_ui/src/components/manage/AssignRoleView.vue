@@ -105,7 +105,7 @@
 
 <script setup>
 import {ref} from "vue";
-import {queryUserByRoleId, queryUserNotRoleId} from "@/api/request/RoleRequest";
+import {queryUserByRoleId, queryUserNotRoleId} from "@/api/admin_request/RoleRequest";
 import noImage from "@/assets/img/no_image.png";
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import {Refresh, Search} from "@element-plus/icons-vue";

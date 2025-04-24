@@ -114,7 +114,7 @@ import {computed, onMounted, ref} from "vue";
 import store from "@/store";
 import {Avatar, Message, PhoneFilled, Plus, UserFilled, Watch} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
-import {updatePerson} from "@/api/request/WebRequest";
+import {updatePerson} from "@/api/admin_request/WebRequest";
 import router from "@/router";
 
 // 上传的ip和端口号
