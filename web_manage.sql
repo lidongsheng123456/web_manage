@@ -14,7 +14,7 @@ CREATE TABLE `notice`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `notice_ibfk_1`(`create_user_id` ASC) USING BTREE,
   CONSTRAINT `notice_ibfk_1` FOREIGN KEY (`create_user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `notice` VALUES (1, '使用说明', '系统共有菜单：通知，用户，日志。权限。如需使用菜单，请联系超级管理员升级角色权限phone:19976898057', '2025-01-19 13:59:59', '2025-01-27 15:51:31', 1);
 
@@ -37,7 +37,7 @@ CREATE TABLE `oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1107 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1109 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `oper_log` VALUES (477, '新增通知', 'insert', 'addNotice', 'POST', 'lidongsheng', 'http://localhost:8088/admin/notice', '[Notice(id=null, noticeTitle=hello, noticeContent=word, createTime=null, updateTime=null, createUserId=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-01-22 15:20:36', 27);
 INSERT INTO `oper_log` VALUES (478, '删除通知', 'delete', 'deleteNotice', 'DELETE', 'lidongsheng', 'http://localhost:8088/admin/notice/33', '[33]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-01-22 15:22:03', 5);
@@ -655,6 +655,8 @@ INSERT INTO `oper_log` VALUES (1103, '退出后台', 'force', 'com.example.contr
 INSERT INTO `oper_log` VALUES (1104, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=lidongsheng, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=ebxes), org.apache.catalina.session.StandardSessionFacade@11e6fe5d]', '', 1, '验证码错误', '2025-02-03 15:10:04', 3);
 INSERT INTO `oper_log` VALUES (1105, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=lidongsheng, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=p2snt), org.apache.catalina.session.StandardSessionFacade@11e6fe5d]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"lidongsheng\",\"name\":\"李东升\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1738555087402-cat.png\",\"createTime\":1737266057000,\"updateTime\":1738557142000,\"permissions\":[{\"permission_code\":\"admin:notice:add\"},{\"permission_code\":\"admin:notice:delete\"},{\"permission_code\":\"admin:notice:update\"},{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:user:add\"},{\"permission_code\":\"admin:user:delete\"},{\"permission_code\":\"admin:user:update\"},{\"permission_code\":\"admin:user:query\"},{\"permission_code\":\"admin:operLog:delete\"},{\"permission_code\":\"admin:operLog:update\"},{\"permission_code\":\"admin:operLog:query\"},{\"permission_code\":\"admin:notice:export\"},{\"permission_code\":\"admin:user:export\"},{\"permission_code\":\"admin:operLog:export\"},{\"permission_code\":\"admin:person:query\"},{\"permission_code\":\"admin:permission:query\"},{\"permission_code\":\"admin:permission:remove\"},{\"permission_code\":\"admin:permission:assign\"},{\"permission_code\":\"admin:permission:export\"},{\"permission_code\":\"admin:permission:update\"},{\"permission_code\":\"admin:permission:delete\"},{\"permission_code\":\"admin:permission:add\"},{\"permission_code\":\"admin:role:remove\"},{\"permission_code\":\"admin:role:assign\"},{\"permission_code\":\"admin:role:export\"},{\"permission_code\":\"admin:role:query\"},{\"permission_code\":\"admin:role:update\"},{\"permission_code\":\"admin:role:delete\"},{\"permission_code\":\"admin:role:add\"}],\"roles\":[{\"role_code\":\"super_admin\"},{\"role_code\":\"admin\"},{\"role_code\":\"user\"}]}}', 0, '', '2025-02-03 15:10:08', 41);
 INSERT INTO `oper_log` VALUES (1106, '移除权限', 'delete', 'com.example.controller.admin.AdminPermissionController.removePermission()', 'POST', 'lidongsheng', 'http://localhost:8088/admin/permission/remove', '[AssignPermissionDTO(permissionId=8, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-03 17:44:12', 12);
+INSERT INTO `oper_log` VALUES (1107, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'lidongsheng', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:docs:query, permissionName=接口文档查询, description=c, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-04-29 11:54:24', 14);
+INSERT INTO `oper_log` VALUES (1108, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'lidongsheng', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=38, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-04-29 11:54:28', 8);
 
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission`  (
@@ -666,7 +668,7 @@ CREATE TABLE `permission`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `permission_code`(`permission_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `permission` VALUES (1, 'admin:notice:add', '新增通知', 'c', '2025-01-20 17:59:26', '2025-02-01 16:01:32');
 INSERT INTO `permission` VALUES (2, 'admin:notice:delete', '删除通知', 'r', '2025-01-20 18:00:08', '2025-02-01 16:01:39');
@@ -697,6 +699,7 @@ INSERT INTO `permission` VALUES (33, 'admin:permission:update', '修改访问权
 INSERT INTO `permission` VALUES (35, 'admin:permission:export', '导出访问权限', 'e', '2025-02-01 16:39:33', '2025-02-01 16:39:33');
 INSERT INTO `permission` VALUES (36, 'admin:permission:assign', '分配访问权限', 'a', '2025-02-01 16:39:49', '2025-02-01 16:39:49');
 INSERT INTO `permission` VALUES (37, 'admin:permission:remove', '移除访问权限', 'r', '2025-02-01 16:40:03', '2025-02-01 16:40:03');
+INSERT INTO `permission` VALUES (38, 'admin:docs:query', '接口文档查询', 'c', '2025-04-29 11:54:24', '2025-04-29 11:54:24');
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
@@ -708,7 +711,7 @@ CREATE TABLE `role`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `role_code`(`role_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `role` VALUES (1, 'super_admin', '超级管理员', '上帝', '2025-01-20 17:49:56', '2025-01-20 17:54:06');
 INSERT INTO `role` VALUES (2, 'admin', '管理员', '小卡拉米', '2025-01-20 17:51:15', '2025-01-20 17:54:09');
@@ -725,7 +728,7 @@ CREATE TABLE `role_permission`  (
   INDEX `permission_id`(`permission_id` ASC) USING BTREE,
   CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `role_permission` VALUES (1, 1, 1, '2025-01-20 18:01:46');
 INSERT INTO `role_permission` VALUES (2, 1, 2, '2025-01-20 18:01:54');
@@ -765,6 +768,7 @@ INSERT INTO `role_permission` VALUES (47, 1, 27, '2025-02-01 16:44:01');
 INSERT INTO `role_permission` VALUES (48, 1, 26, '2025-02-01 16:44:05');
 INSERT INTO `role_permission` VALUES (49, 1, 25, '2025-02-01 16:44:08');
 INSERT INTO `role_permission` VALUES (50, 1, 24, '2025-02-01 16:44:11');
+INSERT INTO `role_permission` VALUES (56, 1, 38, '2025-04-29 11:54:27');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
@@ -778,7 +782,7 @@ CREATE TABLE `user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `user` VALUES (1, 'lidongsheng', 'e10adc3949ba59abbe56e057f20f883e', '李东升', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1738555087402-cat.png', '2025-01-19 13:54:17', '2025-02-03 12:32:22');
 INSERT INTO `user` VALUES (5, 'clh', 'e10adc3949ba59abbe56e057f20f883e', '龙欢', '19976898051', '208550738@qq.com', 'http://localhost:8088/common/files/1737957098302-微信图片f.jpg', '2025-01-19 18:20:45', '2025-01-27 13:59:22');
@@ -795,7 +799,7 @@ CREATE TABLE `user_role`  (
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `user_role` VALUES (4, 5, 2, '2025-01-20 17:55:55');
 INSERT INTO `user_role` VALUES (28, 18, 3, '2025-01-30 20:14:43');
