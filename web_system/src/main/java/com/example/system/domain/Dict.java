@@ -32,6 +32,9 @@ public class Dict implements Serializable {
     @Schema(description = "描述")
     private String description;
 
+    @Schema(description = "标签类型")
+    private String tagType;
+
     @Schema(description = "字典创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;

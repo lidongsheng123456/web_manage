@@ -49,6 +49,11 @@
       <el-table-column align="center" label="字典标签" prop="dictLabel"/>
       <el-table-column align="center" label="字典键值" prop="dictValue"/>
       <el-table-column align="center" label="描述" prop="description"/>
+      <el-table-column align="center" label="标签类型" prop="tagType">
+        <template #default="scope">
+          <el-tag :type="scope.row.tagType">{{ scope.row.tagType }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip/>
       <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
       <el-table-column align="center" fixed="right" label="操作">
@@ -105,6 +110,20 @@
         <el-form-item label="字典键值" prop="dictValue">
           <el-input-number v-model="form.dictValue" :min="0" :max="100"/>
         </el-form-item>
+        <el-form-item label="标签类型" prop="tagType">
+          <el-select
+              v-model="form.tagType"
+              placeholder="请选择标签类型"
+              style="width: 350px"
+          >
+            <el-option
+                v-for="(item,index) in tagTypeOptions"
+                :key="index"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input
               v-model="form.description"
@@ -131,13 +150,7 @@ import {onMounted, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import {
-  addDict,
-  batchDeleteDict,
-  queryDict,
-  queryDictById,
-  updateDict
-} from "@/api/admin_request/DictRequest";
+import {addDict, batchDeleteDict, queryDict, queryDictById, updateDict} from "@/api/admin_request/DictRequest";
 import {Bottom, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
 
 // 表格数据
@@ -162,12 +175,36 @@ const loading = ref(true);
 const dialogOverflowVisible = ref(false)
 // 上传的ip和端口号
 const uploadUrl = process.env.VUE_APP_BASEURL
+// 标签类型选项
+const tagTypeOptions = ref([
+  {
+    value: 'primary',
+    label: 'primary',
+  },
+  {
+    value: 'success',
+    label: 'success',
+  },
+  {
+    value: 'info',
+    label: 'info',
+  },
+  {
+    value: 'warning',
+    label: 'warning',
+  },
+  {
+    value: 'danger',
+    label: 'danger',
+  }
+])
 // 表单
 const form = ref({
   dictType: null,
   dictLabel: null,
   dictValue: null,
-  description: null
+  description: null,
+  tagType: null
 });
 // 查询参数
 let queryParams = ref({
@@ -186,6 +223,9 @@ const rules = {
   ],
   dictValue: [
     {required: true, message: "字典键值不能为空", trigger: "blur"}
+  ],
+  tagType: [
+    {required: true, message: "标签类型不能为空", trigger: "blur"}
   ],
 };
 // 提交表单
@@ -296,7 +336,8 @@ const resetFrom = () => {
     dictType: null,
     dictLabel: null,
     dictValue: null,
-    description: null
+    description: null,
+    tagType: null
   }
   // 重置表单验证状态
   if (formRef.value) {

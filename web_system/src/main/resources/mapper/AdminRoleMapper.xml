@@ -77,7 +77,7 @@
     <select id="queryUserNotRoleId" resultType="com.example.system.domain.vo.UserVo">
         select *
         from sys_user
-        where id not in (select sys_user_role.user_id as role_id from sys_user_role where role_id = #{id})
+        where id not in (select sys_user_role.user_id from sys_user_role where role_id = #{id})
         <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
         <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
         <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
@@ -85,7 +85,7 @@
     </select>
 
     <select id="queryUserByRoleId" resultType="com.example.system.domain.vo.UserVo">
-        select * from sys_user where id in (select sys_user_role.user_id as user_id from sys_user_role where role_id =
+        select * from sys_user where id in (select sys_user_role.user_id from sys_user_role where role_id =
         #{id})
         <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
         <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>

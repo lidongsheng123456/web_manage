@@ -81,7 +81,7 @@
     <select id="queryRoleNotPermissionId" resultType="com.example.system.domain.Role">
         select *
         from sys_role
-        where id not in (select sys_role_permission.role_id as role_id from sys_role_permission where permission_id =
+        where id not in (select sys_role_permission.role_id from sys_role_permission where permission_id =
         #{id})
         <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
         <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
@@ -90,7 +90,7 @@
     </select>
 
     <select id="queryRoleByPermissionId" resultType="com.example.system.domain.Role">
-        select * from sys_role where id in (select sys_role_permission.role_id as role_id from sys_role_permission where
+        select * from sys_role where id in (select sys_role_permission.role_id from sys_role_permission where
         permission_id = #{id})
         <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
         <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>

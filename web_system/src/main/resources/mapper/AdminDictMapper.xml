@@ -11,6 +11,7 @@
             <if test="dictLabel != null &amp; dictLabel != ''">dict_label,</if>
             <if test="dictValue != null &amp; dictValue != ''">dict_value,</if>
             <if test="description != null &amp; description != ''">description,</if>
+            <if test="tagType != null &amp; tagType != ''">tag_type,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
@@ -19,6 +20,7 @@
             <if test="dictLabel != null &amp; dictLabel != ''">#{dictLabel},</if>
             <if test="dictValue != null &amp; dictValue != ''">#{dictValue},</if>
             <if test="description != null &amp; description != ''">#{description},</if>
+            <if test="tagType != null &amp; tagType != ''">#{tagType},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
@@ -40,6 +42,7 @@
             <if test="dictLabel != null &amp; dictLabel != ''">dict_label=#{dictLabel},</if>
             <if test="dictValue != null &amp; dictValue != ''">dict_value=#{dictValue},</if>
             <if test="description != null &amp; description != ''">description=#{description},</if>
+            <if test="tagType != null &amp; tagType != ''">tag_type=#{tagType},</if>
             <if test="createTime != null">create_time=#{createTime},</if>
             <if test="updateTime != null">update_time=#{updateTime},</if>
         </set>
@@ -59,6 +62,9 @@
             <if test="dictValue != null">and dict_value = #{dictValue}</if>
             <if test="description != null &amp; description != ''">
                 and description like concat('%',#{description},'%')
+            </if>
+            <if test="tagType != null &amp; tagType != ''">
+                and tag_type like concat('%',#{tagType},'%')
             </if>
             <if test="createTime != null">and create_time = #{createTime}</if>
             <if test="updateTime != null">and update_time #{updateTime}</if>
