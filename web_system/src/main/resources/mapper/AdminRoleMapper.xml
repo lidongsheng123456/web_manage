@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.system.mapper.AdminRoleMapper">
     <insert id="addRole">
-        insert into role
+        insert into sys_role
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="roleCode != null &amp; roleCode != ''">role_code,</if>
             <if test="roleName != null &amp; roleName != ''">role_name,</if>
@@ -24,13 +24,13 @@
 
     <delete id="deleteRole">
         delete
-        from role
+        from sys_role
         where id = #{id}
     </delete>
 
     <delete id="batchDeleteRole">
         delete
-        from role
+        from sys_role
         where id in
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
@@ -38,7 +38,7 @@
     </delete>
 
     <update id="updateRole">
-        update role
+        update sys_role
         <set>
             <if test="roleCode != null &amp; roleCode != ''">role_code=#{roleCode},</if>
             <if test="roleName != null &amp; roleName != ''">role_name=#{roleName},</if>
@@ -50,7 +50,7 @@
     </update>
 
     <select id="queryRole" resultType="com.example.system.domain.Role">
-        select * from role
+        select * from sys_role
         <trim prefix="where " prefixOverrides="and">
             <if test="roleCode != null &amp; roleCode != ''">and role_code like concat('%',#{roleCode},'%')</if>
             <if test="roleName != null &amp; roleName != ''">and role_name like concat('%',#{roleName},'%')</if>
@@ -64,20 +64,20 @@
 
     <select id="queryRoleById" resultType="com.example.system.domain.Role">
         select *
-        from role
+        from sys_role
         where id = #{id};
     </select>
 
     <select id="queryAllRole" resultType="com.example.system.domain.Role">
         select *
-        from role
+        from sys_role
         order by id asc
     </select>
 
     <select id="queryUserNotRoleId" resultType="com.example.system.domain.vo.UserVo">
         select *
-        from user
-        where id not in (select user_role.user_id as role_id from user_role where role_id = #{id})
+        from sys_user
+        where id not in (select sys_user_role.user_id as role_id from sys_user_role where role_id = #{id})
         <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
         <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
         <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
@@ -85,7 +85,8 @@
     </select>
 
     <select id="queryUserByRoleId" resultType="com.example.system.domain.vo.UserVo">
-        select * from user where id in (select user_role.user_id as user_id from user_role where role_id = #{id})
+        select * from sys_user where id in (select sys_user_role.user_id as user_id from sys_user_role where role_id =
+        #{id})
         <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
         <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
         <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminComQueryMapper">
+    <insert id="addComQuery">
+        insert into sys_com_query
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="name != null &amp; name != ''">name,</if>
+            <if test="code != null &amp; code != ''">code,</if>
+            <if test="customSql != null &amp; customSql != ''">custom_sql,</if>
+            <if test="description != null &amp; description != ''">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="name != null &amp; name != ''">#{name},</if>
+            <if test="code != null &amp; code != ''">#{code},</if>
+            <if test="customSql != null &amp; customSql != ''">#{customSql},</if>
+            <if test="description != null &amp; description != ''">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="batchDeleteComQuery">
+        delete
+        from sys_com_query
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updateComQuery">
+        update sys_com_query
+        <set>
+            <if test="name != null &amp; name != ''">name=#{name},</if>
+            <if test="code != null &amp; code != ''">code=#{code},</if>
+            <if test="customSql != null &amp; customSql != ''">custom_sql=#{customSql},</if>
+            <if test="description != null &amp; description != ''">description=#{description},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryComQuery" resultType="com.example.system.domain.ComQuery">
+        select *
+        from sys_com_query
+        <trim prefix="where " prefixOverrides="and">
+            <if test="name != null &amp; name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null &amp; code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+            <if test="customSql != null &amp; customSql != ''">
+                and custom_sql like concat('%',#{customSql},'%')
+            </if>
+            <if test="description != null &amp; description != ''">
+                and description like concat('%',#{description},'%')
+            </if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time #{updateTime}</if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="queryAllComQuery" resultType="com.example.system.domain.ComQuery">
+        select *
+        from sys_com_query
+        order by id asc
+    </select>
+
+    <select id="queryComQueryById" resultType="com.example.system.domain.ComQuery">
+        select *
+        from sys_com_query
+        where id = #{id}
+    </select>
+</mapper>

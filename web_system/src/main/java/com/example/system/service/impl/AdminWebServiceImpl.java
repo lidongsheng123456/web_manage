@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

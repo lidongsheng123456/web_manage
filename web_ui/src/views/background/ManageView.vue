@@ -45,6 +45,12 @@
               </el-icon>
               日志管理
             </el-menu-item>
+            <el-menu-item v-permission="'admin:dict:query'" index="/Manage/ManageDictView">
+              <el-icon>
+                <Collection/>
+              </el-icon>
+              字典管理
+            </el-menu-item>
             <el-sub-menu v-permission="'admin:permission:query'" index="2-1" style="background-color: #212d3d">
               <template #title>
                 <el-icon>
@@ -73,11 +79,17 @@
               </el-icon>
               系统工具
             </template>
-            <el-menu-item v-permission="'admin:docs:query'" index="/DocsView">
+            <el-menu-item v-permission="'admin:docs:query'" index="/Manage/DocsView">
               <el-icon>
                 <List/>
               </el-icon>
               接口文档
+            </el-menu-item>
+            <el-menu-item v-permission="'admin:com-query:query'" index="/Manage/ManageComQueryView">
+              <el-icon>
+                <Search/>
+              </el-icon>
+              通用查询
             </el-menu-item>
           </el-sub-menu>
         </el-menu>
@@ -148,7 +160,19 @@
 </template>
 
 <script setup>
-import {ArrowDown, Avatar, Bell, Comment, List, Promotion, Stamp, Tools, Unlock, User} from "@element-plus/icons-vue";
+import {
+  ArrowDown,
+  Avatar,
+  Bell,
+  Collection,
+  Comment,
+  List,
+  Promotion,
+  Stamp,
+  Tools,
+  Unlock,
+  User
+} from "@element-plus/icons-vue";
 import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import router from "@/router";

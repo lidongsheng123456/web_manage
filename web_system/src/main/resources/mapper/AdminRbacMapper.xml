@@ -6,9 +6,9 @@
 <mapper namespace="com.example.system.mapper.AdminRbacMapper">
     <select id="getPermissionList" resultType="java.util.Map">
         select distinct permission_code
-        from user_role ur,
-             role_permission rp,
-             permission p
+        from sys_user_role ur,
+             sys_role_permission rp,
+             sys_permission p
         where ur.role_id = rp.role_id
           and rp.permission_id = p.id
           and ur.user_id = #{loginId}
@@ -16,8 +16,8 @@
 
     <select id="getRoleList" resultType="java.util.Map">
         select distinct role_code
-        from user_role ur,
-             role r
+        from sys_user_role ur,
+             sys_role r
         where ur.role_id = r.id
           and ur.user_id = #{loginId}
     </select>

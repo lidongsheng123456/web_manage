@@ -22,7 +22,7 @@
                COALESCE(COUNT(l.create_time), 0) AS count
         FROM days_of_week d
                  LEFT JOIN
-             user l
+             sys_user l
              ON
                  d.day_of_week = CASE DAYOFWEEK(l.create_time)
                                      WHEN 2 THEN 'Monday'
@@ -55,7 +55,7 @@
                COALESCE(COUNT(l.create_time), 0) AS count
         FROM days_of_week d
                  LEFT JOIN
-             notice l
+             sys_notice l
              ON
                  d.day_of_week = CASE DAYOFWEEK(l.create_time)
                                      WHEN 2 THEN 'Monday'
@@ -88,7 +88,7 @@
                COALESCE(COUNT(l.oper_time), 0) AS count
         FROM days_of_week d
                  LEFT JOIN
-             oper_log l
+             sys_oper_log l
              ON
                  d.day_of_week = CASE DAYOFWEEK(l.oper_time)
                                      WHEN 2 THEN 'Monday'
@@ -121,7 +121,7 @@
                COALESCE(COUNT(l.create_time), 0) AS count
         FROM days_of_week d
                  LEFT JOIN
-             permission l
+             sys_permission l
              ON
                  d.day_of_week = CASE DAYOFWEEK(l.create_time)
                                      WHEN 2 THEN 'Monday'

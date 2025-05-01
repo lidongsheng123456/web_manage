@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.system.mapper.AdminOperLogMapper">
     <insert id="addOperLog">
-        insert into oper_log(title, business_type, method, request_method, oper_name, oper_url,
-                             oper_param, json_result, status, error_msg, oper_time, cost_time)
+        insert into sys_oper_log(title, business_type, method, request_method, oper_name, oper_url,
+                                 oper_param, json_result, status, error_msg, oper_time, cost_time)
         values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operName}, #{operUrl},
                 #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{operTime},
                 #{costTime})
@@ -13,13 +13,13 @@
 
     <delete id="deleteOperLog">
         delete
-        from oper_log
+        from sys_oper_log
         where id = #{id}
     </delete>
 
     <delete id="batchDeleteOperLog">
         delete
-        from oper_log
+        from sys_oper_log
         where id in
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
@@ -27,7 +27,7 @@
     </delete>
 
     <update id="updateOperLog">
-        update oper_log
+        update sys_oper_log
         <set>
             <if test="title != null &amp; title != ''">
                 title = #{title},
@@ -71,7 +71,7 @@
 
     <select id="queryOperLog" resultType="com.example.system.domain.OperLog">
         select *
-        from oper_log
+        from sys_oper_log
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -118,13 +118,13 @@
 
     <select id="queryAllOperLog" resultType="com.example.system.domain.OperLog">
         select *
-        from oper_log
+        from sys_oper_log
         order by id asc
     </select>
 
     <select id="queryOperLogById" resultType="com.example.system.domain.OperLog">
         select *
-        from oper_log
+        from sys_oper_log
         where id = #{id}
     </select>
 </mapper>

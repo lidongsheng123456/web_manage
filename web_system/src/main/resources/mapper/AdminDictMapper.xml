@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.system.mapper.AdminDictMapper">
+    <insert id="addDict">
+        insert into sys_dict_data
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="dictType != null &amp; dictType != ''">dict_type,</if>
+            <if test="dictLabel != null &amp; dictLabel != ''">dict_label,</if>
+            <if test="dictValue != null &amp; dictValue != ''">dict_value,</if>
+            <if test="description != null &amp; description != ''">description,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <if test="dictType != null &amp; dictType != ''">#{dictType},</if>
+            <if test="dictLabel != null &amp; dictLabel != ''">#{dictLabel},</if>
+            <if test="dictValue != null &amp; dictValue != ''">#{dictValue},</if>
+            <if test="description != null &amp; description != ''">#{description},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <delete id="batchDeleteDict">
+        delete
+        from sys_dict_data
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="ids">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="updateDict">
+        update sys_dict_data
+        <set>
+            <if test="dictType != null &amp; dictType != ''">dict_type=#{dictType},</if>
+            <if test="dictLabel != null &amp; dictLabel != ''">dict_label=#{dictLabel},</if>
+            <if test="dictValue != null &amp; dictValue != ''">dict_value=#{dictValue},</if>
+            <if test="description != null &amp; description != ''">description=#{description},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="queryDict" resultType="com.example.system.domain.Dict">
+        select *
+        from sys_dict_data
+        <trim prefix="where " prefixOverrides="and">
+            <if test="dictType != null &amp; dictType != ''">
+                and dict_type like concat('%',#{dictType},'%')
+            </if>
+            <if test="dictLabel != null &amp; dictLabel != ''">
+                and dict_label like concat('%',#{dictLabel},'%')
+            </if>
+            <if test="dictValue != null">and dict_value = #{dictValue}</if>
+            <if test="description != null &amp; description != ''">
+                and description like concat('%',#{description},'%')
+            </if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time #{updateTime}</if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="queryAllDict" resultType="com.example.system.domain.Dict">
+        select *
+        from sys_dict_data
+        order by id asc
+    </select>
+
+    <select id="queryDictById" resultType="com.example.system.domain.Dict">
+        select *
+        from sys_dict_data
+        where id = #{id}
+    </select>
+</mapper>

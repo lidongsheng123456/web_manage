@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.system.mapper.AdminUserMapper">
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
-        insert into user
+        insert into sys_user
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="username != null &amp; username != ''">username,</if>
             <if test="password != null &amp; password != ''">password,</if>
@@ -30,13 +30,13 @@
 
     <delete id="deleteUser">
         delete
-        from user
+        from sys_user
         where id = #{id}
     </delete>
 
     <delete id="batchDeleteUser">
         delete
-        from user
+        from sys_user
         where id in
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
@@ -44,7 +44,7 @@
     </delete>
 
     <update id="updateUser">
-        update user
+        update sys_user
         <set>
             <if test="username != null &amp; username != ''">username=#{username},</if>
             <if test="password != null &amp; password != ''">password=#{password},</if>
@@ -59,7 +59,7 @@
     </update>
 
     <select id="queryUser" resultType="com.example.system.domain.vo.UserVo">
-        select * from user
+        select * from sys_user
         <trim prefix="where " prefixOverrides="and">
             <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
             <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
@@ -73,19 +73,19 @@
 
     <select id="queryUserById" resultType="com.example.system.domain.User">
         select *
-        from user
+        from sys_user
         where id = #{id};
     </select>
 
     <select id="queryAllUser" resultType="com.example.system.domain.User">
         select *
-        from user
+        from sys_user
         order by id asc
     </select>
 
     <select id="queryCurrentUser" resultType="com.example.system.domain.vo.UserVo">
         select *
-        from user
+        from sys_user
         where id = #{id}
     </select>
 </mapper>

@@ -49,6 +49,12 @@ const routes = [
                 component: () => import('@/views/background/manage/ManageOperLogView.vue')
             },
             {
+                path: 'ManageDictView',
+                name: 'ManageDictView',
+                meta: {name: '字典管理'},
+                component: () => import('@/views/background/manage/ManageDictView.vue')
+            },
+            {
                 path: 'ManagePermissionView',
                 name: 'ManagePermissionView',
                 meta: {name: '访问权限管理'},
@@ -61,10 +67,16 @@ const routes = [
                 component: () => import('@/views/background/manage/ManageRoleView.vue')
             },
             {
-                path: '/DocsView',
+                path: 'DocsView',
                 name: 'DocsView',
                 meta: {name: '接口文档'},
                 component: () => import('@/views/background/manage/DocsView.vue')
+            },
+            {
+                path: 'ManageComQueryView',
+                name: 'ManageComQueryView',
+                meta: {name: '通用查询'},
+                component: () => import('@/views/background/manage/ManageComQueryView.vue')
             },
             {
                 path: 'ManagePersonView',

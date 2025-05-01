@@ -5,19 +5,19 @@
 
 <mapper namespace="com.example.system.mapper.AdminUserAndRoleMapper">
     <insert id="addUserAndRoleId">
-        insert into user_role (user_id, role_id)
+        insert into sys_user_role (user_id, role_id)
         VALUES (#{userId}, #{roleId})
     </insert>
 
     <delete id="deleteUserAndRoleByUserId">
         delete
-        from user_role
+        from sys_user_role
         where user_id = #{userId}
     </delete>
 
     <delete id="batchDeleteUserAndRoleByUserId">
         delete
-        from user_role
+        from sys_user_role
         where user_id in
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
@@ -26,13 +26,13 @@
 
     <delete id="deleteUserAndRoleByRoleId">
         delete
-        from user_role
+        from sys_user_role
         where role_id = #{roleId}
     </delete>
 
     <delete id="batchDeleteUserAndRoleByRoleId">
         delete
-        from user_role
+        from sys_user_role
         where role_id in
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
@@ -40,7 +40,7 @@
     </delete>
 
     <delete id="removeRole">
-        delete from user_role
+        delete from sys_user_role
         where user_id in
         <foreach collection="userId" item="userId" open="(" separator="," close=")">
             #{userId}
@@ -49,7 +49,7 @@
     </delete>
 
     <insert id="assignRole">
-        insert into user_role (user_id, role_id)
+        insert into sys_user_role (user_id, role_id)
         VALUES
         <foreach collection="userId" item="userId" separator=",">
             (#{userId}, #{roleId})
@@ -58,14 +58,14 @@
 
     <select id="validateIsExistByUserId" resultType="java.lang.Integer">
         select count(*)
-        from user_role
+        from sys_user_role
         where user_id = #{userId}
           and role_id = #{roleId}
     </select>
 
     <select id="getUserAndRoleByUserId" resultType="java.util.Map">
         select *
-        from user_role
+        from sys_user_role
         where user_id = #{userId}
     </select>
 </mapper>

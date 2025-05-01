@@ -6,18 +6,18 @@
 <mapper namespace="com.example.system.mapper.AdminWebMapper">
     <select id="selectByUsername" resultType="com.example.system.domain.User">
         select *
-        from user
+        from sys_user
         where username = #{username}
     </select>
 
     <select id="selectByUserId" resultType="com.example.system.domain.User">
         select *
-        from user
+        from sys_user
         where id = #{id}
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id">
-        insert into user
+        insert into sys_user
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="username != null &amp; username != ''">username,</if>
             <if test="password != null &amp; password != ''">password,</if>
@@ -41,7 +41,7 @@
     </insert>
 
     <update id="updatePerson">
-        update user
+        update sys_user
         <set>
             <if test="username != null &amp; username != ''">username=#{username},</if>
             <if test="password != null &amp; password != ''">password=#{password},</if>
