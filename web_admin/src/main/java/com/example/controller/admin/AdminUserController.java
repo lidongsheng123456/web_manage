@@ -121,19 +121,6 @@ public class AdminUserController {
     }
 
     /**
-     * 查询当前登录用户信息
-     *
-     * @return
-     */
-    @Operation(summary = "查询当前登录用户信息")
-    @SaCheckPermission("admin:person:query")
-    @GetMapping("/current")
-    public Result<UserVo> queryCurrentUser() {
-        UserVo userVo = adminUserService.queryCurrentUser();
-        return Result.success(userVo);
-    }
-
-    /**
      * 导出用户信息
      *
      * @param response

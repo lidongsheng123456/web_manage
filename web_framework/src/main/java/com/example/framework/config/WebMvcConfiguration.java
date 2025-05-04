@@ -1,6 +1,5 @@
 package com.example.framework.config;
 
-import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.common.util.StpUserUtil;
@@ -27,42 +26,28 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/login")
                 .excludePathPatterns("/admin/register")
-                .excludePathPatterns("/admin/captcha")
-                .excludePathPatterns("/admin/logout/**");
+                .excludePathPatterns("/admin/captcha");
 
         // 前台验证拦截器
         registry.addInterceptor(new SaInterceptor(handle -> StpUserUtil.checkLogin()))
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
-                .excludePathPatterns("/user/captcha")
-                .excludePathPatterns("/user/logout/**");
-    }
-
-    /**
-     * 注册Sa-Token全局过滤器
-     * 负责拦截spring拦截不到的路由
-     *
-     * @return
-     */
-    @Bean
-    public SaServletFilter getSaServletFilter() {
-        return new SaServletFilter()
-                .addInclude("/**");
+                .excludePathPatterns("/user/captcha");
     }
 
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("东神后台接口文档")
-                        .description("东神后台API文档")
+                        .title("接口文档")
+                        .description("API文档")
                         .version("v1")
                         .license(new License().name("Apache 2.0").url("https://springdoc.org"))
                         .contact(new io.swagger.v3.oas.models.info.Contact()
-                                .name("李东升")
-                                .url("https://www.lidongshen.top/")
-                                .email("208550738@qq.com")));
+                                .name("admin")
+                                .url("")
+                                .email("")));
     }
 
     /**
@@ -80,4 +65,3 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
-

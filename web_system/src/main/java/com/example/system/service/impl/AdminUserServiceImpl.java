@@ -141,19 +141,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     /**
-     * 查询当前登录用户信息
-     *
-     * @return
-     */
-    @Override
-    public UserVo queryCurrentUser() {
-        UserVo userVo = adminUserMapper.queryCurrentUser(StpUtil.getLoginIdAsLong());
-        userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-        userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
-        return userVo;
-    }
-
-    /**
      * 根据id查询用户
      *
      * @param id

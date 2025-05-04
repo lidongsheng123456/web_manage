@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function addNotice(data) {
-    return request({
+    return adminRequest({
         url: '/admin/notice',
         method: 'POST',
         data: data
@@ -9,14 +9,14 @@ export function addNotice(data) {
 }
 
 export function deleteNotice(data) {
-    return request({
+    return adminRequest({
         url: `/admin/notice/${data}`,
         method: 'DELETE'
     })
 }
 
 export function batchDeleteNotice(data) {
-    return request({
+    return adminRequest({
         url: '/admin/notice/batchDelete',
         method: 'DELETE',
         params: {
@@ -26,7 +26,7 @@ export function batchDeleteNotice(data) {
 }
 
 export function updateNotice(data) {
-    return request({
+    return adminRequest({
         url: '/admin/notice',
         method: 'PUT',
         data: data
@@ -34,7 +34,7 @@ export function updateNotice(data) {
 }
 
 export function queryNotice(data) {
-    return request({
+    return adminRequest({
         url: '/admin/notice',
         method: 'GET',
         params: data,
@@ -42,7 +42,7 @@ export function queryNotice(data) {
 }
 
 export function queryNoticeById(data) {
-    return request({
+    return adminRequest({
         url: `/admin/notice/${data}`,
         method: 'GET'
     })

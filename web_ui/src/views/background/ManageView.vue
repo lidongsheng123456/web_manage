@@ -3,9 +3,9 @@
     <el-container class="container">
       <el-aside width="200px">
         <div class="aside-logo">
-          <img alt="管理" src="../../assets/img/管理.png">
+          <img alt="管理" src="@/assets/img/管理.png">
           <h1>
-            东神后台
+            毕设脚手架
           </h1>
         </div>
         <el-menu
@@ -164,14 +164,22 @@ import {
   ArrowDown,
   Avatar,
   Bell,
+  Briefcase,
+  ChatDotSquare,
   Collection,
   Comment,
+  Handbag,
   List,
+  Orange,
   Promotion,
+  Shop,
+  ShoppingCart,
   Stamp,
+  StarFilled,
   Tools,
   Unlock,
-  User
+  User,
+  UserFilled
 } from "@element-plus/icons-vue";
 import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
@@ -243,7 +251,7 @@ const logoutLogin = () => {
   }).then(() => {
     logout().then(res => {
       ElMessage.success('退出成功');
-      router.push('/');
+      router.push('/Login');
       window.location.reload(true);
     }).catch(error => {
       console.log(error)

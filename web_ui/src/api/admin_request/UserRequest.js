@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function addUser(data) {
-    return request({
+    return adminRequest({
         url: '/admin/user',
         method: 'POST',
         data: data
@@ -9,14 +9,14 @@ export function addUser(data) {
 }
 
 export function deleteUser(data) {
-    return request({
+    return adminRequest({
         url: `/admin/user/${data}`,
         method: 'DELETE'
     })
 }
 
 export function batchDeleteUser(data) {
-    return request({
+    return adminRequest({
         url: '/admin/user/batchDelete',
         method: 'DELETE',
         params: {
@@ -26,7 +26,7 @@ export function batchDeleteUser(data) {
 }
 
 export function updateUser(data) {
-    return request({
+    return adminRequest({
         url: '/admin/user',
         method: 'PUT',
         data: data
@@ -34,7 +34,7 @@ export function updateUser(data) {
 }
 
 export function queryUser(data) {
-    return request({
+    return adminRequest({
         url: '/admin/user',
         method: 'GET',
         params: data
@@ -42,15 +42,8 @@ export function queryUser(data) {
 }
 
 export function queryUserById(data) {
-    return request({
+    return adminRequest({
         url: `/admin/user/${data}`,
-        method: 'GET'
-    })
-}
-
-export function queryCurrentUser() {
-    return request({
-        url: '/admin/user/current',
         method: 'GET'
     })
 }

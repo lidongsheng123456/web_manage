@@ -1,9 +1,9 @@
-import request from "@/utils/request";
+import userRequest from "@/utils/UserRequest";
 
 //登录
 export function login(data) {
-    return request({
-        url: '/admin/login',
+    return userRequest({
+        url: '/user/login',
         method: 'POST',
         data: data
     })
@@ -11,8 +11,8 @@ export function login(data) {
 
 //注册
 export function register(data) {
-    return request({
-        url: '/admin/register',
+    return userRequest({
+        url: '/user/register',
         method: 'POST',
         data: data
     })
@@ -20,7 +20,7 @@ export function register(data) {
 
 // 获取验证码
 export function captcha() {
-    return fetch(process.env.VUE_APP_BASEURL + '/admin/captcha', {
+    return fetch(process.env.VUE_APP_BASEURL + '/user/captcha', {
         method: 'get',
         credentials: 'include' // 确保发送Cookie
     }).then(response => {
@@ -38,16 +38,16 @@ export function captcha() {
 
 //退出
 export function logout() {
-    return request({
-        url: '/admin/logout',
+    return userRequest({
+        url: '/user/logout',
         method: 'GET'
     })
 }
 
 //修改个人信息
 export function updatePerson(data) {
-    return request({
-        url: '/admin/person',
+    return userRequest({
+        url: '/user/person',
         method: 'POST',
         data: data
     })
@@ -55,11 +55,18 @@ export function updatePerson(data) {
 
 //修改个人信息
 export function validateFormerPassword(data) {
-    return request({
-        url: '/admin/validate/formerPassword',
+    return userRequest({
+        url: '/user/validate/formerPassword',
         method: 'POST',
         params: {
             formerPassword: data
         }
+    })
+}
+
+export function queryCurrentFrontUserInfo() {
+    return userRequest({
+        url: '/user/current',
+        method: 'GET'
     })
 }

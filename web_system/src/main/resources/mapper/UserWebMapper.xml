@@ -3,16 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.system.mapper.AdminUserMapper">
-    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_user
+<mapper namespace="com.example.system.mapper.UserWebMapper">
+    <select id="selectByUsername" resultType="com.example.system.domain.User">
+        select *
+        from front_user
+        where username = #{username}
+    </select>
+
+    <select id="selectByUserId" resultType="com.example.system.domain.User">
+        select *
+        from front_user
+        where id = #{id}
+    </select>
+
+    <insert id="register" useGeneratedKeys="true" keyProperty="id">
+        insert into front_user
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="username != null &amp; username != ''">username,</if>
             <if test="password != null &amp; password != ''">password,</if>
             <if test="name != null &amp; name != ''">name,</if>
+            <if test="imgUrl != null &amp; imgUrl != ''">img_url,</if>
             <if test="phone != null &amp; phone != ''">phone,</if>
             <if test="email != null &amp; email != ''">email,</if>
-            <if test="imgUrl != null &amp; imgUrl != ''">img_url,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
         </trim>
@@ -20,31 +32,16 @@
             <if test="username != null &amp; username != ''">#{username},</if>
             <if test="password != null &amp; password != ''">#{password},</if>
             <if test="name != null &amp; name != ''">#{name},</if>
+            <if test="imgUrl != null &amp; imgUrl != ''">#{imgUrl},</if>
             <if test="phone != null &amp; phone != ''">#{phone},</if>
             <if test="email != null &amp; email != ''">#{email},</if>
-            <if test="imgUrl != null &amp; imgUrl != ''">#{imgUrl},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
         </trim>
     </insert>
 
-    <delete id="deleteUser">
-        delete
-        from sys_user
-        where id = #{id}
-    </delete>
-
-    <delete id="batchDeleteUser">
-        delete
-        from sys_user
-        where id in
-        <foreach collection="list" open="(" separator="," close=")" item="ids">
-            #{ids}
-        </foreach>
-    </delete>
-
-    <update id="updateUser">
-        update sys_user
+    <update id="updatePerson">
+        update front_user
         <set>
             <if test="username != null &amp; username != ''">username=#{username},</if>
             <if test="password != null &amp; password != ''">password=#{password},</if>
@@ -58,28 +55,9 @@
         where id=#{id}
     </update>
 
-    <select id="queryUser" resultType="com.example.system.domain.vo.UserVo">
-        select * from sys_user
-        <trim prefix="where " prefixOverrides="and">
-            <if test="username != null &amp; username != ''">and username like concat('%',#{username},'%')</if>
-            <if test="name != null &amp; name != ''">and name like concat('%',#{name},'%')</if>
-            <if test="phone != null &amp; phone != ''">and phone like concat('%',#{phone},'%')</if>
-            <if test="email != null &amp; email != ''">and email like concat('%',#{email},'%')</if>
-            <if test="createTime != null">and create_time = #{createTime}</if>
-            <if test="updateTime != null">and update_time = #{updateTime}</if>
-        </trim>
-        order by id desc
-    </select>
-
-    <select id="queryUserById" resultType="com.example.system.domain.User">
+    <select id="queryCurrentUser" resultType="com.example.system.domain.vo.UserVo">
         select *
         from sys_user
-        where id = #{id};
-    </select>
-
-    <select id="queryAllUser" resultType="com.example.system.domain.User">
-        select *
-        from sys_user
-        order by id asc
+        where id = #{id}
     </select>
 </mapper>

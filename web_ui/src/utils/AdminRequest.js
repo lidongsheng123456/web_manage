@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from "@/router";
 import {ElMessage, ElMessageBox} from "element-plus";
 
-const request = axios.create({
+const adminRequest = axios.create({
     baseURL: process.env.VUE_APP_BASEURL,
     timeout: 30000,
     withCredentials: true
@@ -13,11 +13,11 @@ const request = axios.create({
  * 响应时会将token自动注入到Cookie
  * 请求时网络请求携带着Cookie，sa-token会自动提取Cookie中的token验证
  */
-request.interceptors.request.use(config => {
+adminRequest.interceptors.request.use(config => {
     return config
 })
 
-request.interceptors.response.use(response => {
+adminRequest.interceptors.response.use(response => {
         let res = response.data;
 
         // 401 token令牌效验失败
@@ -28,7 +28,7 @@ request.interceptors.response.use(response => {
                     type: 'warning'
                 }
             ).then(() => {
-                router.push('/').catch(() => {
+                router.push('/Login').catch(() => {
                 });
             }).catch(error => {
             })
@@ -42,4 +42,4 @@ request.interceptors.response.use(response => {
     }
 )
 
-export default request
+export default adminRequest

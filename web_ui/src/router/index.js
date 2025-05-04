@@ -1,9 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
+    //后台路由
     {
         path: '/',
-        redirect: '/Login',
+        redirect: '/Front',
     },
     {
         path: '/Login',
@@ -18,7 +19,6 @@ const routes = [
         component: () => import('@/views/background/RegisterView.vue')
     },
     {
-        //后台路由
         path: '/Manage',
         name: 'Manage',
         component: () => import('@/views/background/ManageView.vue'),
@@ -98,6 +98,33 @@ const routes = [
                     }
                 ]
             }
+        ]
+    },
+    // 前台路由
+    {
+        path: '/UserLogin',
+        name: 'UserLogin',
+        meta: {name: '登录'},
+        component: () => import('@/views/front/UserLoginView.vue')
+    },
+    {
+        path: '/UserRegister',
+        name: 'UserRegister',
+        meta: {name: '注册'},
+        component: () => import('@/views/front/UserRegisterView.vue')
+    },
+    {
+        path: '/Front',
+        name: 'Front',
+        component: () => import('@/views/front/FrontView.vue'),
+        redirect: '/Front/HomeView',
+        children: [
+            {
+                path: 'HomeView',
+                name: 'HomeView',
+                meta: {name: '首页'},
+                component: () => import('@/views/front/home/HomeView.vue')
+            },
         ]
     },
     {

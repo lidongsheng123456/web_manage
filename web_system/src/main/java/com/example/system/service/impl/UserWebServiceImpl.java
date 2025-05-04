@@ -1,20 +1,17 @@
 package com.example.system.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.annotation.AutoFill;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
-import com.example.common.enums.RoleEnum;
 import com.example.common.exception.BusinessException;
 import com.example.common.interface_constants.Constants;
+import com.example.common.util.StpUserUtil;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
-import com.example.system.mapper.AdminRbacMapper;
-import com.example.system.mapper.AdminUserAndRoleMapper;
-import com.example.system.mapper.AdminWebMapper;
-import com.example.system.service.AdminWebService;
+import com.example.system.mapper.UserWebMapper;
+import com.example.system.service.UserWebService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -26,14 +23,12 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class AdminWebServiceImpl implements AdminWebService {
+public class UserWebServiceImpl implements UserWebService {
 
-    private final AdminWebMapper adminWebMapper;
-    private final AdminUserAndRoleMapper adminUserAndRoleMapper;
-    private final AdminRbacMapper adminRbacMapper;
+    private final UserWebMapper userWebMapper;
 
     /**
-     * 登录后台
+     * 登录前台
      *
      * @param userDto
      * @param session
@@ -53,7 +48,7 @@ public class AdminWebServiceImpl implements AdminWebService {
             throw new BusinessException(ResultCodeEnum.CAPTCHA_ERROR);
         }
 
-        User user = adminWebMapper.selectByUsername(username);
+        User user = userWebMapper.selectByUsername(username);
 
         //空返回true isEmpty会检查String list array 的长度是否为0 其他对象则检查是否为null
         if (ObjectUtil.isEmpty(user)) {
@@ -70,15 +65,13 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(user, userVo);
-        userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-        userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
 
-        StpUtil.login(userVo.getId());
+        StpUserUtil.login(userVo.getId());
         return userVo;
     }
 
     /**
-     * 后台注册用户
+     * 前台注册用户
      *
      * @param userDto
      * @param session
@@ -96,7 +89,7 @@ public class AdminWebServiceImpl implements AdminWebService {
         }
 
         //1. 注册判断数据库是否存在当前用户名的数据
-        User User = adminWebMapper.selectByUsername(userDto.getUsername());
+        User User = userWebMapper.selectByUsername(userDto.getUsername());
         //2. 用户不为空则代表当前用户名重复，不能注册，抛出异常
         if (ObjectUtil.isNotNull(User)) {
             throw new BusinessException(ResultCodeEnum.USER_EXIST_ERROR);
@@ -108,10 +101,9 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
 
-        int i = adminWebMapper.register(userDto);
-        int j = adminUserAndRoleMapper.addUserAndRoleId(userDto.getId(), RoleEnum.USER.roleId);
+        int i = userWebMapper.register(userDto);
 
-        if (i == 0 || j == 0) {
+        if (i == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
         }
     }
@@ -145,7 +137,7 @@ public class AdminWebServiceImpl implements AdminWebService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updatePerson(User user) {
-        Long loginIdAsLong = StpUtil.getLoginIdAsLong();
+        Long loginIdAsLong = StpUserUtil.getLoginIdAsLong();
 
         if (ObjectUtil.isEmpty(loginIdAsLong)) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
@@ -157,7 +149,7 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         user.setId(loginIdAsLong);
 
-        if (adminWebMapper.updatePerson(user) == 0) {
+        if (userWebMapper.updatePerson(user) == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
         }
     }
@@ -169,7 +161,7 @@ public class AdminWebServiceImpl implements AdminWebService {
      */
     @Override
     public void validateFormerPassword(String formerPassword) {
-        Long loginIdAsLong = StpUtil.getLoginIdAsLong();
+        Long loginIdAsLong = StpUserUtil.getLoginIdAsLong();
 
         if (ObjectUtil.isEmpty(loginIdAsLong)) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
@@ -177,7 +169,7 @@ public class AdminWebServiceImpl implements AdminWebService {
 
         String password = DigestUtils.md5DigestAsHex(formerPassword.getBytes());
 
-        User user = adminWebMapper.selectByUserId(loginIdAsLong);
+        User user = userWebMapper.selectByUserId(loginIdAsLong);
         if (!user.getPassword().equals(password)) {
             throw new BusinessException(ResultCodeEnum.PASSWORD_ERROR);
         }
@@ -190,9 +182,7 @@ public class AdminWebServiceImpl implements AdminWebService {
      */
     @Override
     public UserVo queryCurrentUser() {
-        UserVo userVo = adminWebMapper.queryCurrentUser(StpUtil.getLoginIdAsLong());
-        userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-        userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
+        UserVo userVo = userWebMapper.queryCurrentUser(StpUserUtil.getLoginIdAsLong());
         return userVo;
     }
 }

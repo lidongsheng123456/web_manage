@@ -5,9 +5,9 @@ import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
 import jakarta.servlet.http.HttpSession;
 
-public interface AdminWebService {
+public interface UserWebService {
     /**
-     * 登录后台
+     * 登录前台
      *
      * @param userDto
      * @param session
@@ -16,7 +16,7 @@ public interface AdminWebService {
     UserVo login(UserDto userDto, HttpSession session);
 
     /**
-     * 后台注册用户
+     * 前台注册用户
      *
      * @param userDto
      * @param session

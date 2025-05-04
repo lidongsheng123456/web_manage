@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div style="background-color: white; width: 400px; padding: 30px; border-radius: 10px">
-      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用毕设脚手架后台</div>
+      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用毕设脚手架</div>
       <el-form ref="formRef" :model="form" :rules="rules">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="User"></el-input>
@@ -33,7 +33,7 @@
         <div style="display: flex; align-items: center">
           <div style="flex: 1"></div>
           <div style="flex: 1; text-align: right">
-            还没有账号？请<a href="/register">注册</a>
+            还没有账号？请<a href="/UserRegister">注册</a>
           </div>
         </div>
       </el-form>
@@ -43,10 +43,9 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import {captcha, login} from "@/api/admin_request/WebRequest";
+import {captcha, login} from "@/api/front_request/WebRequest";
 import router from "@/router";
 import {ElMessage} from "element-plus";
-import axios from "axios";
 
 const uploadUrl = process.env.VUE_APP_BASEURL
 const codeUrl = ref('');
@@ -76,7 +75,7 @@ const logIn = () => {
       loading.value = true;
       login(form.value).then(res => {
         ElMessage.success('登录成功');
-        router.push('/Manage');
+        router.push('/Front');
       }).catch(error => {
         console.log(error);
       }).finally(() => {
@@ -97,23 +96,8 @@ const getCaptcha = () => {
   });
 };
 
-const getNotice = () => {
-  // 不配置的话session携带不了
-  const request = axios.create({
-    withCredentials: true
-  })
-  request.get(uploadUrl + '/admin/notice').then(res => {
-    if (res.data.code === 200) {
-      router.push('/Manage');
-    }
-  }).catch(error => {
-    console.log(error)
-  });
-}
-
 onMounted(() => {
   getCaptcha();
-  getNotice()
 });
 </script>
 

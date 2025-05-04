@@ -9,7 +9,7 @@
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="dictType != null &amp; dictType != ''">dict_type,</if>
             <if test="dictLabel != null &amp; dictLabel != ''">dict_label,</if>
-            <if test="dictValue != null &amp; dictValue != ''">dict_value,</if>
+            <if test="dictValue != null">dict_value,</if>
             <if test="description != null &amp; description != ''">description,</if>
             <if test="tagType != null &amp; tagType != ''">tag_type,</if>
             <if test="createTime != null">create_time,</if>
@@ -18,7 +18,7 @@
         <trim prefix="values (" suffixOverrides="," suffix=")">
             <if test="dictType != null &amp; dictType != ''">#{dictType},</if>
             <if test="dictLabel != null &amp; dictLabel != ''">#{dictLabel},</if>
-            <if test="dictValue != null &amp; dictValue != ''">#{dictValue},</if>
+            <if test="dictValue != null">#{dictValue},</if>
             <if test="description != null &amp; description != ''">#{description},</if>
             <if test="tagType != null &amp; tagType != ''">#{tagType},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -40,7 +40,7 @@
         <set>
             <if test="dictType != null &amp; dictType != ''">dict_type=#{dictType},</if>
             <if test="dictLabel != null &amp; dictLabel != ''">dict_label=#{dictLabel},</if>
-            <if test="dictValue != null &amp; dictValue != ''">dict_value=#{dictValue},</if>
+            <if test="dictValue != null">dict_value=#{dictValue},</if>
             <if test="description != null &amp; description != ''">description=#{description},</if>
             <if test="tagType != null &amp; tagType != ''">tag_type=#{tagType},</if>
             <if test="createTime != null">create_time=#{createTime},</if>

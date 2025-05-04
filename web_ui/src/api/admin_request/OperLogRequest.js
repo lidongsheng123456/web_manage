@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function addOperLog(data) {
-    return request({
+    return adminRequest({
         url: '/admin/operLog',
         method: 'POST',
         data: data
@@ -9,14 +9,14 @@ export function addOperLog(data) {
 }
 
 export function deleteOperLog(data) {
-    return request({
+    return adminRequest({
         url: `/admin/operLog/${data}`,
         method: 'DELETE'
     })
 }
 
 export function batchDeleteOperLog(data) {
-    return request({
+    return adminRequest({
         url: '/admin/operLog/batchDelete',
         method: 'DELETE',
         params: {
@@ -26,7 +26,7 @@ export function batchDeleteOperLog(data) {
 }
 
 export function updateOperLog(data) {
-    return request({
+    return adminRequest({
         url: '/admin/operLog',
         method: 'PUT',
         data: data
@@ -34,7 +34,7 @@ export function updateOperLog(data) {
 }
 
 export function queryOperLog(data) {
-    return request({
+    return adminRequest({
         url: '/admin/operLog',
         method: 'GET',
         params: data
@@ -42,7 +42,7 @@ export function queryOperLog(data) {
 }
 
 export function queryOperLogById(data) {
-    return request({
+    return adminRequest({
         url: `/admin/operLog/${data}`,
         method: 'GET'
     })

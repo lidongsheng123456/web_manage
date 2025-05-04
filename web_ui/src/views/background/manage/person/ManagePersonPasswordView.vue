@@ -70,7 +70,7 @@ const submitForm = () => {
       updatePerson({password: form.value.confirmPassword}).then(res => {
         ElMessage.success('修改成功');
         logout().then(res => {
-          router.push('/');
+          router.push('/Login');
           window.location.reload(true);
         }).catch(error => {
           console.log(error)

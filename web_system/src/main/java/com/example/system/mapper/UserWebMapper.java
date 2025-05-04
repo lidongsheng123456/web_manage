@@ -4,7 +4,7 @@ import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
 
-public interface AdminWebMapper {
+public interface UserWebMapper {
     /**
      * 根据用户名查询
      *
@@ -14,7 +14,7 @@ public interface AdminWebMapper {
     User selectByUsername(String username);
 
     /**
-     * 后台注册用户
+     * 前台注册用户
      *
      * @param User
      * @return
@@ -35,6 +35,7 @@ public interface AdminWebMapper {
      * @return
      */
     User selectByUserId(Long loginIdAsLong);
+
 
     /**
      * 查询当前登录用户信息

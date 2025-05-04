@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 /**
  * 查询动态字典
@@ -6,7 +6,7 @@ import request from "@/utils/request";
  * @returns
  */
 export function queryComQueryByCode(code) {
-    return request({
+    return adminRequest({
         url: `/common/query-com-query/${code}`,
         method: 'GET'
     })
@@ -18,7 +18,7 @@ export function queryComQueryByCode(code) {
  * @returns
  */
 export function queryDictByType(dictType) {
-    return request({
+    return adminRequest({
         url: `/common/query-dict/${dictType}`,
         method: 'GET'
     })

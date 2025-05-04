@@ -21,7 +21,7 @@ public class ComQueryServiceImpl implements ComQueryService {
         List<DictVo> list = new ArrayList<>();
         List<Dict> dicts = ComQueryMapper.queryDictByType(dictType);
         dicts.forEach(dict1 -> {
-            list.add(new DictVo(dict1.getDictLabel(), dict1.getDictValue()));
+            list.add(new DictVo(dict1.getDictLabel(), dict1.getDictValue(), dict1.getTagType()));
         });
         return list;
     }

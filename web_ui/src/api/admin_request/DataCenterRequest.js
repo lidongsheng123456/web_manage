@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function queryData() {
-    return request({
+    return adminRequest({
         url: '/admin/data',
         method: 'GET'
     })

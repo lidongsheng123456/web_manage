@@ -1,7 +1,5 @@
-package com.example.controller.admin;
+package com.example.controller.user;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.ObjectUtil;
@@ -11,10 +9,11 @@ import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
 import com.example.common.interface_constants.Constants;
+import com.example.common.util.StpUserUtil;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
-import com.example.system.service.AdminWebService;
+import com.example.system.service.UserWebService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,41 +24,41 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.Date;
 
-@Tag(name = "web相关接口")
-@RequestMapping("/admin")
+@Tag(name = "web前台相关接口")
+@RequestMapping("/user")
 @RestController
 @RequiredArgsConstructor
-public class AdminWebController {
+public class UserWebController {
 
-    private final AdminWebService adminWebService;
+    private final UserWebService userWebService;
 
     /**
-     * 登录后台
+     * 登录前台
      *
      * @param userDto
      * @param session
      * @return
      */
-    @Operation(summary = "登录后台")
-    @Log(title = "登录后台", businessType = BusinessType.OTHER)
+    @Operation(summary = "登录前台")
+    @Log(title = "登录前台", businessType = BusinessType.OTHER)
     @PostMapping("/login")
     public Result<UserVo> login(@RequestBody UserDto userDto, HttpSession session) {
-        UserVo User = adminWebService.login(userDto, session);
+        UserVo User = userWebService.login(userDto, session);
         return Result.success(User);
     }
 
     /**
-     * 后台注册用户
+     * 前台注册用户
      *
      * @param userDto
      * @param session
      * @return
      */
-    @Operation(summary = "后台注册用户")
-    @Log(title = "后台注册用户", businessType = BusinessType.INSERT)
+    @Operation(summary = "前台注册用户")
+    @Log(title = "前台注册用户", businessType = BusinessType.INSERT)
     @PostMapping("/register")
     public Result register(@RequestBody UserDto userDto, HttpSession session) {
-        adminWebService.register(userDto, session);
+        userWebService.register(userDto, session);
         return Result.success();
     }
 
@@ -92,21 +91,21 @@ public class AdminWebController {
     }
 
     /**
-     * 退出后台
+     * 退出前台
      *
      * @return
      */
-    @Operation(summary = "退出后台")
-    @Log(title = "退出后台", businessType = BusinessType.FORCE)
+    @Operation(summary = "退出前台")
+    @Log(title = "退出前台", businessType = BusinessType.FORCE)
     @GetMapping("/logout")
     public Result logout() {
-        Long loginIdAsLong = StpUtil.getLoginIdAsLong();
+        Long loginIdAsLong = StpUserUtil.getLoginIdAsLong();
 
         if (ObjectUtil.isEmpty(loginIdAsLong)) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
         }
 
-        StpUtil.logout(loginIdAsLong);
+        StpUserUtil.logout(loginIdAsLong);
 
         return Result.success();
     }
@@ -121,7 +120,7 @@ public class AdminWebController {
     @Log(title = "修改个人信息", businessType = BusinessType.UPDATE)
     @PostMapping("/person")
     public Result updatePerson(@RequestBody User user) {
-        adminWebService.updatePerson(user);
+        userWebService.updatePerson(user);
         return Result.success();
     }
 
@@ -135,7 +134,7 @@ public class AdminWebController {
     @Log(title = "验证密码正确", businessType = BusinessType.OTHER)
     @PostMapping("/validate/formerPassword")
     public Result validateFormerPassword(String formerPassword) {
-        adminWebService.validateFormerPassword(formerPassword);
+        userWebService.validateFormerPassword(formerPassword);
         return Result.success();
     }
 
@@ -145,10 +144,9 @@ public class AdminWebController {
      * @return
      */
     @Operation(summary = "查询当前登录用户信息")
-    @SaCheckPermission("admin:person:query")
     @GetMapping("/current")
     public Result<UserVo> queryCurrentUser() {
-        UserVo userVo = adminWebService.queryCurrentUser();
+        UserVo userVo = userWebService.queryCurrentUser();
         return Result.success(userVo);
     }
 }

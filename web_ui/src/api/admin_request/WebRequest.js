@@ -1,8 +1,8 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 //登录
 export function login(data) {
-    return request({
+    return adminRequest({
         url: '/admin/login',
         method: 'POST',
         data: data
@@ -11,7 +11,7 @@ export function login(data) {
 
 //注册
 export function register(data) {
-    return request({
+    return adminRequest({
         url: '/admin/register',
         method: 'POST',
         data: data
@@ -38,7 +38,7 @@ export function captcha() {
 
 //退出
 export function logout() {
-    return request({
+    return adminRequest({
         url: '/admin/logout',
         method: 'GET'
     })
@@ -46,7 +46,7 @@ export function logout() {
 
 //修改个人信息
 export function updatePerson(data) {
-    return request({
+    return adminRequest({
         url: '/admin/person',
         method: 'POST',
         data: data
@@ -55,11 +55,18 @@ export function updatePerson(data) {
 
 //修改个人信息
 export function validateFormerPassword(data) {
-    return request({
+    return adminRequest({
         url: '/admin/validate/formerPassword',
         method: 'POST',
         params: {
             formerPassword: data
         }
+    })
+}
+
+export function queryCurrentUser() {
+    return adminRequest({
+        url: '/admin/current',
+        method: 'GET'
     })
 }

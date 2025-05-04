@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function addPermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission',
         method: 'POST',
         data: data
@@ -9,14 +9,14 @@ export function addPermission(data) {
 }
 
 export function deletePermission(data) {
-    return request({
+    return adminRequest({
         url: `/admin/permission/${data}`,
         method: 'DELETE'
     })
 }
 
 export function batchDeletePermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission/batchDelete',
         method: 'DELETE',
         params: {
@@ -26,7 +26,7 @@ export function batchDeletePermission(data) {
 }
 
 export function updatePermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission',
         method: 'PUT',
         data: data
@@ -34,7 +34,7 @@ export function updatePermission(data) {
 }
 
 export function queryPermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission',
         method: 'GET',
         params: data
@@ -42,14 +42,14 @@ export function queryPermission(data) {
 }
 
 export function queryPermissionById(data) {
-    return request({
+    return adminRequest({
         url: `/admin/permission/${data}`,
         method: 'GET'
     })
 }
 
 export function queryRoleNotPermissionId(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission/NotPermissionId',
         method: 'GET',
         params: data
@@ -57,7 +57,7 @@ export function queryRoleNotPermissionId(data) {
 }
 
 export function queryRoleByPermissionId(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission/permission',
         method: 'GET',
         params: data
@@ -65,7 +65,7 @@ export function queryRoleByPermissionId(data) {
 }
 
 export function exportPermission() {
-    return request({
+    return adminRequest({
         url: '/admin/permission/export',
         method: 'GET',
         responseType: 'blob'
@@ -73,7 +73,7 @@ export function exportPermission() {
 }
 
 export function assignPermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission/assign',
         method: 'POST',
         data: data
@@ -81,7 +81,7 @@ export function assignPermission(data) {
 }
 
 export function removePermission(data) {
-    return request({
+    return adminRequest({
         url: '/admin/permission/remove',
         method: 'POST',
         data: data

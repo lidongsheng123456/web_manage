@@ -60,12 +60,4 @@ public interface AdminUserMapper {
      * @return
      */
     List<User> queryAllUser();
-
-    /**
-     * 查询当前登录用户信息
-     *
-     * @param id
-     * @return
-     */
-    UserVo queryCurrentUser(Long id);
 }

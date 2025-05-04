@@ -20,4 +20,7 @@ public class DictVo implements Serializable {
 
     @Schema(description = "字典键值")
     private Integer dictValue;
+
+    @Schema(description = "标签类型")
+    private String tagType;
 }

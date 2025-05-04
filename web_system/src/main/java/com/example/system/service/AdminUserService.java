@@ -53,13 +53,6 @@ public interface AdminUserService {
     List<User> queryAllUser();
 
     /**
-     * 查询当前登录用户信息
-     *
-     * @return
-     */
-    UserVo queryCurrentUser();
-
-    /**
      * 根据id查询用户
      *
      * @param id

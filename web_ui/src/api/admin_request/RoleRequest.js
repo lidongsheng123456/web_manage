@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import adminRequest from "@/utils/AdminRequest";
 
 export function addRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role',
         method: 'POST',
         data: data
@@ -9,14 +9,14 @@ export function addRole(data) {
 }
 
 export function deleteRole(data) {
-    return request({
+    return adminRequest({
         url: `/admin/role/${data}`,
         method: 'DELETE'
     })
 }
 
 export function batchDeleteRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role/batchDelete',
         method: 'DELETE',
         params: {
@@ -26,7 +26,7 @@ export function batchDeleteRole(data) {
 }
 
 export function updateRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role',
         method: 'PUT',
         data: data
@@ -34,7 +34,7 @@ export function updateRole(data) {
 }
 
 export function queryRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role',
         method: 'GET',
         params: data
@@ -42,14 +42,14 @@ export function queryRole(data) {
 }
 
 export function queryRoleById(data) {
-    return request({
+    return adminRequest({
         url: `/admin/role/${data}`,
         method: 'GET'
     })
 }
 
 export function queryUserNotRoleId(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role/notRoleId',
         method: 'GET',
         params: data
@@ -57,7 +57,7 @@ export function queryUserNotRoleId(data) {
 }
 
 export function queryUserByRoleId(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role/role',
         method: 'GET',
         params: data
@@ -65,7 +65,7 @@ export function queryUserByRoleId(data) {
 }
 
 export function exportRole() {
-    return request({
+    return adminRequest({
         url: '/admin/role/export',
         method: 'GET',
         responseType: 'blob'
@@ -73,7 +73,7 @@ export function exportRole() {
 }
 
 export function assignRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role/assign',
         method: 'POST',
         data: data
@@ -81,7 +81,7 @@ export function assignRole(data) {
 }
 
 export function removeRole(data) {
-    return request({
+    return adminRequest({
         url: '/admin/role/remove',
         method: 'POST',
         data: data
