@@ -33,7 +33,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
-                .excludePathPatterns("/user/captcha");
+                .excludePathPatterns("/user/captcha")
+                .excludePathPatterns("/user/home/**");
     }
 
     @Bean

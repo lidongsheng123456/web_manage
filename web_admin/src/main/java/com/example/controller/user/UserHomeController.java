@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 前台数据显示类，不拦截
+ */
 @Tag(name = "用户主页相关接口")
 @RestController
 @RequestMapping("/user/home")
