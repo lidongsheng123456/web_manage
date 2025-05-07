@@ -22,7 +22,7 @@
         <module>web_system</module>
     </modules>
 
-    <description>后台管理系统</description>
+    <description>东神脚手架</description>
 
     <properties>
         <java.version>17</java.version>
