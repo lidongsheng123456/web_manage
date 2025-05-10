@@ -1,6 +1,7 @@
 package com.example.controller.user;
 
 import com.example.common.entity.Result;
+import com.example.system.domain.Notice;
 import com.example.system.domain.vo.NoticeVo;
 import com.example.system.service.UserHomeService;
 import com.github.pagehelper.PageInfo;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 前台数据显示类，不拦截
@@ -26,17 +29,12 @@ public class UserHomeController {
     /**
      * 查询通知
      *
-     * @param noticeVo
-     * @param currentPage
-     * @param pageSize
      * @return
      */
     @Operation(summary = "查询通知")
-    @GetMapping
-    public Result<PageInfo<NoticeVo>> queryNotice(NoticeVo noticeVo,
-                                                  @RequestParam(defaultValue = "1") Integer currentPage,
-                                                  @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<NoticeVo> page = userHomeService.queryNotice(noticeVo, currentPage, pageSize);
-        return Result.success(page);
+    @GetMapping("/notice")
+    public Result queryNotice(Notice noticeVo) {
+        List<NoticeVo> list = userHomeService.queryNotice(noticeVo);
+        return Result.success(list);
     }
 }

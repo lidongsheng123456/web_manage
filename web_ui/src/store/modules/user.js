@@ -39,7 +39,7 @@ const actions = {
             request.get(uploadUrl + '/user/current')
                 .then(res => {
                     if (res.data.code === 200) {
-                        commit("SET_FRONT_USERINFO", res.data);
+                        commit("SET_FRONT_USERINFO", res.data.data);
                         resolve(res);
                     }
                 }).catch(error => {

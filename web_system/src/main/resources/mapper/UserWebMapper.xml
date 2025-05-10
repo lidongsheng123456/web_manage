@@ -57,7 +57,7 @@
 
     <select id="queryCurrentUser" resultType="com.example.system.domain.vo.UserVo">
         select *
-        from sys_user
+        from front_user
         where id = #{id}
     </select>
 </mapper>
