@@ -44,7 +44,7 @@ a {
         color: white !important;
       }
 
-      .el-menu-item:focus {
+      .el-menu-item.is-active {
         color: $focus-color !important;
       }
 
