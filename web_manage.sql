@@ -58,6 +58,7 @@ CREATE TABLE `sys_com_query`  (
 -- Records of sys_com_query
 -- ----------------------------
 INSERT INTO `sys_com_query` VALUES (1, '用户查询', 'user_query', 'SELECT username as dictLabel,id as dictValue FROM sys_user', NULL, '2025-05-01 13:16:39', '2025-05-01 15:48:26');
+INSERT INTO `sys_com_query` VALUES (4, '前台用户查询', 'front_user_query', 'SELECT username as dictLabel,id as dictValue FROM front_user', NULL, '2025-05-13 21:50:29', '2025-05-13 21:50:29');
 
 -- ----------------------------
 -- Table structure for sys_dict_data
