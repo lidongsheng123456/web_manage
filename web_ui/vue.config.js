@@ -8,6 +8,11 @@ module.exports = {
             })
             return definitions
         })
+        config.plugin('html')
+            .tap(args => {
+                args[0].title = "东神脚手架";
+                return args;
+            })
     },
     lintOnSave: false,//关闭eslint校验
     devServer: {
