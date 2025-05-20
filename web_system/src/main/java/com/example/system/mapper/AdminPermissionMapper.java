@@ -15,14 +15,6 @@ public interface AdminPermissionMapper {
     Integer addPermission(Permission permission);
 
     /**
-     * 删除权限
-     *
-     * @param id
-     * @return
-     */
-    Integer deletePermission(Long id);
-
-    /**
      * 批量删除权限
      *
      * @param ids

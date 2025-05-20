@@ -44,27 +44,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     /**
-     * 删除角色
-     *
-     * @param id
-     */
-    @Override
-    @Transactional
-    public void deleteRole(Long id) {
-        if (ObjectUtil.isEmpty(id)) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
-        if (id == 0) {
-            throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
-        }
-
-        adminUserAndRoleMapper.deleteUserAndRoleByRoleId(id);
-        adminRoleAndPermissionMapper.deleteRoleAndPermissionByRoleId(id);
-        isSuccess(adminRoleMapper.deleteRole(id));
-    }
-
-    /**
      * 批量删除角色
      *
      * @param ids

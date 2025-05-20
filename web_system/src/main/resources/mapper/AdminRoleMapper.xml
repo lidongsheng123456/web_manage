@@ -22,12 +22,6 @@
         </trim>
     </insert>
 
-    <delete id="deleteRole">
-        delete
-        from sys_role
-        where id = #{id}
-    </delete>
-
     <delete id="batchDeleteRole">
         delete
         from sys_role

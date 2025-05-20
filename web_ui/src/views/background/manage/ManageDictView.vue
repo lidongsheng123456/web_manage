@@ -108,7 +108,7 @@
           />
         </el-form-item>
         <el-form-item label="字典键值" prop="dictValue">
-          <el-input-number v-model="form.dictValue" :min="0" :max="100"/>
+          <el-input-number v-model="form.dictValue" :max="100" :min="0"/>
         </el-form-item>
         <el-form-item label="标签类型" prop="tagType">
           <el-select

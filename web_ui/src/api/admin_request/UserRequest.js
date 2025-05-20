@@ -8,13 +8,6 @@ export function addUser(data) {
     })
 }
 
-export function deleteUser(data) {
-    return adminRequest({
-        url: `/admin/user/${data}`,
-        method: 'DELETE'
-    })
-}
-
 export function batchDeleteUser(data) {
     return adminRequest({
         url: '/admin/user/batchDelete',

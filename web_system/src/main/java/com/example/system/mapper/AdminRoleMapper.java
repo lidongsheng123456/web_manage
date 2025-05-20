@@ -15,14 +15,6 @@ public interface AdminRoleMapper {
     int addRole(Role role);
 
     /**
-     * 删除角色
-     *
-     * @param id
-     * @return
-     */
-    int deleteRole(Long id);
-
-    /**
      * 批量删除角色
      *
      * @param ids

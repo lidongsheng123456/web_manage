@@ -6,7 +6,7 @@
       </el-icon>
       <span style="margin-left: 5px">公告：{{ top }}</span>
     </div>
-    <router-link to="/Login" target="_blank">后台管理</router-link>
+    <router-link target="_blank" to="/Login">后台管理</router-link>
     <router-view/>
   </div>
 </template>

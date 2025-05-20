@@ -14,14 +14,6 @@ public interface AdminOperLogMapper {
     int addOperLog(OperLog operlog);
 
     /**
-     * 删除日志
-     *
-     * @param id
-     * @return
-     */
-    int deleteOperLog(Long id);
-
-    /**
      * 批量删除日志
      *
      * @param ids

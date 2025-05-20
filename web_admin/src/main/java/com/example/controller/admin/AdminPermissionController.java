@@ -45,21 +45,6 @@ public class AdminPermissionController {
     }
 
     /**
-     * 删除权限
-     *
-     * @param id
-     * @return
-     */
-    @Operation(summary = "删除权限")
-    @SaCheckPermission("admin:permission:delete")
-    @Log(title = "删除权限", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{id}")
-    public Result deletePermission(@PathVariable Long id) {
-        adminPermissionService.deletePermission(id);
-        return Result.success();
-    }
-
-    /**
      * 批量删除权限
      *
      * @param ids

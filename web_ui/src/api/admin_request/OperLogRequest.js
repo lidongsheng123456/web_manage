@@ -8,13 +8,6 @@ export function addOperLog(data) {
     })
 }
 
-export function deleteOperLog(data) {
-    return adminRequest({
-        url: `/admin/operLog/${data}`,
-        method: 'DELETE'
-    })
-}
-
 export function batchDeleteOperLog(data) {
     return adminRequest({
         url: '/admin/operLog/batchDelete',

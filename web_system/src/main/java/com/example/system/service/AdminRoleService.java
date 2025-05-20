@@ -16,13 +16,6 @@ public interface AdminRoleService {
     void addRole(Role role);
 
     /**
-     * 删除角色
-     *
-     * @param id
-     */
-    void deleteRole(Long id);
-
-    /**
      * 批量删除角色
      *
      * @param ids

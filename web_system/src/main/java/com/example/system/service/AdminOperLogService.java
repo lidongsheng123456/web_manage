@@ -7,13 +7,6 @@ import java.util.List;
 
 public interface AdminOperLogService {
     /**
-     * 删除日志
-     *
-     * @param id
-     */
-    void deleteOperLog(Long id);
-
-    /**
      * 批量删除日志
      *
      * @param ids

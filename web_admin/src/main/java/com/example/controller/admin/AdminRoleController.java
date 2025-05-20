@@ -45,21 +45,6 @@ public class AdminRoleController {
     }
 
     /**
-     * 删除角色
-     *
-     * @param id
-     * @return
-     */
-    @Operation(summary = "删除角色")
-    @SaCheckPermission("admin:role:delete")
-    @Log(title = "删除角色", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{id}")
-    public Result deleteRole(@PathVariable Long id) {
-        adminRoleService.deleteRole(id);
-        return Result.success();
-    }
-
-    /**
      * 批量删除角色
      *
      * @param ids

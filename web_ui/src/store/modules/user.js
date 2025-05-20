@@ -43,9 +43,9 @@ const actions = {
                         resolve(res);
                     }
                 }).catch(error => {
-                    console.log(error);
-                    reject(error);
-                });
+                console.log(error);
+                reject(error);
+            });
         });
     },
 };

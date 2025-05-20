@@ -15,14 +15,6 @@ public interface AdminUserMapper {
     int addUser(User user);
 
     /**
-     * 删除用户
-     *
-     * @param id
-     * @return
-     */
-    int deleteUser(Long id);
-
-    /**
      * 批量删除用户
      *
      * @param ids

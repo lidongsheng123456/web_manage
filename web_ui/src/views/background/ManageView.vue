@@ -164,22 +164,14 @@ import {
   ArrowDown,
   Avatar,
   Bell,
-  Briefcase,
-  ChatDotSquare,
   Collection,
   Comment,
-  Handbag,
   List,
-  Orange,
   Promotion,
-  Shop,
-  ShoppingCart,
   Stamp,
-  StarFilled,
   Tools,
   Unlock,
-  User,
-  UserFilled
+  User
 } from "@element-plus/icons-vue";
 import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";

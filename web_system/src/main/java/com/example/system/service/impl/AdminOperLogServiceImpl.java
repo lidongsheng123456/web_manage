@@ -20,20 +20,6 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
     private final AdminOperLogMapper adminOperLogMapper;
 
     /**
-     * 删除日志
-     *
-     * @param id
-     */
-    @Override
-    public void deleteOperLog(Long id) {
-        if (ObjectUtil.isEmpty(id)) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
-        isSuccess(adminOperLogMapper.deleteOperLog(id));
-    }
-
-    /**
      * 批量删除日志
      *
      * @param ids

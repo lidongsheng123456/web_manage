@@ -47,7 +47,7 @@
       <el-table-column align="center" label="序号" prop="id" sortable width="100"/>
       <el-table-column align="center" label="通知标题" prop="noticeTitle"/>
       <el-table-column align="center" label="通知内容" prop="noticeContent" show-overflow-tooltip/>
-      <el-table-column align="center" label="创建用户" prop="username"/>
+      <el-table-column :formatter="userIdFormatter" align="center" label="创建用户" prop="createUserId"/>
       <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip/>
       <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
       <el-table-column align="center" fixed="right" label="操作">
@@ -120,8 +120,16 @@ import {onMounted, ref} from 'vue';
 import {ElMessage, ElMessageBox} from 'element-plus';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import {addNotice, batchDeleteNotice, queryNotice, queryNoticeById, updateNotice} from "@/api/admin_request/NoticeRequest";
+import {
+  addNotice,
+  batchDeleteNotice,
+  queryNotice,
+  queryNoticeById,
+  updateNotice
+} from "@/api/admin_request/NoticeRequest";
 import {Bottom, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
+import {queryComQueryByCode} from "@/api/com_request/ComRequest";
+import {selectDictLabel} from "@/utils/env";
 
 // 表格数据
 const tableData = ref([])
@@ -145,6 +153,8 @@ const loading = ref(true);
 const dialogOverflowVisible = ref(false)
 // 上传的ip和端口号
 const uploadUrl = process.env.VUE_APP_BASEURL
+// 用户选项
+const userOption = ref([]);
 // 表单
 const form = ref({
   noticeTitle: null,
@@ -166,6 +176,10 @@ const rules = {
     {required: true, message: "通知内容不能为空", trigger: "blur"}
   ]
 };
+// 翻译用户id
+const userIdFormatter = (row) => {
+  return selectDictLabel(userOption.value, row.createUserId)
+}
 // 提交表单
 const submitForm = () => {
   formRef.value.validate(valid => {
@@ -292,6 +306,9 @@ const resetQuery = () => {
 // 页面挂载时获取数据
 onMounted(() => {
   getList();
+  queryComQueryByCode('user_query').then(res => {
+    userOption.value = res.data
+  })
 });
 </script>
 <style scoped>

@@ -22,12 +22,6 @@
         </trim>
     </insert>
 
-    <delete id="deletePermission">
-        delete
-        from sys_permission
-        where id = #{id}
-    </delete>
-
     <delete id="batchDeletePermission">
         delete
         from sys_permission

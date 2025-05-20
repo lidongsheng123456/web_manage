@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from "@/router";
-import {ElMessage, ElMessageBox} from "element-plus";
+import {ElMessage} from "element-plus";
 
 const adminRequest = axios.create({
     baseURL: process.env.VUE_APP_BASEURL,

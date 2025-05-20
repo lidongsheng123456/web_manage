@@ -8,13 +8,6 @@ export function addRole(data) {
     })
 }
 
-export function deleteRole(data) {
-    return adminRequest({
-        url: `/admin/role/${data}`,
-        method: 'DELETE'
-    })
-}
-
 export function batchDeleteRole(data) {
     return adminRequest({
         url: '/admin/role/batchDelete',

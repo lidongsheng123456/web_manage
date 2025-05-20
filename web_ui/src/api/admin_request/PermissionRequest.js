@@ -8,13 +8,6 @@ export function addPermission(data) {
     })
 }
 
-export function deletePermission(data) {
-    return adminRequest({
-        url: `/admin/permission/${data}`,
-        method: 'DELETE'
-    })
-}
-
 export function batchDeletePermission(data) {
     return adminRequest({
         url: '/admin/permission/batchDelete',

@@ -38,22 +38,18 @@ public class StpUserUtil {
         return stpLogic.getLoginType();
     }
 
+    public static StpLogic getStpLogic() {
+        return stpLogic;
+    }
+
     public static void setStpLogic(StpLogic newStpLogic) {
         stpLogic = newStpLogic;
         SaManager.putStpLogic(newStpLogic);
         SaTokenEventCenter.doSetStpLogic(stpLogic);
     }
 
-    public static StpLogic getStpLogic() {
-        return stpLogic;
-    }
-
     public static String getTokenName() {
         return stpLogic.getTokenName();
-    }
-
-    public static void setTokenValue(String tokenValue) {
-        stpLogic.setTokenValue(tokenValue);
     }
 
     public static void setTokenValue(String tokenValue, int cookieTimeout) {
@@ -66,6 +62,10 @@ public class StpUserUtil {
 
     public static String getTokenValue() {
         return stpLogic.getTokenValue();
+    }
+
+    public static void setTokenValue(String tokenValue) {
+        stpLogic.setTokenValue(tokenValue);
     }
 
     public static String getTokenValueNotCut() {

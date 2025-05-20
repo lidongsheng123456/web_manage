@@ -44,21 +44,6 @@ public class AdminUserController {
     }
 
     /**
-     * 删除用户
-     *
-     * @param id
-     * @return
-     */
-    @Operation(summary = "删除用户")
-    @SaCheckPermission("admin:user:delete")
-    @Log(title = "删除用户", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{id}")
-    public Result deleteUser(@PathVariable Long id) {
-        adminUserService.deleteUser(id);
-        return Result.success();
-    }
-
-    /**
      * 批量删除用户
      *
      * @param ids

@@ -26,20 +26,6 @@ public class AdminOperlogController {
     private final AdminOperLogService adminOperLogService;
 
     /**
-     * 删除日志
-     *
-     * @param id
-     * @return
-     */
-    @Operation(summary = "删除日志")
-    @SaCheckPermission("admin:operLog:delete")
-    @DeleteMapping("/{id}")
-    public Result deleteOperLog(@PathVariable Long id) {
-        adminOperLogService.deleteOperLog(id);
-        return Result.success();
-    }
-
-    /**
      * 批量删除日志
      *
      * @param ids

@@ -16,13 +16,6 @@ public interface AdminPermissionService {
     void addPermission(Permission permission);
 
     /**
-     * 删除权限
-     *
-     * @param id
-     */
-    void deletePermission(Long id);
-
-    /**
      * 批量删除权限
      *
      * @param ids

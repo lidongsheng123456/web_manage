@@ -1,12 +1,14 @@
 package com.example.controller.admin;
 
+
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
+import com.example.common.annotation.AutoFill;
 import com.example.common.annotation.Log;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.util.ExcelExportUtil;
 import com.example.system.domain.Notice;
-import com.example.system.domain.vo.NoticeVo;
 import com.example.system.service.AdminNoticeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,117 +23,72 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Tag(name = "通知相关接口")
-@RestController
 @RequestMapping("/admin/notice")
+@RestController
 @RequiredArgsConstructor
 public class AdminNoticeController {
-
     private final AdminNoticeService adminNoticeService;
 
-    /**
-     * 新增通知
-     *
-     * @param notice
-     * @return
-     */
+    @AutoFill(BusinessType.INSERT)
     @Operation(summary = "新增通知")
     @SaCheckPermission("admin:notice:add")
     @Log(title = "新增通知", businessType = BusinessType.INSERT)
     @PostMapping
     public Result addNotice(@RequestBody Notice notice) {
-        adminNoticeService.addNotice(notice);
-        return Result.success();
+        notice.setCreateUserId(StpUtil.getLoginIdAsLong());
+        if (adminNoticeService.save(notice)) {
+            return Result.success();
+        }
+        return Result.error(500, "新增通知失败");
     }
 
-    /**
-     * 删除通知
-     *
-     * @param id
-     * @return
-     */
-    @Operation(summary = "删除通知")
-    @SaCheckPermission("admin:notice:delete")
-    @Log(title = "删除通知", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{id}")
-    public Result deleteNotice(@PathVariable Long id) {
-        adminNoticeService.deleteNotice(id);
-        return Result.success();
-    }
-
-    /**
-     * 批量删除通知
-     *
-     * @param ids
-     * @return
-     */
     @Operation(summary = "批量删除通知")
     @SaCheckPermission("admin:notice:delete")
     @Log(title = "批量删除通知", businessType = BusinessType.DELETE)
     @DeleteMapping("/batchDelete")
     public Result batchDeleteNotice(@RequestParam List<Long> ids) {
-        adminNoticeService.batchDeleteNotice(ids);
-        return Result.success();
+        if (adminNoticeService.removeBatchByIds(ids)) {
+            return Result.success();
+        }
+        return Result.error(500, "删除通知失败");
     }
 
-    /**
-     * 修改通知
-     *
-     * @param notice
-     * @return
-     */
+    @AutoFill(BusinessType.UPDATE)
     @Operation(summary = "修改通知")
     @SaCheckPermission("admin:notice:update")
     @Log(title = "修改通知", businessType = BusinessType.UPDATE)
     @PutMapping
     public Result updateNotice(@RequestBody Notice notice) {
-        adminNoticeService.updateNotice(notice);
-        return Result.success();
+        if (adminNoticeService.updateById(notice)) {
+            return Result.success();
+        }
+        return Result.error(500, "修改通知失败");
     }
 
-    /**
-     * 查询通知
-     *
-     * @param noticeVo
-     * @param currentPage
-     * @param pageSize
-     * @return
-     */
     @Operation(summary = "查询通知")
     @SaCheckPermission("admin:notice:query")
     @GetMapping
-    public Result<PageInfo<NoticeVo>> queryNotice(NoticeVo noticeVo,
-                                                  @RequestParam(defaultValue = "1") Integer currentPage,
-                                                  @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<NoticeVo> page = adminNoticeService.queryNotice(noticeVo, currentPage, pageSize);
+    public Result<PageInfo<Notice>> queryNotice(Notice notice,
+                                                @RequestParam(defaultValue = "1") Integer currentPage,
+                                                @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Notice> page = adminNoticeService.queryNotice(notice, currentPage, pageSize);
         return Result.success(page);
     }
 
-    /**
-     * 根据id查询通知
-     *
-     * @param id
-     * @return
-     */
     @Operation(summary = "根据id查询通知")
     @SaCheckPermission("admin:notice:query")
     @GetMapping("/{id}")
     public Result<Notice> queryNoticeById(@PathVariable Long id) {
-        Notice notice = adminNoticeService.queryNoticeById(id);
-        return Result.success(notice);
+        Notice byId = adminNoticeService.getById(id);
+        return Result.success(byId);
     }
 
-    /**
-     * 导出通知信息
-     *
-     * @param response
-     * @throws IOException
-     */
     @Operation(summary = "导出通知信息")
     @SaCheckPermission("admin:notice:export")
     @GetMapping("/export")
     public void exportExcel(HttpServletResponse response) throws IOException {
-        List<Notice> notices = adminNoticeService.queryAllNotice();
-        byte[] excelBytes = ExcelExportUtil.exportToExcel(notices, Notice.class);
+        List<Notice> list = adminNoticeService.list();
+        byte[] excelBytes = ExcelExportUtil.exportToExcel(list, Notice.class);
 
         // 设置响应头
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

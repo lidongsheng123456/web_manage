@@ -39,22 +39,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     }
 
     /**
-     * 删除权限
-     *
-     * @param id
-     */
-    @Override
-    @Transactional
-    public void deletePermission(Long id) {
-        if (ObjectUtil.isEmpty(id)) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
-        adminRoleAndPermissionMapper.deleteRoleAndPermissionByPermissionId(id);
-        isSuccess(adminPermissionMapper.deletePermission(id));
-    }
-
-    /**
      * 批量删除权限
      *
      * @param ids

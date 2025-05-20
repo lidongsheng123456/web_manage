@@ -8,13 +8,6 @@ export function addNotice(data) {
     })
 }
 
-export function deleteNotice(data) {
-    return adminRequest({
-        url: `/admin/notice/${data}`,
-        method: 'DELETE'
-    })
-}
-
 export function batchDeleteNotice(data) {
     return adminRequest({
         url: '/admin/notice/batchDelete',

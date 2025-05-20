@@ -1,6 +1,5 @@
 package com.example.system.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.annotation.AutoFill;
 import com.example.common.enums.BusinessType;
@@ -47,27 +46,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         user.setPassword(DigestUtils.md5DigestAsHex(Constants.DEFAULT_PAD.getBytes()));
         isSuccess(adminUserMapper.addUser(user));
         isSuccess(adminUserAndRoleMapper.addUserAndRoleId(user.getId(), RoleEnum.USER.roleId));
-    }
-
-    /**
-     * 删除用户
-     *
-     * @param id
-     */
-    @Override
-    @Transactional
-    public void deleteUser(Long id) {
-        if (ObjectUtil.isEmpty(id)) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
-        if (id == 1) {
-            throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
-        }
-
-        adminNoticeMapper.deleteNoticeByUserId(id);
-        adminUserAndRoleMapper.deleteUserAndRoleByUserId(id);
-        isSuccess(adminUserMapper.deleteUser(id));
     }
 
     /**

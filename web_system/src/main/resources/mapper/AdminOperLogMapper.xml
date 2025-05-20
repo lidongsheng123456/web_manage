@@ -11,12 +11,6 @@
                 #{costTime})
     </insert>
 
-    <delete id="deleteOperLog">
-        delete
-        from sys_oper_log
-        where id = #{id}
-    </delete>
-
     <delete id="batchDeleteOperLog">
         delete
         from sys_oper_log

@@ -1,98 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.system.mapper.AdminNoticeMapper">
-    <insert id="addNotice">
-        insert into sys_notice
-        <trim prefix="(" suffixOverrides="," suffix=")">
-            <if test="noticeTitle != null &amp; noticeTitle != ''">notice_title,</if>
-            <if test="noticeContent != null &amp; noticeContent != ''">notice_content,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateTime != null">update_time,</if>
-            <if test="createUserId != null">create_user_id,</if>
-        </trim>
-        <trim prefix="values (" suffixOverrides="," suffix=")">
-            <if test="noticeTitle != null &amp; noticeTitle != ''">#{noticeTitle},</if>
-            <if test="noticeContent != null &amp; noticeContent != ''">#{noticeContent},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-            <if test="createUserId != null">#{createUserId},</if>
-        </trim>
-    </insert>
 
-    <delete id="deleteNotice">
-        delete
-        from sys_notice
-        where id = #{id}
-    </delete>
-
-    <delete id="batchDeleteNotice">
-        delete
-        from sys_notice
-        where id in
-        <foreach collection="list" open="(" separator="," close=")" item="ids">
-            #{ids}
-        </foreach>
-    </delete>
-
-    <delete id="deleteNoticeByUserId">
-        delete
-        from sys_notice
-        where create_user_id = #{id}
-    </delete>
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.system.domain.Notice">
+        <id column="id" property="id"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="notice_content" property="noticeContent"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user_id" property="createUserId"/>
+    </resultMap>
 
     <delete id="batchDeleteNoticeByUserIds">
-        delete
-        from sys_notice
-        where id in
-        <foreach collection="list" open="(" separator="," close=")" item="ids">
-            #{ids}
+        DELETE
+        FROM sys_notice
+        WHERE create_user_id in
+        <foreach collection="list" open="(" separator="," close=")" item="userId">
+            #{userId}
         </foreach>
     </delete>
-
-    <update id="updateNotice">
-        update sys_notice
-        <set>
-            <if test="noticeTitle != null &amp; noticeTitle != ''">notice_title=#{noticeTitle},</if>
-            <if test="noticeContent != null &amp; noticeContent != ''">notice_content=#{noticeContent},</if>
-            <if test="createTime != null">create_time=#{createTime},</if>
-            <if test="updateTime != null">update_time=#{updateTime},</if>
-            <if test="createUserId != null">create_user_id=#{createUserId},</if>
-        </set>
-        where id=#{id}
-    </update>
-
-    <select id="queryNotice" resultType="com.example.system.domain.vo.NoticeVo">
-        select
-        sys_notice.id,sys_notice.notice_title,sys_notice.notice_content,sys_notice.create_time,sys_notice.update_time,sys_notice.create_user_id,sys_User.username
-        from
-        sys_notice
-        join sys_User on sys_notice.create_user_id = sys_User.id
-        <trim prefix="where " prefixOverrides="and">
-            <if test="noticeTitle != null &amp; noticeTitle != ''">and notice_title like
-                concat('%',#{noticeTitle},'%')
-            </if>
-            <if test="noticeContent != null &amp; noticeContent != ''">and notice_content like
-                concat('%',#{noticeContent},'%')
-            </if>
-            <if test="createTime != null">and create_time = #{createTime}</if>
-            <if test="updateTime != null">and update_time #{updateTime}</if>
-            <if test="createUserId != null">and create_user_id = #{createUserId}</if>
-        </trim>
-        order by id desc
-    </select>
-
-    <select id="queryAllNotice" resultType="com.example.system.domain.Notice">
-        select *
-        from sys_notice
-        order by id asc
-    </select>
-
-    <select id="queryNoticeById" resultType="com.example.system.domain.Notice">
-        select *
-        from sys_notice
-        where id = #{id}
-    </select>
 </mapper>
