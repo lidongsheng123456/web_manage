@@ -11,8 +11,6 @@
 - **运行环境下载地址**：  
   [百度网盘链接](https://pan.baidu.com/s/1zU8TWzNMtv5kNSL5H9Q5_w?pwd=ys73)
 
----
-
 ## 🔧 技术栈
 
 ### 后端技术栈
@@ -41,8 +39,6 @@
 | Vue Router   | 4.0.3   |
 | Vuex         | 4.0.0   |
 
----
-
 ## 🛠️ 功能模块
 
 ### 后台功能
@@ -59,15 +55,13 @@
 
 1. **主页通知展示**
 
----
-
 ## 🧱 二次开发指南
 
 ### 后端开发建议
 
 - 使用 `mybatis-plus` 的代码生成器生成基础代码
-- 拷贝 [AdminNoticeController](file://D:\develop\idea_project\java_project\web_manage\web_admin\src\main\java\com\example\controller\admin\AdminNoticeController.java#L22-L143)
-的三层架构（Controller → Service → Mapper）
+- 拷贝 `AdminNoticeController`
+的三层架构（Controller → Service → Mapper）和实体类domain
 - 修改对应业务逻辑和表名即可快速实现新功能
 
 ### 前端开发建议
@@ -77,14 +71,10 @@
 
 > 💡 注：前台功能因需求差异较大，未提供统一模板。
 
----
-
 ## 📚 其他说明
 
 - 若需扩展前台功能，请根据实际业务场景自行开发
 - 如有疑问或需要技术支持，请联系作者：李东升19976898057
-
----
 
 ## ✅ 优势亮点
 
@@ -92,5 +82,3 @@
 - 快速开发模板，降低重复工作量
 - 集成常用工具库和中间件，开箱即用
 - 接口文档完善，便于调试与对接
-
----
