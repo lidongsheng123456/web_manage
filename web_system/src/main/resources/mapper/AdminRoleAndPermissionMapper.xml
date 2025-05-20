@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.system.mapper.AdminRoleAndPermissionMapper">
-    <delete id="deleteRoleAndPermissionByRoleId">
-        delete
-        from sys_role_permission
-        where role_id = #{id}
-    </delete>
-
     <delete id="batchDeleteRoleAndPermissionByRoleId">
         delete
         from sys_role_permission
@@ -17,12 +11,6 @@
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
         </foreach>
-    </delete>
-
-    <delete id="deleteRoleAndPermissionByPermissionId">
-        delete
-        from sys_role_permission
-        where permission_id = #{id}
     </delete>
 
     <delete id="batchDeleteRoleAndPermissionByPermissionId">

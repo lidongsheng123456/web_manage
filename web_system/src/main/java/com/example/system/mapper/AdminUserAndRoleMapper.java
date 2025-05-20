@@ -16,25 +16,11 @@ public interface AdminUserAndRoleMapper {
     int addUserAndRoleId(Long userId, Long roleId);
 
     /**
-     * 根据用户id删除用户和角色关联id
-     *
-     * @param userId
-     */
-    void deleteUserAndRoleByUserId(Long userId);
-
-    /**
      * 根据用户id批量删除用户和角色关联id
      *
      * @param ids
      */
     void batchDeleteUserAndRoleByUserId(List<Long> ids);
-
-    /**
-     * 根据角色id删除用户和角色关联id
-     *
-     * @param roleId
-     */
-    void deleteUserAndRoleByRoleId(Long roleId);
 
     /**
      * 根据角色id批量删除用户和角色关联id

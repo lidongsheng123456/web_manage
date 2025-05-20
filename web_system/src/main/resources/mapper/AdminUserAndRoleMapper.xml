@@ -9,12 +9,6 @@
         VALUES (#{userId}, #{roleId})
     </insert>
 
-    <delete id="deleteUserAndRoleByUserId">
-        delete
-        from sys_user_role
-        where user_id = #{userId}
-    </delete>
-
     <delete id="batchDeleteUserAndRoleByUserId">
         delete
         from sys_user_role
@@ -22,12 +16,6 @@
         <foreach collection="list" open="(" separator="," close=")" item="ids">
             #{ids}
         </foreach>
-    </delete>
-
-    <delete id="deleteUserAndRoleByRoleId">
-        delete
-        from sys_user_role
-        where role_id = #{roleId}
     </delete>
 
     <delete id="batchDeleteUserAndRoleByRoleId">
