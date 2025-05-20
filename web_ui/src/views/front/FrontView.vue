@@ -1,12 +1,22 @@
 <template>
-  <div>
+  <div class="front-container">
+    <el-alert
+        title="提示"
+        type="info"
+        description="当前页面为前台页面需要自定义，但后台模板是完整的。"
+        show-icon
+        :closable="false"
+        class="custom-alert"
+    />
     <div class="front-notice">
       <el-icon>
         <Bell/>
       </el-icon>
-      <span style="margin-left: 5px">公告：{{ top }}</span>
+      <span class="notice-text">公告：{{ top }}</span>
     </div>
-    <router-link target="_blank" to="/Login">后台管理</router-link>
+    <div class="admin-link">
+      <router-link target="_blank" to="/Login">后台管理</router-link>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -51,15 +61,41 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.el-dropdown .el-dropdown-link:focus-visible {
-  outline: none !important;
+.front-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.custom-alert {
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .front-notice {
-  padding: 5px 20px;
-  color: black;
-  font-size: 12px;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.notice-text {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.admin-link {
+  margin-bottom: 20px;
+}
+
+.el-dropdown .el-dropdown-link:focus-visible {
+  outline: none !important;
 }
 </style>
