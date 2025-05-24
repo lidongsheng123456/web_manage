@@ -1,4 +1,4 @@
-package com.example.common.interface_constants;
+package com.example.common.constants;
 
 public interface Constants {
     Integer CAPTCHA_WIDTH = 100;//验证码宽度
