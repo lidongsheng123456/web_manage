@@ -43,7 +43,7 @@
 
 <script setup>
 import {Bell, Comment, Unlock, User} from '@element-plus/icons-vue'
-import {computed, defineProps} from "vue";
+import {computed} from "vue";
 // 父组件事件
 const emit = defineEmits(['updateLineChartData'])
 // 父组件的数据

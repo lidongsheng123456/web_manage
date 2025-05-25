@@ -39,7 +39,7 @@
 
 <script setup>
 // 表单
-import {defineProps, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import router from "@/router";
 import {updatePerson} from "@/api/admin_request/WebRequest";
 import {ElMessage} from "element-plus";

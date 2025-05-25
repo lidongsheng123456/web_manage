@@ -280,5 +280,5 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@import "@/assets/css/manager";
+@use "@/assets/css/manager";
 </style>
