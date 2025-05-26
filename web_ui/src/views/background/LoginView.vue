@@ -7,7 +7,7 @@
           <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="Lock"></el-input>
+          <el-input v-model="form.password" placeholder="请输入密码" prefix-icon="Lock" show-password></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <div style="display: flex">
