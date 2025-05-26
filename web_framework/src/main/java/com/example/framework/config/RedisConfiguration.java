@@ -22,8 +22,6 @@ public class RedisConfiguration {
 
         // 使用 Jackson2JsonRedisSerializer 来序列化和反序列化 JSON 数据
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 
         // 设置 key 的序列化器为 StringRedisSerializer
         template.setKeySerializer(new StringRedisSerializer());
