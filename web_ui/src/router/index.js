@@ -125,6 +125,12 @@ const routes = [
                 meta: {name: '首页'},
                 component: () => import('@/views/front/home/HomeView.vue')
             },
+            {
+                path: 'PersonView',
+                name: 'PersonView',
+                meta: {name: '个人中心'},
+                component: () => import('@/views/front/home/PersonView.vue')
+            },
         ]
     },
     {

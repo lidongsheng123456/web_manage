@@ -1,6 +1,6 @@
 <template>
-  <div>
-
+  <div class="safe-area">
+    前台首页
   </div>
 </template>
 
