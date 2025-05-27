@@ -38,6 +38,7 @@
         <sa-token-jwt.version>1.38.0</sa-token-jwt.version>
         <sa-token-redis-jackson.version>1.38.0</sa-token-redis-jackson.version>
         <knife4j.version>4.3.0</knife4j.version>
+        <sensitive-word.version>0.2.0</sensitive-word.version>
         <web_common.version>0.0.1-SNAPSHOT</web_common.version>
         <web_framework.version>0.0.1-SNAPSHOT</web_framework.version>
         <web_system.version>0.0.1-SNAPSHOT</web_system.version>
@@ -141,6 +142,13 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+
+            <!-- 敏感词过滤工具 -->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word</artifactId>
+                <version>${sensitive-word.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -10,6 +10,7 @@ import com.example.common.enums.BusinessType;
 import com.example.common.util.ExcelExportUtil;
 import com.example.system.domain.Notice;
 import com.example.system.service.AdminNoticeService;
+import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +36,8 @@ public class AdminNoticeController {
     @Log(title = "新增通知", businessType = BusinessType.INSERT)
     @PostMapping
     public Result addNotice(@RequestBody Notice notice) {
+        // 过滤敏感字
+        notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         notice.setCreateUserId(StpUtil.getLoginIdAsLong());
         if (adminNoticeService.save(notice)) {
             return Result.success();
@@ -59,6 +62,8 @@ public class AdminNoticeController {
     @Log(title = "修改通知", businessType = BusinessType.UPDATE)
     @PutMapping
     public Result updateNotice(@RequestBody Notice notice) {
+        // 过滤敏感字
+        notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         if (adminNoticeService.updateById(notice)) {
             return Result.success();
         }
