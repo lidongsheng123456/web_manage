@@ -79,6 +79,12 @@ const routes = [
                 component: () => import('@/views/background/manage/ManageComQueryView.vue')
             },
             {
+                path: 'ManageFrontUserView',
+                name: 'ManageFrontUserView',
+                meta: {name: '前台用户管理'},
+                component: () => import('@/views/background/manage/ManageFrontUserView.vue')
+            },
+            {
                 path: 'ManagePersonView',
                 name: 'ManagePersonView',
                 meta: {name: '个人中心'},

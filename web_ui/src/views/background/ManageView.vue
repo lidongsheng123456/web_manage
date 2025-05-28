@@ -9,7 +9,7 @@
           </h1>
         </div>
         <el-menu
-            :default-openeds="['2','3']"
+            :default-openeds="['2','3','4']"
             :router="true"
             class="el-menu-vertical-demo"
             default-active="1"
@@ -92,6 +92,20 @@
               通用查询
             </el-menu-item>
           </el-sub-menu>
+          <el-sub-menu index="4">
+            <template #title>
+              <el-icon>
+                <HomeFilled/>
+              </el-icon>
+              前台管理
+            </template>
+            <el-menu-item v-permission="'admin:front-user:query'" index="/Manage/ManageFrontUserView">
+              <el-icon>
+                <UserFilled/>
+              </el-icon>
+              用户管理
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <el-container>
@@ -166,12 +180,14 @@ import {
   Bell,
   Collection,
   Comment,
+  HomeFilled,
   List,
   Promotion,
   Stamp,
   Tools,
   Unlock,
-  User
+  User,
+  UserFilled
 } from "@element-plus/icons-vue";
 import {computed, onMounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
