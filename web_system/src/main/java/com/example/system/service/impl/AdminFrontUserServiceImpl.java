@@ -15,14 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author admin
- * @since 2025-05-28
- */
 @Service
 @RequiredArgsConstructor
 public class AdminFrontUserServiceImpl extends ServiceImpl<AdminFrontUserMapper, FrontUser> implements AdminFrontUserService {

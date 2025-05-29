@@ -36,16 +36,7 @@ public class UserHomeController {
     @Operation(summary = "查询通知")
     @GetMapping("/notice")
     public Result queryNotice(Notice noticeVo) {
-        // 缓存有效返回缓存
-        List<NoticeVo> cacheObject = redisCache.getCacheObject("notice-list");
-        if (ObjectUtil.isNotEmpty(cacheObject)) {
-            return Result.success(cacheObject);
-        }
-
-        // 缓存无效返回数据库
-        List<NoticeVo> list = userHomeService.queryNotice(noticeVo);
-        // 1分钟后过期，下次查询时会重新从数据库加载最新数据。
-        redisCache.setCacheObject("notice-list", list, 1, TimeUnit.MINUTES);
+        List<Object> list = userHomeService.queryNotice(noticeVo);
         return Result.success(list);
     }
 }

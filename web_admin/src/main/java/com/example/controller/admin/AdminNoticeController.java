@@ -7,6 +7,7 @@ import com.example.common.annotation.AutoFill;
 import com.example.common.annotation.Log;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
+import com.example.common.redis.RedisCache;
 import com.example.common.util.ExcelExportUtil;
 import com.example.system.domain.Notice;
 import com.example.system.service.AdminNoticeService;
@@ -30,6 +31,8 @@ import java.util.List;
 public class AdminNoticeController {
     private final AdminNoticeService adminNoticeService;
 
+    private final RedisCache redisCache;
+
     @AutoFill(BusinessType.INSERT)
     @Operation(summary = "新增通知")
     @SaCheckPermission("admin:notice:add")
@@ -51,6 +54,7 @@ public class AdminNoticeController {
     @DeleteMapping("/batchDelete")
     public Result batchDeleteNotice(@RequestParam List<Long> ids) {
         if (adminNoticeService.removeBatchByIds(ids)) {
+            ids.forEach(ids1 -> redisCache.deleteObject(ids1.toString()));
             return Result.success();
         }
         return Result.error(500, "删除通知失败");
@@ -65,6 +69,7 @@ public class AdminNoticeController {
         // 过滤敏感字
         notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         if (adminNoticeService.updateById(notice)) {
+            redisCache.deleteObject(notice.getId().toString());
             return Result.success();
         }
         return Result.error(500, "修改通知失败");

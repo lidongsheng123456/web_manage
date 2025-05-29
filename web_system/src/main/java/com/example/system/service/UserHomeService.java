@@ -11,5 +11,5 @@ public interface UserHomeService {
      *
      * @return
      */
-    List<NoticeVo> queryNotice(Notice noticeVo);
+    List<Object> queryNotice(Notice noticeVo);
 }

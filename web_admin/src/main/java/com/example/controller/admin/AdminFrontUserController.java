@@ -23,14 +23,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-/**
- * <p>
- * 前端控制器
- * </p>
- *
- * @author admin
- * @since 2025-05-28
- */
 @Tag(name = "前台用户相关接口")
 @RequestMapping("/admin/front-user")
 @RestController

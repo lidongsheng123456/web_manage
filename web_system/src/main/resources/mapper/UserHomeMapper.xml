@@ -4,12 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.system.mapper.UserHomMapper">
-    <select id="queryNotice" resultType="com.example.system.domain.vo.NoticeVo">
-        select
-        sys_notice.id,sys_notice.notice_title,sys_notice.notice_content,sys_notice.create_time,sys_notice.update_time,sys_notice.create_user_id,sys_User.username
-        from
+    <select id="queryNotice" resultType="String">
+        select id from
         sys_notice
-        join sys_User on sys_notice.create_user_id = sys_User.id
         <trim prefix="where " prefixOverrides="and">
             <if test="noticeTitle != null &amp; noticeTitle != ''">and notice_title like
                 concat('%',#{noticeTitle},'%')
@@ -19,5 +16,14 @@
             <if test="updateTime != null">and update_time #{updateTime}</if>
             <if test="createUserId != null">and create_user_id = #{createUserId}</if>
         </trim>
+    </select>
+
+    <select id="batchQueryNotice" resultType="com.example.system.domain.Notice">
+        select *
+        from sys_notice
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="noticeId">
+            #{noticeId}
+        </foreach>
     </select>
 </mapper>
