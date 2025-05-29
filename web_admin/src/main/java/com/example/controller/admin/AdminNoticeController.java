@@ -5,6 +5,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.common.annotation.AutoFill;
 import com.example.common.annotation.Log;
+import com.example.common.constants.Constants;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.redis.RedisCache;
@@ -54,7 +55,7 @@ public class AdminNoticeController {
     @DeleteMapping("/batchDelete")
     public Result batchDeleteNotice(@RequestParam List<Long> ids) {
         if (adminNoticeService.removeBatchByIds(ids)) {
-            ids.forEach(ids1 -> redisCache.deleteObject(ids1.toString()));
+            ids.forEach(ids1 -> redisCache.deleteObject(Constants.noticeCacheKey + ids1.toString()));
             return Result.success();
         }
         return Result.error(500, "删除通知失败");
@@ -69,7 +70,7 @@ public class AdminNoticeController {
         // 过滤敏感字
         notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         if (adminNoticeService.updateById(notice)) {
-            redisCache.deleteObject(notice.getId().toString());
+            redisCache.deleteObject(Constants.noticeCacheKey + notice.getId().toString());
             return Result.success();
         }
         return Result.error(500, "修改通知失败");

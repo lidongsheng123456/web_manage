@@ -1,7 +1,6 @@
 package com.example.system.service;
 
 import com.example.system.domain.Notice;
-import com.example.system.domain.vo.NoticeVo;
 
 import java.util.List;
 

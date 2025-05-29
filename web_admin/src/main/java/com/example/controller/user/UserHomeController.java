@@ -1,10 +1,7 @@
 package com.example.controller.user;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.example.common.entity.Result;
-import com.example.common.redis.RedisCache;
 import com.example.system.domain.Notice;
-import com.example.system.domain.vo.NoticeVo;
 import com.example.system.service.UserHomeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 前台数据显示类，不拦截
@@ -25,8 +21,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class UserHomeController {
     private final UserHomeService userHomeService;
-
-    private final RedisCache redisCache;
 
     /**
      * 查询通知

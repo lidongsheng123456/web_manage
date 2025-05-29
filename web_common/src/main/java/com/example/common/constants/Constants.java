@@ -6,5 +6,6 @@ public interface Constants {
     long EXPIRATION_TIME = 60 * 1000;//过期时间
     String CAPTCHA_KEY = "captcha";//验证码键
     String CAPTCHA_DATE = "date";//验证码日期
-    String DEFAULT_PAD = "123456";
+    String DEFAULT_PAD = "123456";//默认密码
+    String noticeCacheKey = "notice:";//缓存通知的键前缀
 }
