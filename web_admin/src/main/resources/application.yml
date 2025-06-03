@@ -36,6 +36,10 @@ mybatis-plus:
     db-config:
       id-type: auto # 全局id类型为自增长
 
+logging:
+  level:
+    com.example.system.mapper: debug # 替换为你的 Mapper 包路径
+
 sa-token:
   # token 名称（同时也是 cookie 名称）
   token-name: satoken

@@ -16,30 +16,6 @@
         where id = #{id}
     </select>
 
-    <insert id="register" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_user
-        <trim prefix="(" suffixOverrides="," suffix=")">
-            <if test="username != null &amp; username != ''">username,</if>
-            <if test="password != null &amp; password != ''">password,</if>
-            <if test="name != null &amp; name != ''">name,</if>
-            <if test="imgUrl != null &amp; imgUrl != ''">img_url,</if>
-            <if test="phone != null &amp; phone != ''">phone,</if>
-            <if test="email != null &amp; email != ''">email,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateTime != null">update_time,</if>
-        </trim>
-        <trim prefix="values (" suffixOverrides="," suffix=")">
-            <if test="username != null &amp; username != ''">#{username},</if>
-            <if test="password != null &amp; password != ''">#{password},</if>
-            <if test="name != null &amp; name != ''">#{name},</if>
-            <if test="imgUrl != null &amp; imgUrl != ''">#{imgUrl},</if>
-            <if test="phone != null &amp; phone != ''">#{phone},</if>
-            <if test="email != null &amp; email != ''">#{email},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-        </trim>
-    </insert>
-
     <update id="updatePerson">
         update sys_user
         <set>

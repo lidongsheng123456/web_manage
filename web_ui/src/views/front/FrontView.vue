@@ -5,7 +5,7 @@
       <div class="mobile-menu-btn" @click="toggleMobileMenu">
         <el-icon><Menu /></el-icon>
       </div>
-      
+
       <!-- 左侧用户信息区域 -->
       <div class="top-box-left">
         <div v-if="!userInfo.id" class="login-section">
@@ -33,7 +33,7 @@
           <a class="register-link" href="/UserRegister">免费注册</a>
         </div>
       </div>
-      
+
       <!-- 中间通知区域 -->
       <div class="front-notice">
         <el-icon class="notice-icon">
@@ -43,7 +43,7 @@
           <span class="notice-text">{{ noticeTitle }}：{{ top }}</span>
         </el-tooltip>
       </div>
-      
+
       <!-- 右侧管理链接 -->
       <div class="top-box-right">
         <div class="admin-link">
@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 移动端下拉菜单 -->
     <div class="mobile-menu" :class="{ 'mobile-menu-open': mobileMenuOpen }" v-show="mobileMenuOpen">
       <div class="mobile-menu-item" v-if="!userInfo.id">
@@ -70,10 +70,10 @@
         <router-link target="_blank" to="/Login" @click="closeMobileMenu">后台管理</router-link>
       </div>
     </div>
-    
+
     <!-- 遮罩层 -->
     <div class="mobile-menu-overlay" v-show="mobileMenuOpen" @click="closeMobileMenu"></div>
-    
+
     <router-view v-slot="{ Component }">
       <keep-alive>
         <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
@@ -126,9 +126,9 @@ const handleLogoutFromMobile = () => {
 const handleClickOutside = (event) => {
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn')
   const mobileMenu = document.querySelector('.mobile-menu')
-  
-  if (mobileMenuOpen.value && 
-      !mobileMenuBtn?.contains(event.target) && 
+
+  if (mobileMenuOpen.value &&
+      !mobileMenuBtn?.contains(event.target) &&
       !mobileMenu?.contains(event.target)) {
     closeMobileMenu()
   }
@@ -406,33 +406,33 @@ a {
   .header-bar {
     padding: 10px 15px;
   }
-  
+
   .mobile-menu-btn {
     display: block;
   }
-  
+
   .top-box-left {
     display: none;
   }
-  
+
   .front-notice {
     margin: 0 10px;
     max-width: none;
     flex: 1;
   }
-  
+
   .notice-text {
     font-size: 12px;
   }
-  
+
   .top-box-right {
     display: none;
   }
-  
+
   .mobile-menu {
     display: block;
   }
-  
+
   .mobile-menu-overlay {
     display: block;
   }
@@ -442,20 +442,20 @@ a {
   .header-bar {
     padding: 8px 10px;
   }
-  
+
   .front-notice {
     margin: 0 5px;
   }
-  
+
   .notice-text {
     font-size: 11px;
   }
-  
+
   .user-avatar {
     width: 35px;
     height: 35px;
   }
-  
+
   .mobile-menu {
     right: 10px;
     width: 180px;
@@ -467,11 +467,11 @@ a {
   .header-bar {
     padding: 10px 15px;
   }
-  
+
   .front-notice {
     max-width: 300px;
   }
-  
+
   .notice-text {
     font-size: 13px;
   }
@@ -482,7 +482,7 @@ a {
   .header-bar {
     padding: 12px 30px;
   }
-  
+
   .front-notice {
     max-width: 500px;
   }

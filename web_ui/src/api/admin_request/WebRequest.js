@@ -9,15 +9,6 @@ export function login(data) {
     })
 }
 
-//注册
-export function register(data) {
-    return adminRequest({
-        url: '/admin/register',
-        method: 'POST',
-        data: data
-    })
-}
-
 // 获取验证码
 export function captcha() {
     return fetch(process.env.VUE_APP_BASEURL + '/admin/captcha', {
@@ -64,6 +55,7 @@ export function validateFormerPassword(data) {
     })
 }
 
+// 获取当前登录用户信息
 export function queryCurrentUser() {
     return adminRequest({
         url: '/admin/current',

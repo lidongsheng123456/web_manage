@@ -14,14 +14,6 @@ public interface AdminWebMapper {
     User selectByUsername(String username);
 
     /**
-     * 后台注册用户
-     *
-     * @param User
-     * @return
-     */
-    int register(UserDto User);
-
-    /**
      * 修改个人信息
      *
      * @return

@@ -49,21 +49,6 @@ public class AdminWebController {
     }
 
     /**
-     * 后台注册用户
-     *
-     * @param userDto
-     * @param session
-     * @return
-     */
-    @Operation(summary = "后台注册用户")
-    @Log(title = "后台注册用户", businessType = BusinessType.INSERT)
-    @PostMapping("/register")
-    public Result register(@RequestBody UserDto userDto, HttpSession session) {
-        adminWebService.register(userDto, session);
-        return Result.success();
-    }
-
-    /**
      * 获取验证码
      *
      * @param session

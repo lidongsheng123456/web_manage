@@ -78,45 +78,6 @@ public class AdminWebServiceImpl implements AdminWebService {
     }
 
     /**
-     * 后台注册用户
-     *
-     * @param userDto
-     * @param session
-     */
-    @Override
-    @AutoFill(BusinessType.INSERT)
-    @Transactional
-    public void register(UserDto userDto, HttpSession session) {
-        if (ObjectUtil.isEmpty(userDto.getUsername()) || ObjectUtil.isEmpty(userDto.getPassword()) || ObjectUtil.isEmpty(userDto.getCode())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
-        if (validateCaptcha(userDto.getCode(), session)) {
-            throw new BusinessException(ResultCodeEnum.CAPTCHA_ERROR);
-        }
-
-        //1. 注册判断数据库是否存在当前用户名的数据
-        User User = adminWebMapper.selectByUsername(userDto.getUsername());
-        //2. 用户不为空则代表当前用户名重复，不能注册，抛出异常
-        if (ObjectUtil.isNotNull(User)) {
-            throw new BusinessException(ResultCodeEnum.USER_EXIST_ERROR);
-        }
-
-        if (ObjectUtil.isNull(userDto.getPassword())) {
-            userDto.setPassword(DigestUtils.md5DigestAsHex(Constants.DEFAULT_PAD.getBytes()));
-        }
-
-        userDto.setPassword(DigestUtils.md5DigestAsHex(userDto.getPassword().getBytes()));
-
-        int i = adminWebMapper.register(userDto);
-        int j = adminUserAndRoleMapper.addUserAndRoleId(userDto.getId(), RoleEnum.USER.roleId);
-
-        if (i == 0 || j == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
-
-    /**
      * 验证验证码
      *
      * @param captcha

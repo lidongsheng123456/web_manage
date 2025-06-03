@@ -16,14 +16,6 @@ public interface AdminWebService {
     UserVo login(UserDto userDto, HttpSession session);
 
     /**
-     * 后台注册用户
-     *
-     * @param userDto
-     * @param session
-     */
-    void register(UserDto userDto, HttpSession session);
-
-    /**
      * 修改个人信息
      *
      * @param user

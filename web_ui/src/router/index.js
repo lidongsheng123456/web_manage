@@ -13,12 +13,6 @@ const routes = [
         component: () => import('@/views/background/LoginView.vue')
     },
     {
-        path: '/Register',
-        name: 'Register',
-        meta: {name: '注册'},
-        component: () => import('@/views/background/RegisterView.vue')
-    },
-    {
         path: '/Manage',
         name: 'Manage',
         component: () => import('@/views/background/ManageView.vue'),
