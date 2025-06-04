@@ -10,5 +10,6 @@ public class WebManageApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WebManageApplication.class, args);
+        System.out.println("(‿)ﾉﾞ  东神脚手架启动成功   ლ(ڡ`ლ)");
     }
 }

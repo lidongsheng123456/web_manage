@@ -6,20 +6,17 @@ import com.example.common.annotation.AutoFill;
 import com.example.common.constants.Constants;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
-import com.example.common.enums.RoleEnum;
 import com.example.common.exception.BusinessException;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
 import com.example.system.mapper.AdminRbacMapper;
-import com.example.system.mapper.AdminUserAndRoleMapper;
 import com.example.system.mapper.AdminWebMapper;
 import com.example.system.service.AdminWebService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
@@ -29,7 +26,6 @@ import java.util.Date;
 public class AdminWebServiceImpl implements AdminWebService {
 
     private final AdminWebMapper adminWebMapper;
-    private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final AdminRbacMapper adminRbacMapper;
 
     /**
