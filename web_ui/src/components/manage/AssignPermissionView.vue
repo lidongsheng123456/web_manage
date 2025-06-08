@@ -35,16 +35,14 @@
     <br>
     <div style="display: flex;justify-content: space-between">
       <div class="demo-pagination-block">
-        <el-config-provider :locale="zhCn">
-          <el-pagination
-              :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
-              :page-sizes="[10, 20, 30, 40]"
-              :total="total"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange">
-          </el-pagination>
-        </el-config-provider>
+        <el-pagination
+            :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
+            :page-sizes="[10, 20, 30, 40]"
+            :total="total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange">
+        </el-pagination>
       </div>
       <div class="dialog-footer">
         <el-button @click="handleAssignReset">取消</el-button>

@@ -69,16 +69,14 @@
     </el-table>
     <br>
     <div class="demo-pagination-block">
-      <el-config-provider :locale="zhCn">
-        <el-pagination
-            :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
-            :page-sizes="[10, 20, 30, 40]"
-            :total="total"
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange">
-        </el-pagination>
-      </el-config-provider>
+      <el-pagination
+          :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
+          :page-sizes="[10, 20, 30, 40]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange">
+      </el-pagination>
     </div>
 
     <el-dialog

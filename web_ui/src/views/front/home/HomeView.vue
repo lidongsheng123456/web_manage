@@ -127,10 +127,9 @@
           <div class="feature-category">
             <h3>前台功能</h3>
             <ul class="feature-list">
-              <li>主页通知展示</li>
+              <li>主页通知展示：使用开源中国的搜索流程，查询对象ID列表，再缓存每个对象条目，能大幅度提高查询性能</li>
               <li>用户注册登录</li>
               <li>个人信息管理</li>
-              <li>消息通知查看</li>
             </ul>
           </div>
         </div>
@@ -179,8 +178,8 @@
           </div>
           <div class="highlight-card">
             <div class="highlight-icon">📦</div>
-            <h3>开箱即用</h3>
-            <p>集成常用工具库和中间件</p>
+            <h3>性能优化</h3>
+            <p>使用redis缓存首页热点数据，提升服务器性能</p>
           </div>
           <div class="highlight-card">
             <div class="highlight-icon">📚</div>
@@ -567,22 +566,22 @@
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .section-title {
     font-size: 2rem;
   }
-  
+
   .hero-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .tech-grid,
   .features-grid,
   .guide-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .highlights-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
@@ -592,19 +591,19 @@
   .container {
     padding: 0 15px;
   }
-  
+
   .hero-section {
     padding: 60px 0;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .section-title {
     font-size: 1.8rem;
   }
-  
+
   .intro-card,
   .feature-category,
   .guide-card,
