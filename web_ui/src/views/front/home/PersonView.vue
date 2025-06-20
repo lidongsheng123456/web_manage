@@ -4,8 +4,17 @@
       <div class="safe-area">
         <el-card style="max-width: 480px;margin: 0 auto">
           <template #header>
-            <div class="card-header">
+            <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
               <span>个人信息</span>
+              <!-- 返回按钮 -->
+              <div class="back-section">
+                <div @click="goBack" type="text" class="back-btn" style="cursor: pointer;display: flex;align-items: center">
+                  <el-icon>
+                    <ArrowLeft/>
+                  </el-icon>
+                  返回
+                </div>
+              </div>
             </div>
           </template>
           <el-form ref="formRef" :inline="false" :model="form" :rules="rules" label-width="70px">
@@ -99,7 +108,7 @@
 // 上传的ip和端口号
 import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
-import {Plus} from "@element-plus/icons-vue";
+import {ArrowLeft, Plus} from "@element-plus/icons-vue";
 import {logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword} from "@/api/front_request/WebRequest";
 import router from "@/router";
 // 无头像时展示
@@ -253,6 +262,11 @@ const handleReset = () => {
   dialogOverflowVisible.value = false;
 }
 
+// 返回上一页
+const goBack = () => {
+  router.go(-1);
+};
+
 onMounted(() => {
   getPersonInfo()
 })
@@ -280,5 +294,13 @@ onMounted(() => {
   width: 178px;
   height: 178px;
   text-align: center;
+}
+.back-btn {
+  font-size: 16px;
+  color: #409eff;
+}
+
+.back-btn:hover {
+  color: #66b1ff;
 }
 </style>
