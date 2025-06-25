@@ -71,7 +71,9 @@ const submitForm = () => {
         ElMessage.success('修改成功');
         logout().then(res => {
           router.push('/Login');
-          window.location.reload(true);
+          setTimeout(() => {
+            window.location.reload(true);
+          }, 500)
         }).catch(error => {
           console.log(error)
         });

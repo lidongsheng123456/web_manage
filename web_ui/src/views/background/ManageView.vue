@@ -260,7 +260,9 @@ const logoutLogin = () => {
     logout().then(res => {
       ElMessage.success('退出成功');
       router.push('/Login');
-      window.location.reload(true);
+      setTimeout(() => {
+        window.location.reload(true);
+      }, 500)
     }).catch(error => {
       console.log(error)
     });

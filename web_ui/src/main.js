@@ -6,7 +6,7 @@ import 'element-plus/dist/index.css';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import store from "@/store";
 import permissionDirective from "@/directive/permission";
-import noMoreClick from "@/directive/noMoreClick"; // 导入自定义指令
+import noMoreClick from "@/directive/noMoreClick";
 
 const app = createApp(App);
 // 注册自定义指令
