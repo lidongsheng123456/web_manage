@@ -232,7 +232,7 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  background-color: #eaeaea;
+  background-color: #b7e0f0;
   width: 100%;
   box-sizing: border-box;
   position: relative;

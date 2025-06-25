@@ -1,17 +1,19 @@
 <template>
   <div class="home-container">
     <!-- 头部横幅 -->
-    <section class="hero-section">
+    <section class="hero-section" ref='vantaRef'>
       <div class="hero-content">
         <h1 class="hero-title">东神脚手架</h1>
         <p class="hero-subtitle">为毕业设计快速开发打造的脚手架系统</p>
         <p class="hero-description">支持前后端二次开发，基于 RBAC 权限模型与 Sa-Token 实现精细化权限控制</p>
         <div class="hero-buttons">
           <button class="btn btn-primary">
-            <a style="color: #667eea;text-decoration: none;" href="https://gitee.com/li-dongshenger/web_manage" target="_blank">开始使用</a>
+            <a style="color: #667eea;text-decoration: none;" href="https://gitee.com/li-dongshenger/web_manage"
+               target="_blank">开始使用</a>
           </button>
           <button class="btn btn-primary">
-            <a style="color: #667eea;text-decoration: none;" href="https://gitee.com/li-dongshenger/web_manage" target="_blank">查看文档</a>
+            <a style="color: #667eea;text-decoration: none;" href="https://gitee.com/li-dongshenger/web_manage"
+               target="_blank">查看文档</a>
           </button>
         </div>
       </div>
@@ -198,7 +200,8 @@
           <p>如有疑问或需要技术支持，请联系作者：</p>
           <p class="contact-detail">李东升 - 19976898057</p>
           <div class="download-link">
-            <p>运行环境下载：<a href="https://pan.baidu.com/s/1zU8TWzNMtv5kNSL5H9Q5_w?pwd=ys73" class="link" target="_blank">百度网盘链接</a></p>
+            <p>运行环境下载：<a href="https://pan.baidu.com/s/1zU8TWzNMtv5kNSL5H9Q5_w?pwd=ys73" class="link"
+                               target="_blank">百度网盘链接</a></p>
           </div>
         </div>
       </div>
@@ -215,7 +218,40 @@
 </template>
 
 <script setup>
-// 可以在这里添加交互逻辑
+import * as THREE from 'three'
+import Clouds from "vanta/src/vanta.clouds";
+import {onBeforeUnmount, onMounted, ref} from "vue";
+// Vanta 相关
+const vantaRef = ref(null)
+let vantaEffect = null
+
+// 加载vanta3D动画渲染
+const loadVanta = () => {
+  // 确保 DOM 元素已经渲染
+  if (vantaRef.value) {
+    vantaEffect = Clouds({
+      el: vantaRef.value,
+      THREE: THREE,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00
+    })
+  }
+}
+
+onMounted(() => {
+  loadVanta()
+})
+
+// 组件卸载时清理 Vanta 效果
+onBeforeUnmount(() => {
+  if (vantaEffect) {
+    vantaEffect.destroy()
+    vantaEffect = null
+  }
+})
 </script>
 
 <style scoped>
@@ -243,17 +279,26 @@
 
 /* 头部横幅 */
 .hero-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 100px 0;
+  color: #667eea;
+  padding: 0;
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-content {
+  z-index: 1;
+  position: relative;
 }
 
 .hero-title {
   font-size: 4rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-subtitle {
@@ -298,7 +343,7 @@
 .btn-primary:hover {
   background: #f8f9fa;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .btn-secondary {
@@ -329,7 +374,7 @@
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
@@ -365,7 +410,7 @@
   background: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .tech-row {
@@ -409,7 +454,7 @@
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .feature-category h3 {
@@ -457,7 +502,7 @@
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-left: 4px solid #667eea;
 }
 
@@ -493,7 +538,7 @@
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
