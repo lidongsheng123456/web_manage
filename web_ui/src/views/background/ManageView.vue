@@ -20,7 +20,7 @@
             </el-icon>
             <span>数据中心</span>
           </el-menu-item>
-          <el-sub-menu index="2">
+          <el-sub-menu v-if="shouldShowSystemMenu" index="2">
             <template #title>
               <el-icon>
                 <Tools/>
@@ -72,12 +72,12 @@
               </el-menu-item>
             </el-sub-menu>
           </el-sub-menu>
-          <el-sub-menu index="3">
+          <el-sub-menu v-if="shouldShowToolsMenu" index="3">
             <template #title>
               <el-icon>
                 <Avatar/>
               </el-icon>
-              系统工具
+              <span>系统工具</span>
             </template>
             <el-menu-item v-permission="'admin:docs:query'" index="/Manage/DocsView">
               <el-icon>
@@ -92,12 +92,12 @@
               通用查询
             </el-menu-item>
           </el-sub-menu>
-          <el-sub-menu index="4">
+          <el-sub-menu v-if="shouldShowFrontMenu" index="4">
             <template #title>
               <el-icon>
                 <HomeFilled/>
               </el-icon>
-              前台管理
+              <span>前台管理</span>
             </template>
             <el-menu-item v-permission="'admin:front-user:query'" index="/Manage/ManageFrontUserView">
               <el-icon>
@@ -285,6 +285,45 @@ watch(() => route.path, (newPath) => {
     },
     {immediate: true} // 立即执行一次
 );
+
+// 检查用户是否有指定权限
+const hasPermission = (permission) => {
+  const user = store.getters["user/userInfo"] || {};
+  const filterUser = user.permissions ? user.permissions.map(item => item.permission_code) : [];
+  return filterUser && filterUser.includes(permission);
+};
+
+// 检查系统管理子菜单是否应该显示
+const shouldShowSystemMenu = computed(() => {
+  // 确保响应用户信息变化
+  const user = store.getters["user/userInfo"];
+  if (!user || !user.permissions) return false;
+
+  return hasPermission('admin:notice:query') ||
+         hasPermission('admin:user:query') ||
+         hasPermission('admin:operLog:query') ||
+         hasPermission('admin:dict:query') ||
+         hasPermission('admin:permission:query');
+});
+
+// 检查系统工具子菜单是否应该显示
+const shouldShowToolsMenu = computed(() => {
+  // 确保响应用户信息变化
+  const user = store.getters["user/userInfo"];
+  if (!user || !user.permissions) return false;
+
+  return hasPermission('admin:docs:query') ||
+         hasPermission('admin:com-query:query');
+});
+
+// 检查前台管理子菜单是否应该显示
+const shouldShowFrontMenu = computed(() => {
+  // 确保响应用户信息变化
+  const user = store.getters["user/userInfo"];
+  if (!user || !user.permissions) return false;
+
+  return hasPermission('admin:front-user:query');
+});
 
 const getUserInfo = () => {
   store.dispatch('user/queryCurrentUser').then(() => {
