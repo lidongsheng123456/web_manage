@@ -1,112 +1,112 @@
 <template>
-  <div>
-    <div>
-      <div class="safe-area">
-        <el-card style="max-width: 480px;margin: 0 auto">
-          <template #header>
-            <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
-              <span>个人信息</span>
-              <!-- 返回按钮 -->
-              <div class="back-section">
-                <div @click="goBack" type="text" class="back-btn" style="cursor: pointer;display: flex;align-items: center">
-                  <el-icon>
-                    <ArrowLeft/>
-                  </el-icon>
-                  返回
-                </div>
+  <div style="height: 100vh" ref='vantaRef'>
+    <div class="safe-area">
+      <el-card style="max-width: 480px;margin: 0 auto">
+        <template #header>
+          <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
+            <span>个人信息</span>
+            <!-- 返回按钮 -->
+            <div class="back-section">
+              <div @click="goBack" type="text" class="back-btn"
+                   style="cursor: pointer;display: flex;align-items: center">
+                <el-icon>
+                  <ArrowLeft/>
+                </el-icon>
+                返回
               </div>
             </div>
-          </template>
-          <el-form ref="formRef" :inline="false" :model="form" :rules="rules" label-width="70px">
-            <el-form-item label="头像"
-                          style="display: flex;margin-left: 70px;align-items: center;justify-content: space-around">
-              <el-upload
-                  :action="uploadUrl + '/common/files/upload'"
-                  :before-upload="beforeAvatarUpload"
-                  :on-success="handleAvatarSuccess"
-                  :show-file-list="false"
-                  class="avatar-uploader"
-              >
-                <img style="width: 178px;height: 178px;margin: 0 auto" v-if="form.imgUrl" :src="form.imgUrl || noImage"
-                     alt="" class="avatar"/>
-                <el-icon v-else class="avatar-uploader-icon">
-                  <Plus/>
-                </el-icon>
-              </el-upload>
-            </el-form-item>
-            <el-form-item label="用户名" prop="username">
-              <el-input
-                  v-model="form.username"
-                  placeholder="请输入用户名"
-                  style="width: 350px;height: 40px"
-              />
-            </el-form-item>
-            <el-form-item label="姓名" prop="name">
-              <el-input
-                  v-model="form.name"
-                  placeholder="请输入姓名"
-                  style="width: 350px;height: 40px"
-              />
-            </el-form-item>
-            <el-form-item label="手机号" prop="phone">
-              <el-input
-                  v-model="form.phone"
-                  placeholder="请输入手机号"
-                  style="width: 350px;height: 40px"
-              />
-            </el-form-item>
-            <el-form-item label="邮箱" prop="email">
-              <el-input
-                  v-model="form.email"
-                  placeholder="请输入邮箱"
-                  style="width: 350px;height: 40px"
-              />
-            </el-form-item>
-          </el-form>
-          <template #footer>
-            <el-button @click="dialogOverflowVisible = true" type="warning" plain>
-              修改密码
-            </el-button>
-            <el-button @click="submit" type="primary" plain>
-              提交
-            </el-button>
-          </template>
-        </el-card>
-
-        <el-dialog
-            v-model="dialogOverflowVisible"
-            title="修改密码"
-            draggable
-            overflow
-            width="500"
-        >
-          <el-form ref="pwdFormRef" :model="pwdForm" :rules="rules">
-            <el-form-item label="原来密码" prop="oldPassword">
-              <el-input v-model="pwdForm.oldPassword" placeholder="请输入原密码" prefix-icon="User"
-                        style="width: 350px;height: 40px"></el-input>
-            </el-form-item>
-            <el-form-item label="新的密码" prop="newPassword">
-              <el-input v-model="pwdForm.newPassword" placeholder="请输入新密码" prefix-icon="Lock"
-                        show-password style="width: 350px;height: 40px"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="conPassword">
-              <el-input v-model="pwdForm.conPassword" placeholder="请确认新密码" prefix-icon="Lock"
-                        show-password style="width: 350px;height: 40px"></el-input>
-            </el-form-item>
-          </el-form>
-          <el-button v-no-more-click @click="handleReset">取消</el-button>
-          <el-button v-no-more-click type="primary" @click="submitForm">
-            确认
+          </div>
+        </template>
+        <el-form ref="formRef" :inline="false" :model="form" :rules="rules" label-width="70px">
+          <el-form-item label="头像"
+                        style="display: flex;margin-left: 70px;align-items: center;justify-content: space-around">
+            <el-upload
+                :action="uploadUrl + '/common/files/upload'"
+                :before-upload="beforeAvatarUpload"
+                :on-success="handleAvatarSuccess"
+                :show-file-list="false"
+                class="avatar-uploader"
+            >
+              <img style="width: 178px;height: 178px;margin: 0 auto" v-if="form.imgUrl" :src="form.imgUrl || noImage"
+                   alt="" class="avatar"/>
+              <el-icon v-else class="avatar-uploader-icon">
+                <Plus/>
+              </el-icon>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="用户名" prop="username">
+            <el-input
+                v-model="form.username"
+                placeholder="请输入用户名"
+                style="width: 350px;height: 40px"
+            />
+          </el-form-item>
+          <el-form-item label="姓名" prop="name">
+            <el-input
+                v-model="form.name"
+                placeholder="请输入姓名"
+                style="width: 350px;height: 40px"
+            />
+          </el-form-item>
+          <el-form-item label="手机号" prop="phone">
+            <el-input
+                v-model="form.phone"
+                placeholder="请输入手机号"
+                style="width: 350px;height: 40px"
+            />
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input
+                v-model="form.email"
+                placeholder="请输入邮箱"
+                style="width: 350px;height: 40px"
+            />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <el-button @click="dialogOverflowVisible = true" type="warning" plain>
+            修改密码
           </el-button>
-        </el-dialog>
-      </div>
+          <el-button @click="submit" type="primary" plain>
+            提交
+          </el-button>
+        </template>
+      </el-card>
+
+      <el-dialog
+          v-model="dialogOverflowVisible"
+          title="修改密码"
+          draggable
+          overflow
+          width="500"
+      >
+        <el-form ref="pwdFormRef" :model="pwdForm" :rules="rules">
+          <el-form-item label="原来密码" prop="oldPassword">
+            <el-input v-model="pwdForm.oldPassword" placeholder="请输入原密码" prefix-icon="User"
+                      style="width: 350px;height: 40px"></el-input>
+          </el-form-item>
+          <el-form-item label="新的密码" prop="newPassword">
+            <el-input v-model="pwdForm.newPassword" placeholder="请输入新密码" prefix-icon="Lock"
+                      show-password style="width: 350px;height: 40px"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="conPassword">
+            <el-input v-model="pwdForm.conPassword" placeholder="请确认新密码" prefix-icon="Lock"
+                      show-password style="width: 350px;height: 40px"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-button v-no-more-click @click="handleReset">取消</el-button>
+        <el-button v-no-more-click type="primary" @click="submitForm">
+          确认
+        </el-button>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script setup>
-// 上传的ip和端口号
-import {onMounted, ref} from "vue";
+import * as THREE from 'three'
+import Net from "vanta/src/vanta.net";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {ArrowLeft, Plus} from "@element-plus/icons-vue";
 import {logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword} from "@/api/front_request/WebRequest";
@@ -118,6 +118,9 @@ const formRef = ref(null)
 const pwdFormRef = ref(null)
 // 对话框显示
 const dialogOverflowVisible = ref(false)
+// Vanta 相关
+const vantaRef = ref(null)
+let vantaEffect = null
 
 const form = ref({
   username: null,
@@ -225,6 +228,31 @@ const getPersonInfo = () => {
   })
 }
 
+// 加载vanta3D动画渲染
+const loadVanta = () => {
+  // 确保 DOM 元素已经渲染
+  if (vantaRef.value) {
+    vantaEffect = Net({
+      el: vantaRef.value,
+      THREE: THREE,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x97dffd,
+      colorRange: [0x00ffff, 0xff00ff],
+      backgroundColor: 0xffffff,
+      // 性能优化配置
+      maxDistance: 20.00,
+      spacing: 15.00,
+      showDots: false
+    })
+  }
+}
+
 const submit = () => {
   formRef.value.validate(valid => {
     if (valid) {
@@ -269,11 +297,18 @@ const goBack = () => {
 
 onMounted(() => {
   getPersonInfo()
+  loadVanta()
+})
+
+// 组件卸载时清理 Vanta 效果
+onBeforeUnmount(() => {
+  if (vantaEffect) {
+    vantaEffect.destroy()
+    vantaEffect = null
+  }
 })
 </script>
 
-<style scoped>
-</style>
 <style>
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
@@ -295,6 +330,7 @@ onMounted(() => {
   height: 178px;
   text-align: center;
 }
+
 .back-btn {
   font-size: 16px;
   color: #409eff;
