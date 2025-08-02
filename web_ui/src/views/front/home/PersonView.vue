@@ -112,8 +112,9 @@ import {ArrowLeft, Plus} from "@element-plus/icons-vue";
 import {logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword} from "@/api/front_request/WebRequest";
 import router from "@/router";
 // 无头像时展示
-const noImage = require('@/assets/img/no_image.png')
-const uploadUrl = process.env.VUE_APP_BASEURL
+import noImageUrl from '@/assets/img/no_image.png'
+const noImage = noImageUrl
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const formRef = ref(null)
 const pwdFormRef = ref(null)
 // 对话框显示

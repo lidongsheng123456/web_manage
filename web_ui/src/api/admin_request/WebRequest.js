@@ -11,7 +11,7 @@ export function login(data) {
 
 // 获取验证码
 export function captcha() {
-    return fetch(process.env.VUE_APP_BASEURL + '/admin/captcha', {
+    return fetch(import.meta.env.VUE_APP_BASEURL + '/admin/captcha', {
         method: 'get',
         credentials: 'include' // 确保发送Cookie
     }).then(response => {

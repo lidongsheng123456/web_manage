@@ -3,7 +3,7 @@ import router from "@/router";
 import {ElMessage} from "element-plus";
 
 const adminRequest = axios.create({
-    baseURL: process.env.VUE_APP_BASEURL,
+    baseURL: import.meta.env.VUE_APP_BASEURL,
     timeout: 30000,
     withCredentials: true
 })

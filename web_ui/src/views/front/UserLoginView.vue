@@ -47,7 +47,7 @@ import {captcha, login} from "@/api/front_request/WebRequest";
 import router from "@/router";
 import {ElMessage} from "element-plus";
 
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);

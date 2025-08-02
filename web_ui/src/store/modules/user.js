@@ -1,7 +1,7 @@
 import {queryCurrentUser} from "@/api/admin_request/WebRequest";
 import axios from "axios";
 
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 
 const state = {
     userInfo: {},

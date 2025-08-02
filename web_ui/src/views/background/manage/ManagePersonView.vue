@@ -118,7 +118,7 @@ import {updatePerson} from "@/api/admin_request/WebRequest";
 import router from "@/router";
 
 // 上传的ip和端口号
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 用户信息
 const userInfo = ref({
   createTime: null,

@@ -42,7 +42,7 @@ import router from "@/router";
 import {ElMessage} from "element-plus";
 import axios from "axios";
 
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);

@@ -3,11 +3,11 @@ import router from "@/router";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const adminRequest = axios.create({
-    baseURL: process.env.VUE_APP_BASEURL,
+    baseURL: import.meta.env.VUE_APP_BASEURL,
     timeout: 30000,
     withCredentials: true
 })
-
+http://localhost:8088
 /**
  * 后端使用sa-token不需要手动指定请求头token
  * 响应时会将token自动注入到Cookie

@@ -92,9 +92,10 @@ import {ArrowDown, Bell, Menu} from "@element-plus/icons-vue";
 import {ElMessage, ElMessageBox, ElNotification} from "element-plus";
 import router from "@/router";
 import {logout} from "@/api/front_request/WebRequest";
+import noImageUrl from '@/assets/img/no_image.png'
 
 // 无头像图片
-const noImage = require('@/assets/img/no_image.png')
+const noImage = noImageUrl
 // 登录用户信息
 let userInfo = ref({});
 // 通知列表

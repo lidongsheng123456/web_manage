@@ -201,7 +201,7 @@ let userInfo = ref({});
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
 // 上传的ip和端口号
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const editableTabs = ref([
   {
     title: '首页',

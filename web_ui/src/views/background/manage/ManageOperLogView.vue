@@ -186,7 +186,7 @@ const loading = ref(true);
 // 详细表单
 const from = ref({})
 // 上传的ip和端口号
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 查询参数
 let queryParams = ref({
   currentPage: 1,

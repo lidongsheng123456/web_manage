@@ -183,7 +183,7 @@ const assignDialogOverflowVisible = ref(false)
 // 引用子组件实例
 const assignRoleViewRef = ref(null);
 // 上传的ip和端口号
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 表单
 const form = ref({
   roleCode: null,

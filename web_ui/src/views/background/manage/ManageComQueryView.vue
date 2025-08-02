@@ -165,7 +165,7 @@ const loading = ref(true);
 // 对话框显示
 const dialogOverflowVisible = ref(false)
 // 上传的ip和端口号
-const uploadUrl = process.env.VUE_APP_BASEURL
+const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 表单
 const form = ref({
   name: null,

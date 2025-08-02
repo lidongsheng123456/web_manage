@@ -6,7 +6,7 @@ web:
     port: 3306
     database: web_manage
     username: root
-    password: 20040905
+    password: root
   #本地主机ip和端口
   local:
     datasource:
