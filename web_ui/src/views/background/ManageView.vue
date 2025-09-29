@@ -4,9 +4,9 @@
       <el-aside width="200px">
         <div class="aside-logo">
           <img alt="管理" src="@/assets/img/管理.png">
-          <h1>
+          <h2>
             毕设脚手架
-          </h1>
+          </h2>
         </div>
         <el-menu
             :default-openeds="['2','3','4']"
