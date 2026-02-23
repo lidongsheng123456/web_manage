@@ -125,6 +125,10 @@
   import { queryComQueryByCode } from "@/api/com_request/ComRequest";
   import { selectDictLabel } from "@/utils/env";
   const userOption = ref([]);
+  // 翻译用户id
+  const userIdFormatter = (row) => {
+    return selectDictLabel(userOption.value, row.userId)
+  }
   onMounted(() => { queryComQueryByCode('user_query').then(res => { userOption.value = res.data }); });
   ```
   ```html

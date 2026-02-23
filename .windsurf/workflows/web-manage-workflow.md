@@ -84,10 +84,23 @@
     - **外键关联字段 (强制)**: 必须使用通用查询，禁止手动输入 ID.
       ```js
       import { queryComQueryByCode } from "@/api/com_request/ComRequest";
-      const xxxOption = ref([]);
-      onMounted(() => { queryComQueryByCode('xxx_query').then(res => { xxxOption.value = res.data }); });
+      import { selectDictLabel } from "@/utils/env";
+      const userOption = ref([]);
+      // 翻译用户id
+      const userIdFormatter = (row) => {
+        return selectDictLabel(userOption.value, row.userId)
+      }
+      onMounted(() => { queryComQueryByCode('user_query').then(res => { userOption.value = res.data }); });
       ```
-      - 多选字段 (`el-select multiple`): 提交时数组转逗号字符串，编辑回显时字符串转数组 (参考 rules.md 3.5)。
+      ```html
+      <!-- 表格回显外键 -->
+      <el-table-column :formatter="userIdFormatter" label="用户" prop="userId"/>
+      <!-- 表单选择 (单选) -->
+      <el-select v-model="form.userId"><el-option v-for="item in userOption" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"/></el-select>
+      <!-- 表单选择 (多选，字段为逗号分隔字符串) -->
+      <el-select v-model="form.userIds" multiple><el-option v-for="item in userOption" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"/></el-select>
+      ```
+    - **表单多选字段特殊处理**: 后端字段为 `String`（逗号分隔），前端 `el-select multiple` 为数组，需要转换：
     - **图片字段 (重要)**: 若有 `imgUrl`，**必须使用 `el-upload` 上传组件**，禁止用 `el-input` 文本框.
       ```html
       <el-form-item label="封面图" prop="imgUrl">
