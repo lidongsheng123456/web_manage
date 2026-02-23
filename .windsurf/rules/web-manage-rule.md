@@ -17,10 +17,10 @@
 
 | 模块 | 职责 | 说明 |
 | :--- | :--- | :--- |
-| `{前缀}_admin` | 启动入口 + Controller 层 | 包含 `controller.admin` / `controller.user` / `controller.common` |
-| `{前缀}_system` | Service + Mapper + Domain | 业务逻辑和数据访问层 |
-| `{前缀}_framework` | 框架配置 | Sa-Token、MyBatis Plus、Redis 等配置 |
-| `{前缀}_common` | 公共工具 | 通用实体、工具类、常量 |
+| `{业务前缀}_admin` | 启动入口 + Controller 层 | 包含 `controller.admin` / `controller.user` / `controller.common` |
+| `{业务前缀}_system` | Service + Mapper + Domain | 业务逻辑和数据访问层 |
+| `{业务前缀}_framework` | 框架配置 | Sa-Token、MyBatis Plus、Redis 等配置 |
+| `{业务前缀}_common` | 公共工具 | 通用实体、工具类、常量 |
 
 | 层级 | 模块划分 | 包路径 | 关键说明 |
 | :--- | :--- | :--- | :--- |
@@ -82,6 +82,70 @@
 - **用户ID**: 必须使用 `StpUserUtil.getLoginIdAsLong()` (注意是 `StpUserUtil`)。
 - **功能**: 通常只提供 `query` (查询列表/详情) 或 `submit` (提交数据) 接口，不提供直接的删除/修改管理功能。
 
+### 3.4 字典系统 (Dictionary System)
+用于状态、类型等枚举值的统一管理，避免硬编码。
+- **表**: `sys_dict_data` (字段: `dict_type`, `dict_label`, `dict_value`, `tag_type`)
+- **后端接口**: `GET /common/query-dict/{dictType}` → 返回 `[{dictLabel, dictValue, tagType}]`
+- **已有字典类型**:
+  | dict_type | 说明 | 值 |
+  | :--- | :--- | :--- |
+  | `shop_status` | 店铺状态 | 0=打烊(warning), 1=营业(success) |
+- **前端使用模式**:
+  ```js
+  import { queryDictByType } from "@/api/com_request/ComRequest";
+  import { selectDictLabel, selectTagType } from "@/utils/env";
+  const shopStatusOption = ref([]);
+  onMounted(() => { queryDictByType('shop_status').then(res => { shopStatusOption.value = res.data }); });
+  ```
+  ```html
+  <!-- 表格回显 -->
+  <el-tag :type="selectTagType(shopStatusOption, scope.row.status)">{{ selectDictLabel(shopStatusOption, scope.row.status) }}</el-tag>
+  <!-- 表单下拉 -->
+  <el-select v-model="form.status">
+    <el-option v-for="item in shopStatusOption" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"/>
+  </el-select>
+  ```
+- **规范**: 所有状态/类型字段**禁止硬编码** `el-option` 和三元表达式，必须使用字典查询。
+
+### 3.5 通用查询系统 (Common Query System)
+用于外键关联字段的下拉选项加载，如用户名回显、景点名称选择等。
+- **表**: `sys_com_query` (字段: `name`, `code`, `custom_sql`)
+- **后端接口**: `GET /common/com-query/{code}` → 返回 `[{dictLabel, dictValue}]`
+- **SQL 规范**: 必须以 `dictLabel` 和 `dictValue` 命名。
+  ```sql
+  SELECT username as dictLabel,id as dictValue FROM sys_user
+  ```
+- **已有通用查询**:
+  | code | 说明 | SQL |
+  | :--- | :--- | :--- |
+  | `user_query` | 后台用户 | `SELECT username as dictLabel,id as dictValue FROM sys_user` |
+  | `front_user_query` | 前台用户 | `SELECT username as dictLabel,id as dictValue FROM front_user` |
+- **前端使用模式**:
+  ```js
+  import { queryComQueryByCode } from "@/api/com_request/ComRequest";
+  import { selectDictLabel } from "@/utils/env";
+  const userOption = ref([]);
+  onMounted(() => { queryComQueryByCode('user_query').then(res => { userOption.value = res.data }); });
+  ```
+  ```html
+  <!-- 表格回显外键 -->
+  <el-table-column :formatter="userIdFormatter" label="用户" prop="userId"/>
+  <!-- 表单选择 (单选) -->
+  <el-select v-model="form.userId"><el-option v-for="item in userOption" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"/></el-select>
+  <!-- 表单选择 (多选，字段为逗号分隔字符串) -->
+  <el-select v-model="form.userIds" multiple><el-option v-for="item in userOption" :key="item.dictValue" :label="item.dictLabel" :value="item.dictValue"/></el-select>
+  ```
+- **多选字段特殊处理**: 后端字段为 `String`（逗号分隔），前端 `el-select multiple` 为数组，需要转换：
+  ```js
+  // 提交时: 数组 → 字符串
+  const data = { ...form.value };
+  if (Array.isArray(data.scenicIds)) { data.scenicIds = data.scenicIds.join(','); }
+  // 编辑回显时: 字符串 → 数组
+  if (form.value.scenicIds && typeof form.value.scenicIds === 'string') {
+    form.value.scenicIds = form.value.scenicIds.split(',').map(Number);
+  }
+  ```
+
 ## 4. 前端开发规范 (Frontend Rules)
 
 ### 4.1 API 请求封装
@@ -130,6 +194,8 @@ const beforeAvatarUpload = (rawFile) => {
   - 风格: 表格+弹窗+搜索栏 (Element Plus)。
   - 按钮: 必须加 `v-no-more-click` (防抖) 和 `v-permission` (权限)。
   - 图片字段: 使用 `el-upload` 组件（参考 4.2）。
+  - **状态/类型字段**: 必须使用字典查询 `queryDictByType`（参考 3.4），**禁止硬编码**。
+  - **外键关联字段**: 必须使用通用查询 `queryComQueryByCode`（参考 3.5），**禁止手动输入 ID**。
 - **前台页面 (`views/front`)**:
   - 风格: **iOS 26 Liquid Glass** (液态玻璃) 风格，详见第 5 节。
   - 交互: 侧重展示和简单表单提交，无需复杂权限指令。
