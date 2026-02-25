@@ -3,7 +3,9 @@
     <div class="header-bar">
       <!-- 移动端菜单按钮 -->
       <div class="mobile-menu-btn" @click="toggleMobileMenu">
-        <el-icon><Menu /></el-icon>
+        <el-icon>
+          <Menu />
+        </el-icon>
       </div>
 
       <!-- 左侧用户信息区域 -->
@@ -13,9 +15,9 @@
         </div>
         <el-dropdown v-else class="user-dropdown">
           <span class="el-dropdown-link">
-            <el-image :src="userInfo.imgUrl || noImage" class="user-avatar"/>
+            <el-image :src="userInfo.imgUrl || noImage" class="user-avatar" />
             <el-icon class="el-icon--right">
-              <arrow-down/>
+              <arrow-down />
             </el-icon>
           </span>
           <template #dropdown>
@@ -37,7 +39,7 @@
       <!-- 中间通知区域 -->
       <div class="front-notice">
         <el-icon class="notice-icon">
-          <Bell/>
+          <Bell />
         </el-icon>
         <el-tooltip class="item" effect="dark" :content="top" placement="top">
           <span class="notice-text">{{ noticeTitle }}：{{ top }}</span>
@@ -77,7 +79,7 @@
     <router-view v-slot="{ Component }">
       <keep-alive>
         <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
-          <component :is="Component"/>
+          <component :is="Component" />
         </transition>
       </keep-alive>
     </router-view>
@@ -85,14 +87,14 @@
 </template>
 
 <script setup>
-import {onMounted, ref, onUnmounted} from "vue";
-import store from "@/store";
-import {queryNotice} from "@/api/front_request/UserHomeRequest";
-import {ArrowDown, Bell, Menu} from "@element-plus/icons-vue";
-import {ElMessage, ElMessageBox, ElNotification} from "element-plus";
+import { queryNotice } from "@/api/front_request/UserHomeRequest";
+import { logout } from "@/api/front_request/WebRequest";
+import noImageUrl from '@/assets/img/no_image.png';
 import router from "@/router";
-import {logout} from "@/api/front_request/WebRequest";
-import noImageUrl from '@/assets/img/no_image.png'
+import store from "@/store";
+import { ArrowDown, Bell, Menu } from "@element-plus/icons-vue";
+import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
+import { onMounted, onUnmounted, ref } from "vue";
 
 // 无头像图片
 const noImage = noImageUrl
@@ -129,8 +131,8 @@ const handleClickOutside = (event) => {
   const mobileMenu = document.querySelector('.mobile-menu')
 
   if (mobileMenuOpen.value &&
-      !mobileMenuBtn?.contains(event.target) &&
-      !mobileMenu?.contains(event.target)) {
+    !mobileMenuBtn?.contains(event.target) &&
+    !mobileMenu?.contains(event.target)) {
     closeMobileMenu()
   }
 }
@@ -226,17 +228,31 @@ onUnmounted(() => {
 </style>
 
 <style scoped>
-/* 头部容器 */
+/* 头部容器 - 胶囊液态玻璃导航 */
 .header-bar {
   display: flex;
-  padding: 10px 20px;
+  padding: 10px 28px;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  background-color: #b7e0f0;
-  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 4px 24px rgba(31, 38, 135, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+  width: calc(100% - 32px);
+  max-width: 1200px;
   box-sizing: border-box;
-  position: relative;
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  border-radius: 50px;
+  transition: all 0.3s ease;
 }
 
 /* 移动端菜单按钮 */
@@ -244,13 +260,13 @@ onUnmounted(() => {
   display: none;
   cursor: pointer;
   padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  border-radius: 50%;
+  transition: all 0.3s;
   z-index: 1001;
 }
 
 .mobile-menu-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 /* 左侧用户区域 */
@@ -260,19 +276,31 @@ onUnmounted(() => {
   gap: 10px;
 }
 
-.login-section, .register-section {
+.login-section,
+.register-section {
   transition: all 0.5s;
   cursor: pointer;
 }
 
-.login-section:hover, .register-section:hover {
-  color: #ff5000;
+.login-section:hover,
+.register-section:hover {
+  color: #2563eb;
 }
 
-.login-link, .register-link {
-  color: #ff5000;
+.login-link,
+.register-link {
+  color: #2563eb;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.login-link:hover,
+.register-link:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
 }
 
 .user-dropdown .el-dropdown-link {
@@ -296,17 +324,23 @@ onUnmounted(() => {
   max-width: 400px;
   margin: 0 20px;
   min-width: 0;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .notice-icon {
   flex-shrink: 0;
-  color: #ff5000;
+  color: #2563eb;
 }
 
 .notice-text {
   margin-left: 10px;
-  font-size: 14px;
-  color: #333;
+  font-size: 13px;
+  color: #4a5568;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -320,30 +354,46 @@ onUnmounted(() => {
 }
 
 .admin-link {
-  transition: all 0.5s;
+  transition: all 0.3s;
   cursor: pointer;
 }
 
-.admin-link:hover {
-  color: #ff5000;
+.admin-link a {
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  font-weight: 600;
+  transition: all 0.3s;
+  text-decoration: none;
 }
 
-/* 移动端菜单 */
+.admin-link a:hover {
+  background: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8;
+}
+
+/* 移动端菜单 - 液态玻璃 */
 .mobile-menu {
   display: none;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
   position: fixed;
   top: 70px;
-  right: 15px;
+  right: 20px;
   width: 200px;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 8px 32px rgba(31, 38, 135, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transform: translateY(-10px);
   opacity: 0;
   transition: all 0.3s ease;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .mobile-menu-open {
@@ -353,31 +403,32 @@ onUnmounted(() => {
 }
 
 .mobile-menu-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .mobile-menu-item:hover {
-  background-color: #f5f5f5;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .mobile-menu-item:last-child {
   border-bottom: none;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 20px 20px;
 }
 
 .mobile-menu-item:first-child {
-  border-radius: 8px 8px 0 0;
+  border-radius: 20px 20px 0 0;
 }
 
 .mobile-menu-item a {
-  color: #333;
+  color: #4a5568;
   text-decoration: none;
   display: block;
   width: 100%;
   font-size: 14px;
+  font-weight: 500;
 }
 
 /* 遮罩层 */
@@ -387,14 +438,21 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 999;
   display: none;
 }
 
+/* 主容器 */
+.front-container {
+  min-height: 100vh;
+}
+
 /* 通用链接样式 */
 a {
-  color: black;
+  color: #4a5568;
   text-decoration: none;
 }
 
@@ -405,7 +463,10 @@ a {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .header-bar {
-    padding: 10px 15px;
+    padding: 8px 16px;
+    width: calc(100% - 24px);
+    top: 8px;
+    border-radius: 30px;
   }
 
   .mobile-menu-btn {
@@ -441,11 +502,15 @@ a {
 
 @media (max-width: 480px) {
   .header-bar {
-    padding: 8px 10px;
+    padding: 6px 12px;
+    width: calc(100% - 16px);
+    top: 6px;
+    border-radius: 24px;
   }
 
   .front-notice {
-    margin: 0 5px;
+    margin: 0 6px;
+    padding: 4px 10px;
   }
 
   .notice-text {
@@ -460,13 +525,15 @@ a {
   .mobile-menu {
     right: 10px;
     width: 180px;
+    top: 60px;
   }
 }
 
 /* 平板设备适配 */
 @media (min-width: 769px) and (max-width: 1024px) {
   .header-bar {
-    padding: 10px 15px;
+    padding: 10px 20px;
+    width: calc(100% - 40px);
   }
 
   .front-notice {
@@ -481,7 +548,8 @@ a {
 /* 大屏幕优化 */
 @media (min-width: 1400px) {
   .header-bar {
-    padding: 12px 30px;
+    padding: 12px 36px;
+    max-width: 1400px;
   }
 
   .front-notice {
