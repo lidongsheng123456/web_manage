@@ -1,4 +1,4 @@
-import {queryCurrentUser} from "@/api/admin_request/WebRequest";
+import { queryCurrentUser } from "@/api/admin_request/WebRequest";
 import axios from "axios";
 
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
@@ -33,10 +33,7 @@ const actions = {
     },
     queryCurrentFrontUserInfo({commit}) {
         return new Promise((resolve, reject) => {
-            const request = axios.create({
-                withCredentials: true
-            })
-            request.get(uploadUrl + '/user/current')
+            axios.get(uploadUrl + '/user/current')
                 .then(res => {
                     if (res.data.code === 200) {
                         commit("SET_FRONT_USERINFO", res.data.data);

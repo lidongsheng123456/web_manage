@@ -11,21 +11,15 @@
         </el-form-item>
         <el-form-item prop="code">
           <div style="display: flex">
-            <el-input v-model="form.code" placeholder="验证码" prefix-icon="Postcard"
-                      @keyup.enter="logIn"></el-input>
+            <el-input v-model="form.code" placeholder="验证码" prefix-icon="Postcard" @keyup.enter="logIn"></el-input>
             <div class="login-code">
-              <img id="verificationCodeImg" :src="codeUrl" alt="点击一下试试" title="看不清？换一张"
-                   @click="getCaptcha"/>
+              <img id="verificationCodeImg" :src="codeUrl" alt="点击一下试试" title="看不清？换一张" @click="getCaptcha" />
             </div>
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button
-              v-no-more-click
-              :loading="loading"
-              style="width: 100%; background: pink; border-color: #ff7b7b; color: white"
-              @click="logIn"
-          >
+          <el-button v-no-more-click :loading="loading"
+            style="width: 100%; background: pink; border-color: #ff7b7b; color: white" @click="logIn">
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
@@ -36,11 +30,11 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
-import {captcha, login} from "@/api/admin_request/WebRequest";
+import { captcha, login } from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import {ElMessage} from "element-plus";
 import axios from "axios";
+import { ElMessage } from "element-plus";
+import { onMounted, ref } from 'vue';
 
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const codeUrl = ref('');
@@ -54,13 +48,13 @@ const form = ref({
 
 const rules = {
   username: [
-    {required: true, message: '请输入账号', trigger: 'blur'},
+    { required: true, message: '请输入账号', trigger: 'blur' },
   ],
   password: [
-    {required: true, message: '请输入密码', trigger: 'blur'},
+    { required: true, message: '请输入密码', trigger: 'blur' },
   ],
   code: [
-    {required: true, message: '请输入验证码', trigger: 'change'},
+    { required: true, message: '请输入验证码', trigger: 'change' },
   ],
 };
 
@@ -92,11 +86,7 @@ const getCaptcha = () => {
 };
 
 const getNotice = () => {
-  // 不配置的话session携带不了
-  const request = axios.create({
-    withCredentials: true
-  })
-  request.get(uploadUrl + '/admin/notice').then(res => {
+  axios.get(uploadUrl + '/admin/notice').then(res => {
     if (res.data.code === 200) {
       router.push('/Manage');
     }

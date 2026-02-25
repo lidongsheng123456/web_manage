@@ -1,7 +1,3 @@
-export function getBaseUrl() {
-    return import.meta.env.MODE === 'production' || import.meta.env.MODE === 'staging' ? import.meta.env.VUE_APP_BASEURL : import.meta.env.VUE_APP_BASEURL
-}
-
 // 回显数据字典
 export function selectDictLabel(datas, value) {
     if (value === undefined) {

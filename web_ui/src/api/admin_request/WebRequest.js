@@ -11,9 +11,8 @@ export function login(data) {
 
 // 获取验证码
 export function captcha() {
-    return fetch(import.meta.env.VUE_APP_BASEURL + '/admin/captcha', {
+    return fetch('/api/admin/captcha', {
         method: 'get',
-        credentials: 'include' // 确保发送Cookie
     }).then(response => {
         if (!response.ok) {
             throw new Error('网络响应不正常');
