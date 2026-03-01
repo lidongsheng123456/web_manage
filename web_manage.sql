@@ -11,7 +11,7 @@
  Target Server Version : 80036 (8.0.36)
  File Encoding         : 65001
 
- Date: 28/05/2025 14:18:29
+ Date: 01/03/2026 13:02:46
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `front_user`  (
 -- ----------------------------
 -- Records of front_user
 -- ----------------------------
-INSERT INTO `front_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1748412551117-logo.jpg', '2025-04-24 10:33:25', '2025-05-28 14:09:37');
+INSERT INTO `front_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1772341107029-cat.png', '2025-04-24 10:33:25', '2026-03-01 12:58:28');
 
 -- ----------------------------
 -- Table structure for sys_com_query
@@ -52,7 +52,7 @@ CREATE TABLE `sys_com_query`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_com_query
@@ -126,7 +126,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1315 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1374 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -139,37 +139,6 @@ INSERT INTO `sys_oper_log` VALUES (960, '修改用户', 'update', 'com.example.c
 INSERT INTO `sys_oper_log` VALUES (961, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'lidongsheng', 'http://localhost:8088/admin/logout/1', '[1]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-02 15:19:01', 52);
 INSERT INTO `sys_oper_log` VALUES (962, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=podzi), org.apache.catalina.session.StandardSessionFacade@32eec554]', '', 1, '验证码错误', '2025-02-02 15:19:14', 0);
 INSERT INTO `sys_oper_log` VALUES (963, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=x8mll), org.apache.catalina.session.StandardSessionFacade@32eec554]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":18,\"username\":\"scx\",\"name\":\"史晨翔\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1737964108818-微信图片_20250105205358.jpg\",\"createTime\":1737964050000,\"updateTime\":1737964127000,\"permissions\":[{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:person:query\"}],\"roles\":[{\"role_code\":\"user\"}]}}', 0, '', '2025-02-02 15:19:20', 21);
-INSERT INTO `sys_oper_log` VALUES (964, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'scx', 'http://localhost:8088/admin/logout/18', '[18]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-02 15:20:21', 4);
-INSERT INTO `sys_oper_log` VALUES (965, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=lidongsheng, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=xzqrr), org.apache.catalina.session.StandardSessionFacade@32eec554]', '', 1, '验证码错误', '2025-02-02 15:20:26', 0);
-INSERT INTO `sys_oper_log` VALUES (1286, '退出前台', 'force', 'com.example.controller.user.UserWebController.logout()', 'GET', 'admin', 'http://localhost:8088/user/logout', '[]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 13:45:58', 7);
-INSERT INTO `sys_oper_log` VALUES (1287, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=e60uj), org.apache.catalina.session.StandardSessionFacade@10691072]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1748322742795-cat.png\",\"createTime\":1745462005000,\"updateTime\":1748322744000,\"permissions\":[],\"roles\":[]}}', 0, '', '2025-05-27 13:50:46', 8);
-INSERT INTO `sys_oper_log` VALUES (1288, '修改个人信息', 'update', 'com.example.controller.user.UserWebController.updatePerson()', 'POST', 'admin', 'http://localhost:8088/user/person', '[User(id=1, username=admin, password=null, name=admin, phone=19976898057, email=208550738@qq.com, imgUrl=http://localhost:8088/common/files/1748322742795-cat.png, createTime=2025-04-24T10:33:25, updateTime=2025-05-27T13:12:24)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 13:50:54', 10);
-INSERT INTO `sys_oper_log` VALUES (1289, '退出前台', 'force', 'com.example.controller.user.UserWebController.logout()', 'GET', 'admin', 'http://localhost:8088/user/logout', '[]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 13:51:03', 3);
-INSERT INTO `sys_oper_log` VALUES (1290, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=dpd9h), org.apache.catalina.session.StandardSessionFacade@10691072]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1748322742795-cat.png\",\"createTime\":1745462005000,\"updateTime\":1748325054000,\"permissions\":[],\"roles\":[]}}', 0, '', '2025-05-27 13:52:18', 3);
-INSERT INTO `sys_oper_log` VALUES (1291, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=bmlns), org.apache.catalina.session.StandardSessionFacade@6ec460e1]', '', 1, '验证码错误', '2025-05-27 22:25:44', 2);
-INSERT INTO `sys_oper_log` VALUES (1292, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=dgyrm), org.apache.catalina.session.StandardSessionFacade@6ec460e1]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"李东升\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1746076011429-cat.png\",\"createTime\":1737266057000,\"updateTime\":1748265179000,\"permissions\":[{\"permission_code\":\"admin:notice:add\"},{\"permission_code\":\"admin:notice:delete\"},{\"permission_code\":\"admin:notice:update\"},{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:user:add\"},{\"permission_code\":\"admin:user:delete\"},{\"permission_code\":\"admin:user:update\"},{\"permission_code\":\"admin:operLog:delete\"},{\"permission_code\":\"admin:operLog:update\"},{\"permission_code\":\"admin:operLog:query\"},{\"permission_code\":\"admin:notice:export\"},{\"permission_code\":\"admin:user:export\"},{\"permission_code\":\"admin:operLog:export\"},{\"permission_code\":\"admin:person:query\"},{\"permission_code\":\"admin:permission:query\"},{\"permission_code\":\"admin:permission:remove\"},{\"permission_code\":\"admin:permission:assign\"},{\"permission_code\":\"admin:permission:export\"},{\"permission_code\":\"admin:permission:update\"},{\"permission_code\":\"admin:permission:delete\"},{\"permission_code\":\"admin:permission:add\"},{\"permission_code\":\"admin:role:remove\"},{\"permission_code\":\"admin:role:assign\"},{\"permission_code\":\"admin:role:export\"},{\"permission_code\":\"admin:role:query\"},{\"permission_code\":\"admin:role:update\"},{\"permission_code\":\"admin:role:delete\"},{\"permission_code\":\"admin:role:add\"},{\"permission_code\":\"admin:docs:query\"},{\"permission_code\":\"admin:dict:query\"},{\"permission_code\":\"admin:com-query:query\"},{\"permission_code\":\"admin:com-query:export\"},{\"permission_code\":\"admin:com-query:update\"},{\"permission_code\":\"admin:com-query:delete\"},{\"permission_code\":\"admin:com-query:add\"},{\"permission_code\":\"admin:dict:export\"},{\"permission_code\":\"admin:dict:update\"},{\"permission_code\":\"admin:dict:delete\"},{\"permission_code\":\"admin:dict:add\"},{\"permission_code\":\"admin:user:query\"}],\"roles\":[{\"role_code\":\"super_admin\"},{\"role_code\":\"admin\"},{\"role_code\":\"user\"}]}}', 0, '', '2025-05-27 22:25:49', 34);
-INSERT INTO `sys_oper_log` VALUES (1293, '新增通知', 'insert', 'com.example.controller.admin.AdminNoticeController.addNotice()', 'POST', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=null, noticeTitle=测试, noticeContent=sb, createTime=2025-05-27T22:25:56.326865600, updateTime=2025-05-27T22:25:56.326865600, createUserId=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:25:56', 89);
-INSERT INTO `sys_oper_log` VALUES (1294, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=sb, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:07.767529700, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:08', 82);
-INSERT INTO `sys_oper_log` VALUES (1295, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=傻逼, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:14.064472400, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:14', 40);
-INSERT INTO `sys_oper_log` VALUES (1296, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=艹, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:28.829347400, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:29', 47);
-INSERT INTO `sys_oper_log` VALUES (1297, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=曹尼玛, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:34.069422100, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:34', 43);
-INSERT INTO `sys_oper_log` VALUES (1298, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=cnm, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:38.953362900, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:39', 47);
-INSERT INTO `sys_oper_log` VALUES (1299, '修改通知', 'update', 'com.example.controller.admin.AdminNoticeController.updateNotice()', 'PUT', 'admin', 'http://localhost:8088/admin/notice', '[Notice(id=45, noticeTitle=测试, noticeContent=智障, createTime=2025-05-27T22:25:56, updateTime=2025-05-27T22:27:43.919463600, createUserId=1)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:44', 60);
-INSERT INTO `sys_oper_log` VALUES (1300, '批量删除通知', 'delete', 'com.example.controller.admin.AdminNoticeController.batchDeleteNotice()', 'DELETE', 'admin', 'http://localhost:8088/admin/notice/batchDelete', '[[45]]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-27 22:27:49', 25);
-INSERT INTO `sys_oper_log` VALUES (1301, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', '', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=rmgih), org.apache.catalina.session.StandardSessionFacade@304c1018]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1748322742795-cat.png\",\"createTime\":1745462005000,\"updateTime\":1748325054000,\"permissions\":[],\"roles\":[]}}', 0, '', '2025-05-28 13:27:58', 54);
-INSERT INTO `sys_oper_log` VALUES (1302, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=qwppR), org.apache.catalina.session.StandardSessionFacade@304c1018]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"李东升\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1746076011429-cat.png\",\"createTime\":1737266057000,\"updateTime\":1748265179000,\"permissions\":[{\"permission_code\":\"admin:notice:add\"},{\"permission_code\":\"admin:notice:delete\"},{\"permission_code\":\"admin:notice:update\"},{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:user:add\"},{\"permission_code\":\"admin:user:delete\"},{\"permission_code\":\"admin:user:update\"},{\"permission_code\":\"admin:operLog:delete\"},{\"permission_code\":\"admin:operLog:update\"},{\"permission_code\":\"admin:operLog:query\"},{\"permission_code\":\"admin:notice:export\"},{\"permission_code\":\"admin:user:export\"},{\"permission_code\":\"admin:operLog:export\"},{\"permission_code\":\"admin:person:query\"},{\"permission_code\":\"admin:permission:query\"},{\"permission_code\":\"admin:permission:remove\"},{\"permission_code\":\"admin:permission:assign\"},{\"permission_code\":\"admin:permission:export\"},{\"permission_code\":\"admin:permission:update\"},{\"permission_code\":\"admin:permission:delete\"},{\"permission_code\":\"admin:permission:add\"},{\"permission_code\":\"admin:role:remove\"},{\"permission_code\":\"admin:role:assign\"},{\"permission_code\":\"admin:role:export\"},{\"permission_code\":\"admin:role:query\"},{\"permission_code\":\"admin:role:update\"},{\"permission_code\":\"admin:role:delete\"},{\"permission_code\":\"admin:role:add\"},{\"permission_code\":\"admin:docs:query\"},{\"permission_code\":\"admin:dict:query\"},{\"permission_code\":\"admin:com-query:query\"},{\"permission_code\":\"admin:com-query:export\"},{\"permission_code\":\"admin:com-query:update\"},{\"permission_code\":\"admin:com-query:delete\"},{\"permission_code\":\"admin:com-query:add\"},{\"permission_code\":\"admin:dict:export\"},{\"permission_code\":\"admin:dict:update\"},{\"permission_code\":\"admin:dict:delete\"},{\"permission_code\":\"admin:dict:add\"},{\"permission_code\":\"admin:user:query\"}],\"roles\":[{\"role_code\":\"super_admin\"},{\"role_code\":\"admin\"},{\"role_code\":\"user\"}]}}', 0, '', '2025-05-28 13:28:11', 15);
-INSERT INTO `sys_oper_log` VALUES (1303, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:front-user:add, permissionName=新增前台用户, description=add, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:30:58', 17);
-INSERT INTO `sys_oper_log` VALUES (1304, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:front-user:delete, permissionName=删除前台用户, description=delete, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:31:13', 7);
-INSERT INTO `sys_oper_log` VALUES (1305, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:front-user:update, permissionName=修改前台用户, description=update, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:31:25', 7);
-INSERT INTO `sys_oper_log` VALUES (1306, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:front-user:query, permissionName=查询前台用户, description=query, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:31:36', 8);
-INSERT INTO `sys_oper_log` VALUES (1307, '新增权限', 'insert', 'com.example.controller.admin.AdminPermissionController.addPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission', '[Permission(id=null, permissionCode=admin:front-user:export, permissionName=导出前台用户, description=export, createTime=null, updateTime=null)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:31:49', 7);
-INSERT INTO `sys_oper_log` VALUES (1308, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=49, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:32:00', 10);
-INSERT INTO `sys_oper_log` VALUES (1309, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=50, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:32:03', 7);
-INSERT INTO `sys_oper_log` VALUES (1310, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=51, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:32:05', 7);
-INSERT INTO `sys_oper_log` VALUES (1311, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=52, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:32:08', 9);
-INSERT INTO `sys_oper_log` VALUES (1312, '分配权限', 'insert', 'com.example.controller.admin.AdminPermissionController.assignPermission()', 'POST', 'admin', 'http://localhost:8088/admin/permission/assign', '[AssignPermissionDTO(permissionId=53, roleId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 13:32:11', 18);
-INSERT INTO `sys_oper_log` VALUES (1313, '修改前台用户', 'update', 'com.example.controller.admin.AdminFrontUserController.updateFrontUser()', 'PUT', 'admin', 'http://localhost:8088/admin/front-user', '[FrontUser(id=1, username=admin1, password=null, name=admin1, phone=19976898051, email=108550738@qq.com, imgUrl=http://localhost:8088/common/files/1748412551117-logo.jpg, createTime=2025-04-24T10:33:25, updateTime=2025-05-28T14:09:21.497120300)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 14:09:22', 20);
-INSERT INTO `sys_oper_log` VALUES (1314, '修改前台用户', 'update', 'com.example.controller.admin.AdminFrontUserController.updateFrontUser()', 'PUT', 'admin', 'http://localhost:8088/admin/front-user', '[FrontUser(id=1, username=admin, password=null, name=admin, phone=19976898057, email=208550738@qq.com, imgUrl=http://localhost:8088/common/files/1748412551117-logo.jpg, createTime=2025-04-24T10:33:25, updateTime=2025-05-28T14:09:37.059061700)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-05-28 14:09:37', 18);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -184,7 +153,7 @@ CREATE TABLE `sys_permission`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `permission_code`(`permission_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -271,7 +240,7 @@ CREATE TABLE `sys_role_permission`  (
   INDEX `permission_id`(`permission_id` ASC) USING BTREE,
   CONSTRAINT `sys_role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `sys_role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `sys_permission` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_permission
@@ -346,14 +315,12 @@ CREATE TABLE `sys_user`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', '李东升', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1746076011429-cat.png', '2025-01-19 13:54:17', '2025-05-26 21:12:59');
-INSERT INTO `sys_user` VALUES (5, 'clh', 'e10adc3949ba59abbe56e057f20f883e', '龙欢', '19976898051', '208550738@qq.com', 'http://localhost:8088/common/files/1747746357669-微信图片f.jpg', '2025-01-19 18:20:45', '2025-05-20 21:05:58');
-INSERT INTO `sys_user` VALUES (18, 'scx', 'e10adc3949ba59abbe56e057f20f883e', '史晨翔', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1747746344077-微信图片_20250105205358.jpg', '2025-01-27 15:47:30', '2025-05-20 21:42:36');
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1746076011429-cat.png', '2025-01-19 13:54:17', '2026-03-01 12:58:43');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -369,13 +336,11 @@ CREATE TABLE `sys_user_role`  (
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   CONSTRAINT `sys_user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `sys_user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (4, 5, 2, '2025-01-20 17:55:55');
-INSERT INTO `sys_user_role` VALUES (28, 18, 3, '2025-01-30 20:14:43');
 INSERT INTO `sys_user_role` VALUES (34, 1, 1, '2025-02-01 20:11:34');
 INSERT INTO `sys_user_role` VALUES (36, 1, 2, '2025-02-01 21:22:53');
 INSERT INTO `sys_user_role` VALUES (37, 1, 3, '2025-02-01 21:22:57');
