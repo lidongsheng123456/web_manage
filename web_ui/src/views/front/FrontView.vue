@@ -193,9 +193,9 @@ onMounted(() => {
   // 添加点击外部区域关闭菜单的事件监听
   document.addEventListener('click', handleClickOutside)
   ElNotification.info({
-    title: '提示',
-    message: '当前页面为前台页面需要自定义，但后台模板是完整的。',
-    duration: 0,
+    title: '东神脚手架',
+    message: 'AI 全流程自动化开发平台，一条指令全栈交付。',
+    duration: 5000,
     offset: 100,
   })
 });
