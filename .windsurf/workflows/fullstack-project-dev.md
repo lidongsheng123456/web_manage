@@ -172,37 +172,67 @@ USE `{BIZ}_manage`;
 2. **验证权限**: 登录后台管理系统，确认超级管理员可以看到所有新菜单
 3. **检查前台**: 访问用户前台，确认页面可正常加载
 
-### 可选：业务图片填充
+### 🚨 必须执行：业务图片填充 (img_url 字段)
 
-如果业务表有 `img_url` 字段，使用图片抓取脚本预填充:
+> **⚠️ 强制检查**: 如果任何业务表包含 `img_url` 字段，**必须**执行此步骤，不可跳过！
+
+**执行方式**: 使用 `uv` 运行图片爬取脚本
 
 ```bash
 # 使用 uv 运行脚本 (按业务关键词搜索图片)
-uv run {skill_scripts_path}/fetch_images.py -k "宠物猫" -n 5 -p {项目根目录} -t sys_pet
-uv run {skill_scripts_path}/fetch_images.py -k "宠物狗" -n 5 -p {项目根目录} -t sys_pet --id-start 6
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "业务关键词" -n 10 -p . -t 表名
+```
+
+**参数说明**:
+- `-k`: 搜索关键词 (如 "宠物猫"、"旅游景点")
+- `-n`: 图片数量
+- `-p`: 项目根目录 (通常为 `.`)
+- `-t`: 数据库表名 (如 `sys_pet`)
+- `--id-start`: 起始 ID (用于多批次爬取)
+
+**示例**:
+```bash
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "宠物猫" -n 5 -p . -t sys_pet
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "宠物狗" -n 5 -p . -t sys_pet --id-start 6
 ```
 
 将输出的 UPDATE SQL 在数据库中执行即可。
+
+**检查点**: 
+- [ ] 已识别所有包含 `img_url` 字段的业务表
+- [ ] 已为每个表执行图片爬取脚本
+- [ ] 已在数据库执行生成的 UPDATE SQL
 
 ---
 
 ## Step 3: 优化前台 UI/UX (Optimize Frontend UI)
 
-使用 `/ui-ux-pro-max` 工作流优化所有前台页面。
+> **🚨 强制执行**: 此步骤**必须**使用 `/ui-ux-pro-max` 工作流，不可跳过或简化！
 
-### 提示词模板
+### 执行方式
+
+**必须调用**: `/ui-ux-pro-max`
+
+### 提示词模板 (复制使用)
 
 ```
-使用uv运行py，移除用户前台首页所有的内容和背景云朵，因为这跟业务无关，
+/ui-ux-pro-max 使用uv运行py，移除用户前台首页所有的内容和背景云朵，因为这跟业务无关，
 并且重构用户前台所有页面，页面效果：简约、高级、大气，让人眼前一亮的现代化UI/UX
 ```
 
-### 优化范围
+### 优化范围 (必须全部覆盖)
 
 1. **首页 (HomeView)**: 移除无关内容/背景装饰，重构为业务相关的 Hero + 推荐模块
 2. **每个业务菜单页面**: 统一液态玻璃风格，卡片列表/网格布局
 3. **个人中心**: 现代化个人信息展示
 4. **详情页**: 沉浸式详情布局
+
+### 检查点
+
+- [ ] 已调用 `/ui-ux-pro-max` 工作流
+- [ ] 首页已移除无关背景装饰 (如云朵)
+- [ ] 所有前台页面已重构为液态玻璃风格
+- [ ] UI 效果：简约、高级、大气
 
 ---
 
