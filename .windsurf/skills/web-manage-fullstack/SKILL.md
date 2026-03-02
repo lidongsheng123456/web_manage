@@ -19,21 +19,22 @@ description: "东神脚手架全栈业务二次开发工作流。用于在 Sprin
 
 ## 业务图片抓取工具
 
-当业务表有 `img_url` 字段且需要预填充图片时，运行 `scripts/fetch_images.py`。
+当业务表有 `img_url` 字段且需要预填充图片时，使用 `uv` 运行项目自带的图片爬取脚本。
 
 ### 基本用法
 
 ```bash
-# 自动检测 *_ui 目录 (web_ui, branch_ui, course_ui 等均可)
-python scripts/fetch_images.py -k "猫咪" -n 5 -p D:/project/web_manage
-python scripts/fetch_images.py -k "laptop" -n 3 -p D:/project/branch_manage -t sys_product
-python scripts/fetch_images.py -k "课程" -n 4 -p D:/project/course_manage -t sys_course
+# 使用 uv 运行项目自带脚本 (按业务关键词搜索图片)
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "猫咪" -n 5 -p . -t sys_pet
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "laptop" -n 3 -p . -t sys_product
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "课程" -n 4 -p . -t sys_course
 
-# 手动指定前端图片目录 (跳过自动检测)
-python scripts/fetch_images.py -k "电源" -n 4 -p D:/project/course_manage --img-dir D:/project/course_manage/course_ui/src/assets/img
+# 多批次爬取 (使用 --id-start 指定起始 ID)
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "宠物猫" -n 5 -p . -t sys_pet
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "宠物狗" -n 5 -p . -t sys_pet --id-start 6
 
 # 使用 Pexels API (更高质量)
-python scripts/fetch_images.py -k "动物" -n 6 -p D:/project/web_manage --source pexels --api-key YOUR_KEY
+uv run .windsurf/skills/web-manage-fullstack/scripts/fetch_images.py -k "动物" -n 6 -p . --source pexels --api-key YOUR_KEY
 ```
 
 ### 脚本功能
