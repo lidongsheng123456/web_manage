@@ -1,6 +1,5 @@
 package com.example.common.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,11 +14,19 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  **/
-@SuppressWarnings(value = {"unchecked", "rawtypes"})//抑制编译器对未检查类型转换和原始类型使用的警告。
+@SuppressWarnings(value = {"unchecked", "rawtypes"})
 @Component
 public class RedisCache {
-    @Autowired
-    public RedisTemplate redisTemplate;
+
+    private final RedisTemplate redisTemplate;
+
+    public RedisCache(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    public RedisTemplate getRedisTemplate() {
+        return redisTemplate;
+    }
 
     /**
      * 缓存基本的对象，Integer、String、实体类等

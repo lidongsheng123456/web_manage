@@ -99,3 +99,25 @@ knife4j:
 #    username: user
 #    # Basic认证密码
 #    password: 123456
+
+# 自定义业务配置
+app:
+  # 验证码
+  captcha:
+    width: 100
+    height: 40
+    expiration: 60000
+    session-key: captcha
+    session-date-key: date
+  # 默认密码（新增用户时使用）
+  default-password: "123456"
+  # 缓存 key 前缀
+  cache:
+    notice-prefix: "notice:"
+    perm-prefix: "sa:perm:"
+    role-prefix: "sa:role:"
+    perm-ttl-minutes: 30
+  # 文件上传
+  file:
+    upload-path: "./files/"
+    allowed-extensions: jpg,jpeg,png,gif,webp,bmp,svg,xlsx,xls,pdf,doc,docx,txt

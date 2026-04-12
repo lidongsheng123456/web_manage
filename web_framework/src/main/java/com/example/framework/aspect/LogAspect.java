@@ -49,8 +49,8 @@ public class LogAspect {
      * @return
      * @throws Throwable
      */
-    @Around("@annotation(log)")
-    public Object recordLog(ProceedingJoinPoint joinPoint, Log log) throws Throwable {
+    @Around("@annotation(logAnnotation)")
+    public Object recordLog(ProceedingJoinPoint joinPoint, Log logAnnotation) throws Throwable {
         long loginId;
         try {
             loginId = StpUtil.getLoginIdAsLong();
@@ -60,10 +60,10 @@ public class LogAspect {
         User user = adminUserMapper.queryUserById(loginId);
 
         //1.模块标题
-        String title = log.title();
+        String title = logAnnotation.title();
 
         //2.业务类型
-        BusinessType businessType = log.businessType();
+        BusinessType businessType = logAnnotation.businessType();
 
         //3.方法名称
         String className = joinPoint.getSignature().getDeclaringTypeName();
@@ -115,8 +115,13 @@ public class LogAspect {
             //记录方法返回值
             returnValue = JSONUtil.toJsonStr(resultValue);
 
-            if (!returnValue.contains("200")) {
-                status = 1;
+            try {
+                Object code = JSONUtil.parseObj(returnValue).get("code");
+                if (code != null && !"200".equals(code.toString())) {
+                    status = 1;
+                }
+            } catch (Exception ignored) {
+                // 返回值不是JSON时忽略状态判断
             }
 
             //记录方法执行总耗时
@@ -127,10 +132,9 @@ public class LogAspect {
             try {
                 adminOperLogMapper.addOperLog(operLog);
             } catch (MyBatisSystemException e) {
-                e.printStackTrace();
+                log.error("操作日志写入失败", e);
                 throw new BusinessException(ResultCodeEnum.LOG_ERROR);
             }
-            //必须return，这里的返回值是用的原方法的返回值，不return的话就给前端响应了个空响应体
             return resultValue;
         } catch (Throwable throwable) {
             // 异常处理
@@ -145,7 +149,7 @@ public class LogAspect {
             try {
                 adminOperLogMapper.addOperLog(operLog);
             } catch (MyBatisSystemException e) {
-                e.printStackTrace();
+                log.error("操作日志写入失败", e);
                 throw new BusinessException(ResultCodeEnum.LOG_ERROR);
             }
             throw throwable;
