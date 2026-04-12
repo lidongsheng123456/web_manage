@@ -3,7 +3,7 @@ package com.example.system.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.annotation.AutoFill;
-import com.example.common.constants.Constants;
+import com.example.common.config.AppConfig;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
@@ -27,6 +27,7 @@ public class AdminWebServiceImpl implements AdminWebService {
 
     private final AdminWebMapper adminWebMapper;
     private final AdminRbacMapper adminRbacMapper;
+    private final AppConfig appConfig;
 
     /**
      * 登录后台
@@ -37,10 +38,6 @@ public class AdminWebServiceImpl implements AdminWebService {
      */
     @Override
     public UserVo login(UserDto userDto, HttpSession session) {
-        if (ObjectUtil.isEmpty(userDto.getUsername()) || ObjectUtil.isEmpty(userDto.getPassword()) || ObjectUtil.isEmpty(userDto.getCode())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
         String username = userDto.getUsername();
         String password = userDto.getPassword();
 
@@ -82,14 +79,14 @@ public class AdminWebServiceImpl implements AdminWebService {
      */
     public Boolean validateCaptcha(String captcha, HttpSession session) {
         // 获取存储的验证码和生成时间
-        String code = (String) session.getAttribute(Constants.CAPTCHA_KEY);
-        Date createTime = (Date) session.getAttribute(Constants.CAPTCHA_DATE);
+        String code = (String) session.getAttribute(appConfig.getCaptcha().getSessionKey());
+        Date createTime = (Date) session.getAttribute(appConfig.getCaptcha().getSessionDateKey());
         System.out.println("用户验证码->" + captcha);
         System.out.println("正确验证码->" + code);
         // 判断验证码是否正确(验证码一般忽略大小写)
         if (captcha.equalsIgnoreCase(code)) {
             // 判断验证码是否过时
-            return createTime == null || System.currentTimeMillis() - createTime.getTime() > Constants.EXPIRATION_TIME;
+            return createTime == null || System.currentTimeMillis() - createTime.getTime() > appConfig.getCaptcha().getExpiration();
         }
         return true;
     }

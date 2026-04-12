@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class AdminComQueryController {
     @SaCheckPermission("admin:com-query:add")
     @Log(title = "新增通用查询", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addComQuery(@RequestBody ComQuery comQuery) {
+    public Result addComQuery(@RequestBody @Valid ComQuery comQuery) {
         adminComQueryService.addComQuery(comQuery);
         return Result.success();
     }
@@ -67,7 +68,7 @@ public class AdminComQueryController {
     @SaCheckPermission("admin:com-query:update")
     @Log(title = "修改通用查询", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updateComQuery(@RequestBody ComQuery comQuery) {
+    public Result updateComQuery(@RequestBody @Valid ComQuery comQuery) {
         adminComQueryService.updateComQuery(comQuery);
         return Result.success();
     }

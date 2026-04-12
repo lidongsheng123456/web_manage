@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,18 +22,22 @@ public class User implements Serializable {
     @Schema(description = "用户ID")
     private Long id;
 
+    @NotBlank(message = "用户名不能为空")
     @Schema(description = "用户名称")
     private String username;
 
     @Schema(description = "用户密码")
     private String password;
 
+    @NotBlank(message = "姓名不能为空")
     @Schema(description = "用户名")
     private String name;
 
+    @NotBlank(message = "手机号不能为空")
     @Schema(description = "用户手机号")
     private String phone;
 
+    @NotBlank(message = "邮箱不能为空")
     @Schema(description = "用户邮箱")
     private String email;
 

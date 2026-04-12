@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class AdminPermissionController {
     @SaCheckPermission("admin:permission:add")
     @Log(title = "新增权限", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addPermission(@RequestBody Permission permission) {
+    public Result addPermission(@RequestBody @Valid Permission permission) {
         adminPermissionService.addPermission(permission);
         return Result.success();
     }
@@ -69,7 +70,7 @@ public class AdminPermissionController {
     @SaCheckPermission("admin:permission:update")
     @Log(title = "修改权限", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updatePermission(@RequestBody Permission permission) {
+    public Result updatePermission(@RequestBody @Valid Permission permission) {
         adminPermissionService.updatePermission(permission);
         return Result.success();
     }
@@ -152,7 +153,7 @@ public class AdminPermissionController {
     @SaCheckPermission("admin:permission:assign")
     @Log(title = "分配权限", businessType = BusinessType.INSERT)
     @PostMapping("/assign")
-    public Result assignPermission(@RequestBody AssignPermissionDTO assignPermissionDTO) {
+    public Result assignPermission(@RequestBody @Valid AssignPermissionDTO assignPermissionDTO) {
         adminPermissionService.assignPermission(assignPermissionDTO);
         return Result.success();
     }
@@ -167,7 +168,7 @@ public class AdminPermissionController {
     @SaCheckPermission("admin:permission:remove")
     @Log(title = "移除权限", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
-    public Result removePermission(@RequestBody AssignPermissionDTO assignPermissionDTO) {
+    public Result removePermission(@RequestBody @Valid AssignPermissionDTO assignPermissionDTO) {
         adminPermissionService.removePermission(assignPermissionDTO);
         return Result.success();
     }

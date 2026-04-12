@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,7 @@ public class AdminUserController {
     @SaCheckPermission("admin:user:add")
     @Log(title = "新增用户", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addUser(@RequestBody User user) {
+    public Result addUser(@RequestBody @Valid User user) {
         adminUserService.addUser(user);
         return Result.success();
     }
@@ -68,7 +69,7 @@ public class AdminUserController {
     @SaCheckPermission("admin:user:update")
     @Log(title = "修改用户", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updateUser(@RequestBody User user) {
+    public Result updateUser(@RequestBody @Valid User user) {
         adminUserService.updateUser(user);
         return Result.success();
     }

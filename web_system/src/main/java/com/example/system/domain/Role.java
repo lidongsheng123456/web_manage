@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,12 +22,15 @@ public class Role implements Serializable {
     @Schema(description = "角色ID")
     private Long id;
 
+    @NotBlank(message = "角色代码不能为空")
     @Schema(description = "角色代码")
     private String roleCode;
 
+    @NotBlank(message = "角色名称不能为空")
     @Schema(description = "角色名称")
     private String roleName;
 
+    @NotBlank(message = "角色描述不能为空")
     @Schema(description = "角色描述")
     private String description;
 

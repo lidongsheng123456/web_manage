@@ -5,7 +5,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.common.annotation.AutoFill;
 import com.example.common.annotation.Log;
-import com.example.common.constants.Constants;
+import com.example.common.config.AppConfig;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.redis.RedisCache;
@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminNoticeController {
     private final AdminNoticeService adminNoticeService;
-
     private final RedisCache redisCache;
+    private final AppConfig appConfig;
 
     @AutoFill(BusinessType.INSERT)
     @Operation(summary = "新增通知")
     @SaCheckPermission("admin:notice:add")
     @Log(title = "新增通知", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addNotice(@RequestBody Notice notice) {
+    public Result addNotice(@RequestBody @Valid Notice notice) {
         // 过滤敏感字
         notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         notice.setCreateUserId(StpUtil.getLoginIdAsLong());
@@ -55,7 +56,7 @@ public class AdminNoticeController {
     @DeleteMapping("/batchDelete")
     public Result batchDeleteNotice(@RequestParam List<Long> ids) {
         if (adminNoticeService.removeBatchByIds(ids)) {
-            ids.forEach(ids1 -> redisCache.deleteObject(Constants.noticeCacheKey + ids1.toString()));
+            ids.forEach(ids1 -> redisCache.deleteObject(appConfig.getCache().getNoticePrefix() + ids1.toString()));
             return Result.success();
         }
         return Result.error(500, "删除通知失败");
@@ -66,11 +67,11 @@ public class AdminNoticeController {
     @SaCheckPermission("admin:notice:update")
     @Log(title = "修改通知", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updateNotice(@RequestBody Notice notice) {
+    public Result updateNotice(@RequestBody @Valid Notice notice) {
         // 过滤敏感字
         notice.setNoticeContent(SensitiveWordBs.newInstance().replace(notice.getNoticeContent(), '*'));
         if (adminNoticeService.updateById(notice)) {
-            redisCache.deleteObject(Constants.noticeCacheKey + notice.getId().toString());
+            redisCache.deleteObject(appConfig.getCache().getNoticePrefix() + notice.getId().toString());
             return Result.success();
         }
         return Result.error(500, "修改通知失败");

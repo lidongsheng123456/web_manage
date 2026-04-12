@@ -2,7 +2,7 @@ package com.example.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.annotation.AutoFill;
-import com.example.common.constants.Constants;
+import com.example.common.config.AppConfig;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
@@ -32,6 +32,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final AdminNoticeMapper adminNoticeMapper;
     private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final AdminRbacMapper adminRbacMapper;
+    private final AppConfig appConfig;
 
     /**
      * 新增用户
@@ -42,8 +43,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @AutoFill(BusinessType.INSERT)
     @Transactional
     public void addUser(User user) {
-        validateField(user);
-        user.setPassword(DigestUtils.md5DigestAsHex(Constants.DEFAULT_PAD.getBytes()));
+        user.setPassword(DigestUtils.md5DigestAsHex(appConfig.getDefaultPassword().getBytes()));
         isSuccess(adminUserMapper.addUser(user));
         isSuccess(adminUserAndRoleMapper.addUserAndRoleId(user.getId(), RoleEnum.USER.roleId));
     }
@@ -83,7 +83,6 @@ public class AdminUserServiceImpl implements AdminUserService {
             throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
         }
 
-        validateField(user);
         isSuccess(adminUserMapper.updateUser(user));
     }
 
@@ -146,20 +145,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     public void isSuccess(Integer i) {
         if (i == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * 验证字段
-     *
-     * @param user
-     */
-    public void validateField(User user) {
-        if (ObjectUtil.isEmpty(user.getUsername()) ||
-                ObjectUtil.isEmpty(user.getName()) ||
-                ObjectUtil.isEmpty(user.getPhone()) ||
-                ObjectUtil.isEmpty(user.getEmail())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
     }
 }

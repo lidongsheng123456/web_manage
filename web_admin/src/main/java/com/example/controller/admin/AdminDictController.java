@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class AdminDictController {
     @SaCheckPermission("admin:dict:add")
     @Log(title = "新增字典", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addDict(@RequestBody Dict dict) {
+    public Result addDict(@RequestBody @Valid Dict dict) {
         adminDictService.addDict(dict);
         return Result.success();
     }
@@ -67,7 +68,7 @@ public class AdminDictController {
     @SaCheckPermission("admin:dict:update")
     @Log(title = "修改字典", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updateDict(@RequestBody Dict dict) {
+    public Result updateDict(@RequestBody @Valid Dict dict) {
         adminDictService.updateDict(dict);
         return Result.success();
     }

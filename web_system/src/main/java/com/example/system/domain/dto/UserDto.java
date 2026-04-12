@@ -2,6 +2,8 @@ package com.example.system.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +22,13 @@ public class UserDto implements Serializable {
     @Schema(description = "用户ID")
     private Long id;
 
+    @NotBlank(message = "用户名不能为空")
+    @Size(min = 2, max = 20, message = "用户名长度必须在2-20之间")
     @Schema(description = "用户名称")
     private String username;
 
+    @NotBlank(message = "密码不能为空")
+    @Size(min = 6, max = 50, message = "密码长度必须在6-50之间")
     @Schema(description = "用户密码")
     private String password;
 
@@ -46,6 +52,7 @@ public class UserDto implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime updateTime;
 
+    @NotBlank(message = "验证码不能为空")
     @Schema(description = "用户登录验证码")
     private String code;
 }

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,12 +22,15 @@ public class ComQuery implements Serializable {
     @Schema(description = "通用查询ID")
     private Long id;
 
+    @NotBlank(message = "名称不能为空")
     @Schema(description = "名称")
     private String name;
 
+    @NotBlank(message = "代码不能为空")
     @Schema(description = "代码")
     private String code;
 
+    @NotBlank(message = "SQL语句不能为空")
     @Schema(description = "sql语句")
     private String customSql;
 

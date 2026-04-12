@@ -40,7 +40,9 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
      */
     @Override
     public void updateOperLog(OperLog operlog) {
-        validateField(operlog);
+        if (ObjectUtil.isEmpty(operlog.getId())) {
+            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
+        }
         isSuccess(adminOperLogMapper.updateOperLog(operlog));
     }
 
@@ -92,17 +94,6 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
     public void isSuccess(Integer i) {
         if (i == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * 验证字段
-     *
-     * @param operLog
-     */
-    public void validateField(OperLog operLog) {
-        if (ObjectUtil.isEmpty(operLog.getId())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
     }
 }

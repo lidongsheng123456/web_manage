@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class AdminRoleController {
     @SaCheckPermission("admin:role:add")
     @Log(title = "新增角色", businessType = BusinessType.INSERT)
     @PostMapping
-    public Result addRole(@RequestBody Role role) {
+    public Result addRole(@RequestBody @Valid Role role) {
         adminRoleService.addRole(role);
         return Result.success();
     }
@@ -69,7 +70,7 @@ public class AdminRoleController {
     @SaCheckPermission("admin:role:update")
     @Log(title = "修改角色", businessType = BusinessType.UPDATE)
     @PutMapping
-    public Result updateRole(@RequestBody Role role) {
+    public Result updateRole(@RequestBody @Valid Role role) {
         adminRoleService.updateRole(role);
         return Result.success();
     }
@@ -152,7 +153,7 @@ public class AdminRoleController {
     @SaCheckPermission("admin:role:assign")
     @Log(title = "分配角色", businessType = BusinessType.INSERT)
     @PostMapping("/assign")
-    public Result assignRole(@RequestBody AssignRoleDTO assignRoleDTO) {
+    public Result assignRole(@RequestBody @Valid AssignRoleDTO assignRoleDTO) {
         adminRoleService.assignRole(assignRoleDTO);
         return Result.success();
     }
@@ -167,7 +168,7 @@ public class AdminRoleController {
     @SaCheckPermission("admin:role:remove")
     @Log(title = "移除角色", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
-    public Result removeRole(@RequestBody AssignRoleDTO assignRoleDTO) {
+    public Result removeRole(@RequestBody @Valid AssignRoleDTO assignRoleDTO) {
         adminRoleService.removeRole(assignRoleDTO);
         return Result.success();
     }

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,12 +23,15 @@ public class Dict implements Serializable {
     @Schema(description = "字典ID")
     private Long id;
 
+    @NotBlank(message = "字典类型不能为空")
     @Schema(description = "字典类型")
     private String dictType;
 
+    @NotBlank(message = "字典标签不能为空")
     @Schema(description = "字典标签")
     private String dictLabel;
 
+    @NotNull(message = "字典键值不能为空")
     @Schema(description = "字典键值")
     private Integer dictValue;
 

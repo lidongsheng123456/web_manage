@@ -6,7 +6,7 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.annotation.Log;
-import com.example.common.constants.Constants;
+import com.example.common.config.AppConfig;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ import java.util.Date;
 public class AdminWebController {
 
     private final AdminWebService adminWebService;
+    private final AppConfig appConfig;
 
     /**
      * 登录后台
@@ -43,7 +45,7 @@ public class AdminWebController {
     @Operation(summary = "登录后台")
     @Log(title = "登录后台", businessType = BusinessType.OTHER)
     @PostMapping("/login")
-    public Result<UserVo> login(@RequestBody UserDto userDto, HttpSession session) {
+    public Result<UserVo> login(@RequestBody @Valid UserDto userDto, HttpSession session) {
         UserVo User = adminWebService.login(userDto, session);
         return Result.success(User);
     }
@@ -58,7 +60,7 @@ public class AdminWebController {
     @GetMapping("/captcha")
     public void getCaptcha(HttpSession session, HttpServletResponse response) {
         // 定义图形验证码的长和宽
-        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(Constants.CAPTCHA_WIDTH, Constants.CAPTCHA_HEIGHT);
+        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(appConfig.getCaptcha().getWidth(), appConfig.getCaptcha().getHeight());
         // 设置返回数据类型
         response.setContentType("image/jpeg");
         // 禁止使用缓存
@@ -67,8 +69,8 @@ public class AdminWebController {
             // 输出到页面
             lineCaptcha.write(response.getOutputStream());
             // 将 生成的验证码 和 验证码生成时间 存储到session中
-            session.setAttribute(Constants.CAPTCHA_KEY, lineCaptcha.getCode());
-            session.setAttribute(Constants.CAPTCHA_DATE, new Date());
+            session.setAttribute(appConfig.getCaptcha().getSessionKey(), lineCaptcha.getCode());
+            session.setAttribute(appConfig.getCaptcha().getSessionDateKey(), new Date());
             // 关闭流
             response.getOutputStream().close();
         } catch (IOException e) {

@@ -1,7 +1,7 @@
 package com.example.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.example.common.constants.Constants;
+import com.example.common.config.AppConfig;
 import com.example.common.redis.RedisCache;
 import com.example.system.domain.Notice;
 import com.example.system.mapper.UserHomMapper;
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings(value = {"unchecked"})
 public class UserHomeServiceImpl implements UserHomeService {
     private final UserHomMapper userHomMapper;
-
     private final RedisCache redisCache;
+    private final AppConfig appConfig;
 
     /**
      * 列表缓存通知
@@ -45,16 +45,18 @@ public class UserHomeServiceImpl implements UserHomeService {
         // 2.批量从缓存中获取产品项目
         Map<String, Object> cacheNoticeMap = new HashMap<>();
         for (String key : noticeIdList) {
-            Object value = redisCache.getCacheObject(Constants.noticeCacheKey + key);
+            String prefix = appConfig.getCache().getNoticePrefix();
+            Object value = redisCache.getCacheObject(prefix + key);
             if (value != null) {
-                cacheNoticeMap.put(Constants.noticeCacheKey + key, value);
+                cacheNoticeMap.put(prefix + key, value);
             }
         }
 
         // 3.组装没有命中
+        String noticePrefix = appConfig.getCache().getNoticePrefix();
         ArrayList<String> noHitIdList = new ArrayList<>();
         for (String noticeId : noticeIdList) {
-            if (!cacheNoticeMap.containsKey(noticeId)) {
+            if (!cacheNoticeMap.containsKey(noticePrefix + noticeId)) {
                 noHitIdList.add(noticeId);
             }
         }
@@ -63,14 +65,15 @@ public class UserHomeServiceImpl implements UserHomeService {
         if (ObjectUtil.isNotEmpty(noHitIdList)) {
             List<Notice> noHitNoticeList = userHomMapper.batchQueryNotice(noHitIdList);
             // 将没有命中的文化项目加入到缓存中
-            Map<String, Notice> noHitNoticeMap = noHitNoticeList.stream().collect(Collectors.toMap(notice1 -> Constants.noticeCacheKey + notice1.getId().toString(), Function.identity()));
-            redisCache.redisTemplate.opsForValue().multiSet(noHitNoticeMap);
+            String prefix = appConfig.getCache().getNoticePrefix();
+            Map<String, Notice> noHitNoticeMap = noHitNoticeList.stream().collect(Collectors.toMap(notice1 -> prefix + notice1.getId().toString(), Function.identity()));
+            redisCache.getRedisTemplate().opsForValue().multiSet(noHitNoticeMap);
             cacheNoticeMap.putAll(noHitNoticeMap);
         }
 
         // 5.最后组装
         for (String noticeId : noticeIdList) {
-            Object culture = cacheNoticeMap.get(Constants.noticeCacheKey + noticeId);
+            Object culture = cacheNoticeMap.get(appConfig.getCache().getNoticePrefix() + noticeId);
             if (culture != null) {
                 result.add(culture);
             }

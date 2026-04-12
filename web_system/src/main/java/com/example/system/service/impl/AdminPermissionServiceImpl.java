@@ -33,7 +33,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     @Override
     @AutoFill(BusinessType.INSERT)
     public void addPermission(Permission permission) {
-        validateField(permission);
         isSuccess(adminPermissionMapper.addPermission(permission));
     }
 
@@ -60,7 +59,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updatePermission(Permission permission) {
-        validateField(permission);
         isSuccess(adminPermissionMapper.updatePermission(permission));
     }
 
@@ -141,10 +139,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
      */
     @Override
     public void assignPermission(AssignPermissionDTO assignPermissionDTO) {
-        if (ObjectUtil.isEmpty(assignPermissionDTO.getRoleId()) || ObjectUtil.isEmpty(assignPermissionDTO.getPermissionId())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
         for (Long i : assignPermissionDTO.getRoleId()) {
             if (adminRoleAndPermissionMapper.validateIsExistByRoleId(i, assignPermissionDTO.getPermissionId()) != 0) {
                 throw new BusinessException(4004, "序号为:" + i + "的角色已分配当前权限");
@@ -161,10 +155,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
      */
     @Override
     public void removePermission(AssignPermissionDTO assignPermissionDTO) {
-        if (ObjectUtil.isEmpty(assignPermissionDTO.getRoleId()) || ObjectUtil.isEmpty(assignPermissionDTO.getPermissionId())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
         isSuccess(adminRoleAndPermissionMapper.removePermission(assignPermissionDTO.getRoleId(), assignPermissionDTO.getPermissionId()));
     }
 
@@ -176,19 +166,6 @@ public class AdminPermissionServiceImpl implements AdminPermissionService {
     public void isSuccess(Integer i) {
         if (i == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * 验证字段
-     *
-     * @param permission
-     */
-    public void validateField(Permission permission) {
-        if (ObjectUtil.isEmpty(permission.getPermissionCode()) ||
-                ObjectUtil.isEmpty(permission.getPermissionName()) ||
-                ObjectUtil.isEmpty(permission.getDescription())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
     }
 }

@@ -39,7 +39,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Override
     @AutoFill(BusinessType.INSERT)
     public void addRole(Role role) {
-        validateField(role);
         isSuccess(adminRoleMapper.addRole(role));
     }
 
@@ -78,7 +77,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
         }
 
-        validateField(role);
         isSuccess(adminRoleMapper.updateRole(role));
     }
 
@@ -171,10 +169,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
      */
     @Override
     public void assignRole(AssignRoleDTO assignRoleDTO) {
-        if (ObjectUtil.isEmpty(assignRoleDTO.getRoleId()) || ObjectUtil.isEmpty(assignRoleDTO.getUserId())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
         for (Long i : assignRoleDTO.getUserId()) {
             if (adminUserAndRoleMapper.validateIsExistByUserId(i, assignRoleDTO.getRoleId()) != 0) {
                 throw new BusinessException(4004, "序号为:" + i + "的用户已分配当前角色");
@@ -191,10 +185,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
      */
     @Override
     public void removeRole(AssignRoleDTO assignRoleDTO) {
-        if (ObjectUtil.isEmpty(assignRoleDTO.getRoleId()) || ObjectUtil.isEmpty(assignRoleDTO.getUserId())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
-        }
-
         for (Long l : assignRoleDTO.getUserId()) {
             if (l == 1) {
                 throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
@@ -220,19 +210,6 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     public void isSuccess(Integer i) {
         if (i == 0) {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * 验证字段
-     *
-     * @param role
-     */
-    public void validateField(Role role) {
-        if (ObjectUtil.isEmpty(role.getRoleCode()) ||
-                ObjectUtil.isEmpty(role.getRoleName()) ||
-                ObjectUtil.isEmpty(role.getDescription())) {
-            throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
     }
 }

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,12 +22,15 @@ public class Permission implements Serializable {
     @Schema(description = "访问权限ID")
     private Long id;
 
+    @NotBlank(message = "权限代码不能为空")
     @Schema(description = "访问权限代码")
     private String permissionCode;
 
+    @NotBlank(message = "权限名称不能为空")
     @Schema(description = "访问权限名称")
     private String permissionName;
 
+    @NotBlank(message = "权限描述不能为空")
     @Schema(description = "访问权限描述")
     private String description;
 
