@@ -20,3 +20,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.mount('#app');
+
+// 隐藏首屏加载动画
+const loader = document.getElementById('loader-wrapper');
+if (loader) {
+    loader.classList.add('loaded');
+    loader.addEventListener('transitionend', () => loader.remove());
+}
