@@ -24,7 +24,7 @@ export const useSettingsStore = defineStore('settings', () => {
     const colorWeakMode = ref(saved.colorWeakMode ?? false)
 
     // ==================== 网站信息 ====================
-    const siteName = ref(saved.siteName || '毕设脚手架')
+    const siteName = ref(saved.siteName || '东神脚手架')
     const siteDescription = ref(saved.siteDescription || '基于 Spring Boot 3 + Vue 3 的全栈管理系统')
     const siteFooter = ref(saved.siteFooter || '')
     const siteIcp = ref(saved.siteIcp || '')
@@ -108,7 +108,7 @@ export const useSettingsStore = defineStore('settings', () => {
     }
 
     function resetSiteInfo() {
-        siteName.value = '毕设脚手架'
+        siteName.value = '东神脚手架'
         siteDescription.value = '基于 Spring Boot 3 + Vue 3 的全栈管理系统'
         siteFooter.value = ''
         siteIcp.value = ''

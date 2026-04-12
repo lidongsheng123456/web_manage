@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="login-card">
-      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用毕设脚手架后台</div>
+      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用东神脚手架后台</div>
       <el-form ref="formRef" :model="form" :rules="rules">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="User"></el-input>

@@ -118,7 +118,7 @@
       <el-tab-pane label="关于系统" name="about">
         <div class="settings-section about-section">
           <div class="about-header">
-            <img alt="Logo" src="@/assets/img/管理.png" class="about-logo" />
+            <img alt="Logo" src="@/assets/img/logo.svg" class="about-logo" />
             <div class="about-title-block">
               <h2 class="about-name">{{ settingsStore.siteName }}</h2>
               <p class="about-desc">{{ settingsStore.siteDescription }}</p>
