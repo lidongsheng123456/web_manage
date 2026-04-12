@@ -1,0 +1,19 @@
+// 前台布局全局样式 (unscoped)
+.safe-area {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+/* 响应式安全区域 */
+@media (max-width: 1200px) {
+  .safe-area {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .safe-area {
+    padding: 0 15px;
+  }
+}

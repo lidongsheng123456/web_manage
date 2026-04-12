@@ -1,0 +1,54 @@
+// 前台个人中心全局样式 (unscoped)
+.avatar-uploader .el-upload {
+  border: 2px dashed rgba(37, 99, 235, 0.2);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #a0aec0;
+  width: 140px;
+  height: 140px;
+  text-align: center;
+}
+
+.avatar-uploader .avatar {
+  width: 140px;
+  height: 140px;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 560px) {
+  .person-page {
+    padding: 70px 12px 24px;
+  }
+
+  .glass-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .person-form :deep(.el-input__wrapper) {
+    border-radius: 10px;
+  }
+
+  .card-footer {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
