@@ -1,0 +1,254 @@
+// 系统设置页面样式
+
+.settings-page {
+  padding: 20px;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  .settings-tabs {
+    :deep(.el-tabs__header) {
+      margin-bottom: 24px;
+    }
+
+    :deep(.el-tabs__item) {
+      font-size: 15px;
+      padding: 0 24px;
+    }
+  }
+}
+
+.settings-section {
+  padding: 0 8px;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #303133;
+    margin: 16px 0 20px;
+
+    .el-icon {
+      color: #409eff;
+      font-size: 18px;
+    }
+  }
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #f0f2f5;
+  }
+
+  .setting-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .label-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #303133;
+    }
+
+    .label-desc {
+      font-size: 12px;
+      color: #909399;
+    }
+  }
+
+  .setting-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.color-presets {
+  display: flex;
+  gap: 8px;
+
+  .color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    &.active {
+      border-color: #303133;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+      transform: scale(1.15);
+    }
+  }
+}
+
+.setting-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0;
+}
+
+// 网站信息表单
+.site-form {
+  max-width: 600px;
+  padding: 8px 16px;
+
+  :deep(.el-form-item__label) {
+    font-weight: 500;
+  }
+}
+
+// 关于系统
+.about-section {
+  .about-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #ecf5ff 0%, #f0f9eb 100%);
+    border-radius: 12px;
+
+    .about-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-title-block {
+      .about-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #303133;
+        margin: 0 0 6px;
+      }
+
+      .about-desc {
+        font-size: 13px;
+        color: #606266;
+        margin: 0;
+      }
+    }
+  }
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0;
+
+  .tech-tag {
+    font-size: 13px;
+    padding: 4px 14px;
+  }
+}
+
+.about-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 4px 0;
+
+  .el-link {
+    font-size: 14px;
+
+    .el-icon {
+      margin-right: 4px;
+    }
+  }
+}
+
+// 色弱模式
+:global(.color-weak) {
+  filter: invert(80%);
+}
+
+// ==================== 移动端响应式 ====================
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 12px;
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+
+    .setting-control {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+
+  .color-presets {
+    flex-wrap: wrap;
+  }
+
+  .site-form {
+    padding: 0;
+
+    :deep(.el-form-item) {
+      flex-direction: column;
+
+      .el-form-item__label {
+        text-align: left;
+        width: 100% !important;
+      }
+    }
+  }
+
+  .about-section .about-header {
+    flex-direction: column;
+    text-align: center;
+
+    .about-title-block .about-name {
+      font-size: 18px;
+    }
+  }
+
+  :deep(.el-descriptions) {
+    .el-descriptions__body {
+      .el-descriptions__table {
+        display: block;
+
+        .el-descriptions__row {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+
+  .tech-tags {
+    gap: 6px;
+
+    .tech-tag {
+      font-size: 12px;
+      padding: 2px 10px;
+    }
+  }
+
+  .about-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

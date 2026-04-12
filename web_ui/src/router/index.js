@@ -79,10 +79,17 @@ const routes = [
                 component: () => import('@/views/background/manage/ManageFrontUserView.vue')
             },
             {
+                path: 'ManageSettingsView',
+                name: 'ManageSettingsView',
+                meta: {name: '系统设置'},
+                component: () => import('@/views/background/manage/ManageSettingsView.vue')
+            },
+            {
                 path: 'ManagePersonView',
                 name: 'ManagePersonView',
                 meta: {name: '个人中心'},
                 component: () => import('@/views/background/manage/ManagePersonView.vue'),
+                redirect: '/Manage/ManagePersonView/ManagePersonBaseInfoView',
                 children: [
                     {
                         path: 'ManagePersonBaseInfoView',

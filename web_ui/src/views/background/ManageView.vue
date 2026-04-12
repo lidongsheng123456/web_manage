@@ -1,14 +1,17 @@
 <template>
   <div class="common-layout">
     <el-container class="container">
-      <el-aside width="200px">
+      <div class="sidebar-overlay" :class="{ visible: mobileSidebarOpen }" @click="mobileSidebarOpen = false" />
+      <el-aside :width="settingsStore.sidebarCollapse ? '64px' : '200px'" :class="{ 'mobile-open': mobileSidebarOpen }"
+        style="transition: width 0.3s, transform 0.3s">
         <div class="aside-logo">
           <img alt="管理" src="@/assets/img/管理.png">
-          <h2>
-            毕设脚手架
+          <h2 v-show="!settingsStore.sidebarCollapse">
+            {{ settingsStore.siteName }}
           </h2>
         </div>
-        <el-menu :default-openeds="['4']" :router="true" class="el-menu-vertical-demo" default-active="1">
+        <el-menu :default-openeds="['4']" :router="true" :collapse="settingsStore.sidebarCollapse"
+          :active-text-color="settingsStore.themeColor" class="el-menu-vertical-demo" default-active="1">
           <el-menu-item index="/Manage/ManageDataView">
             <el-icon>
               <Promotion />
@@ -101,11 +104,22 @@
               用户管理
             </el-menu-item>
           </el-sub-menu>
+          <el-menu-item index="/Manage/ManageSettingsView">
+            <el-icon>
+              <Setting />
+            </el-icon>
+            <span>系统设置</span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
         <el-header>
           <div class="el-header-left">
+            <div class="mobile-hamburger" @click="mobileSidebarOpen = !mobileSidebarOpen">
+              <el-icon :size="24">
+                <Fold />
+              </el-icon>
+            </div>
             <el-breadcrumb separator="/">
               <el-breadcrumb-item to="/Manage/ManageDataView">
                 首页
@@ -134,7 +148,7 @@
             </el-dropdown>
           </div>
           <el-divider />
-          <div class="el-header-right">
+          <div v-show="settingsStore.showTagsView" class="el-header-right">
             <el-tabs v-model="editableTabsValue" class="demo-tabs" editable type="card" @edit="handleTabsEdit"
               @tab-click="handleTabClick">
               <el-tab-pane v-for="item in editableTabs" :key="item.name" :closable="item.closable" :label="item.title"
@@ -153,11 +167,15 @@
         </el-header>
         <el-main>
           <router-view v-slot="{ Component }">
-            <transition :duration="{ enter: 300, leave: 150 }" mode="out-in" name="slide-fade">
+            <transition v-if="settingsStore.showTransition" :duration="{ enter: 300, leave: 150 }" mode="out-in"
+              name="slide-fade">
               <keep-alive>
-                <component :is="Component" :key="$route.path" />
+                <component :is="Component" :key="routeKey" />
               </keep-alive>
             </transition>
+            <keep-alive v-else>
+              <component :is="Component" :key="routeKey" />
+            </keep-alive>
           </router-view>
         </el-main>
       </el-container>
@@ -168,6 +186,7 @@
 <script setup>
 import { logout } from "@/api/admin_request/WebRequest";
 import router from "@/router";
+import { useSettingsStore } from "@/store/modules/settings";
 import { useUserStore } from "@/store/modules/user";
 import {
   ArrowDown,
@@ -175,9 +194,12 @@ import {
   Bell,
   Collection,
   Comment,
+  Fold,
   HomeFilled,
   List,
   Promotion,
+  Search,
+  Setting,
   Stamp,
   Tools,
   Unlock,
@@ -190,6 +212,8 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const userStore = useUserStore();
+const settingsStore = useSettingsStore();
+const mobileSidebarOpen = ref(false);
 let userInfo = ref({});
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
@@ -201,6 +225,16 @@ const editableTabs = ref([
     closable: true
   }
 ]);
+
+// 嵌套子路由使用父路由路径作为 key，避免子路由切换导致父组件重新挂载
+const routeKey = computed(() => {
+  const segments = route.path.split('/').filter(Boolean);
+  if (segments.length > 2) {
+    return '/' + segments.slice(0, 2).join('/');
+  }
+  return route.path;
+});
+
 
 const breadcrumbItems = computed(() => {
   const matchedRoutes = route.matched.filter(route => route.meta && route.meta.name);
@@ -331,6 +365,7 @@ const logoutLogin = () => {
 
 // 监听路由变化
 watch(() => route.path, (newPath) => {
+  mobileSidebarOpen.value = false;
   const tabExists = editableTabs.value.some(tab => tab.name === newPath);
   if (!tabExists) {
     const routeMeta = route.meta;
@@ -389,6 +424,7 @@ const getUserInfo = () => {
 
 onMounted(() => {
   getUserInfo();
+  settingsStore.applyTheme();
   // 绑定右键菜单事件
   nextTick(() => {
     const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
