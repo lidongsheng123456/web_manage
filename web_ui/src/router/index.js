@@ -128,7 +128,7 @@ const routes = [
             {
                 path: 'PersonView',
                 name: 'PersonView',
-                meta: {name: '个人中心', requiresFrontAuth: true},
+                meta: {name: '个人中心'},
                 component: () => import('@/views/front/home/PersonView.vue')
             },
         ]

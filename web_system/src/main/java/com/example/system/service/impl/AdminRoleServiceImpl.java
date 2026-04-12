@@ -19,8 +19,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.common.util.ServiceUtil.checkSuccess;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +42,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Override
     @AutoFill(BusinessType.INSERT)
     public void addRole(Role role) {
-        isSuccess(adminRoleMapper.addRole(role));
+        checkSuccess(adminRoleMapper.addRole(role));
     }
 
     /**
@@ -55,14 +58,14 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         }
 
         for (Long id : ids) {
-            if (id == 1) {
+            if (Objects.equals(id, 1L)) {
                 throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
             }
         }
 
         adminUserAndRoleMapper.batchDeleteUserAndRoleByRoleId(ids);
         adminRoleAndPermissionMapper.batchDeleteRoleAndPermissionByRoleId(ids);
-        isSuccess(adminRoleMapper.batchDeleteRole(ids));
+        checkSuccess(adminRoleMapper.batchDeleteRole(ids));
     }
 
     /**
@@ -73,11 +76,11 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updateRole(Role role) {
-        if (role.getId() == 1) {
+        if (Objects.equals(role.getId(), 1L)) {
             throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
         }
 
-        isSuccess(adminRoleMapper.updateRole(role));
+        checkSuccess(adminRoleMapper.updateRole(role));
     }
 
     /**
@@ -133,10 +136,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         PageHelper.startPage(currentPage, pageSize);
         List<UserVo> list = adminRoleMapper.queryUserNotRoleId(user);
         if (ObjectUtil.isNotEmpty(list)) {
-            for (UserVo userVo : list) {
-                userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-                userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
-            }
+            fillPermissionsAndRoles(list);
         }
         return PageInfo.of(list);
     }
@@ -154,12 +154,26 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         PageHelper.startPage(currentPage, pageSize);
         List<UserVo> list = adminRoleMapper.queryUserByRoleId(user);
         if (ObjectUtil.isNotEmpty(list)) {
-            for (UserVo userVo : list) {
-                userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-                userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
-            }
+            fillPermissionsAndRoles(list);
         }
         return PageInfo.of(list);
+    }
+
+    /**
+     * 批量填充用户权限和角色（解决 N+1 查询问题）
+     */
+    private void fillPermissionsAndRoles(List<UserVo> list) {
+        List<Long> userIds = list.stream().map(UserVo::getId).toList();
+        List<Map<String, Object>> allPerms = adminRbacMapper.getBatchPermissionList(userIds);
+        List<Map<String, Object>> allRoles = adminRbacMapper.getBatchRoleList(userIds);
+        Map<Long, List<Map<String, Object>>> permMap = allPerms.stream()
+                .collect(java.util.stream.Collectors.groupingBy(m -> ((Number) m.get("user_id")).longValue()));
+        Map<Long, List<Map<String, Object>>> roleMap = allRoles.stream()
+                .collect(java.util.stream.Collectors.groupingBy(m -> ((Number) m.get("user_id")).longValue()));
+        for (UserVo vo : list) {
+            vo.setPermissions(permMap.getOrDefault(vo.getId(), List.of()));
+            vo.setRoles(roleMap.getOrDefault(vo.getId(), List.of()));
+        }
     }
 
     /**
@@ -175,7 +189,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             }
         }
 
-        isSuccess(adminUserAndRoleMapper.assignRole(assignRoleDTO.getUserId(), assignRoleDTO.getRoleId()));
+        checkSuccess(adminUserAndRoleMapper.assignRole(assignRoleDTO.getUserId(), assignRoleDTO.getRoleId()));
     }
 
     /**
@@ -186,7 +200,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     @Override
     public void removeRole(AssignRoleDTO assignRoleDTO) {
         for (Long l : assignRoleDTO.getUserId()) {
-            if (l == 1) {
+            if (Objects.equals(l, 1L)) {
                 throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
             }
         }
@@ -199,17 +213,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
             }
         }
 
-        isSuccess(adminUserAndRoleMapper.removeRole(assignRoleDTO.getUserId(), assignRoleDTO.getRoleId()));
+        checkSuccess(adminUserAndRoleMapper.removeRole(assignRoleDTO.getUserId(), assignRoleDTO.getRoleId()));
     }
 
-    /**
-     * 是否成功
-     *
-     * @param i
-     */
-    public void isSuccess(Integer i) {
-        if (i == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
 }

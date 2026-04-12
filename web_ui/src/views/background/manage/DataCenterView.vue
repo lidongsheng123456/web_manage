@@ -68,7 +68,7 @@ import { queryData } from '@/api/admin_request/DataCenterRequest'
 import { Avatar, Bell, Collection, Connection, DataAnalysis, Document, Key, Search, Unlock, User, UserFilled } from '@element-plus/icons-vue'
 import { TransitionPresets, useTransition } from '@vueuse/core'
 import * as echarts from 'echarts'
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, reactive, ref } from 'vue'
 
 const lineRef = ref(null), pieRef = ref(null), barRef = ref(null), radarRef = ref(null)
 let lineChart, pieChart, barChart, radarChart
@@ -207,6 +207,14 @@ onMounted(() => {
   barChart = echarts.init(barRef.value); radarChart = echarts.init(radarRef.value)
   init()
   window.addEventListener('resize', onResize)
+})
+onActivated(() => {
+  // keep-alive 重新激活时，容器尺寸可能已变化，需要 resize
+  nextTick(() => onResize())
+})
+onDeactivated(() => {
+  // keep-alive 停用时移除监听，避免后台无意义触发
+  window.removeEventListener('resize', onResize)
 })
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)

@@ -1,8 +1,10 @@
 package com.example.service;
 
+import cn.hutool.crypto.digest.BCrypt;
 import com.example.common.config.AppConfig;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
+import com.example.common.redis.RedisCache;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
@@ -15,9 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.util.DigestUtils;
-
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,45 +31,49 @@ class UserWebServiceImplTest {
     @Mock
     private UserWebMapper userWebMapper;
 
+    @Mock
+    private RedisCache redisCache;
+
     private AppConfig appConfig;
     private UserWebServiceImpl userWebService;
 
     @BeforeEach
     void setUp() {
         appConfig = new AppConfig();
-        userWebService = new UserWebServiceImpl(userWebMapper, appConfig);
+        userWebService = new UserWebServiceImpl(userWebMapper, appConfig, redisCache);
     }
 
     // ========== validateCaptcha ==========
 
     @Test
-    @DisplayName("验证码正确且未过期")
+    @DisplayName("验证码正确应返回 false")
     void validateCaptchaCorrect() {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "xYz1");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("xYz1");
 
         assertFalse(userWebService.validateCaptcha("xyz1", session));
+        verify(redisCache).deleteObject(captchaKey);
     }
 
     @Test
-    @DisplayName("验证码正确但已过期")
-    void validateCaptchaExpired() {
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "xYz1");
-        session.setAttribute("date", new Date(System.currentTimeMillis() - 120_000L));
-
-        assertTrue(userWebService.validateCaptcha("xyz1", session));
-    }
-
-    @Test
-    @DisplayName("验证码错误")
+    @DisplayName("验证码错误应返回 true")
     void validateCaptchaWrong() {
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "xYz1");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("xYz1");
 
         assertTrue(userWebService.validateCaptcha("wrong", session));
+    }
+
+    @Test
+    @DisplayName("验证码不存在应返回 true")
+    void validateCaptchaNotExist() {
+        MockHttpSession session = new MockHttpSession();
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn(null);
+
+        assertTrue(userWebService.validateCaptcha("xyz1", session));
     }
 
     // ========== login ==========
@@ -84,7 +87,7 @@ class UserWebServiceImplTest {
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> userWebService.login(dto, session));
-        assertEquals(ResultCodeEnum.PARAM_LOST_ERROR.code, ex.getCode());
+        assertEquals(ResultCodeEnum.CAPTCHA_ERROR.code, ex.getCode());
     }
 
     @Test
@@ -96,8 +99,8 @@ class UserWebServiceImplTest {
         dto.setCode("wrong");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "right");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("right");
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> userWebService.login(dto, session));
@@ -113,8 +116,8 @@ class UserWebServiceImplTest {
         dto.setCode("abcd");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "abcd");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("abcd");
 
         when(userWebMapper.selectByUsername("user1")).thenReturn(null);
 
@@ -132,18 +135,18 @@ class UserWebServiceImplTest {
         dto.setCode("abcd");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "abcd");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("abcd");
 
         User user = new User();
         user.setId(1L);
         user.setUsername("user1");
-        user.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        user.setPassword(BCrypt.hashpw("123456"));
         when(userWebMapper.selectByUsername("user1")).thenReturn(user);
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> userWebService.login(dto, session));
-        assertEquals(ResultCodeEnum.USER_User_ERROR.code, ex.getCode());
+        assertEquals(ResultCodeEnum.USER_PASSWORD_ERROR.code, ex.getCode());
     }
 
     // ========== register ==========
@@ -157,7 +160,7 @@ class UserWebServiceImplTest {
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> userWebService.register(dto, session));
-        assertEquals(ResultCodeEnum.PARAM_LOST_ERROR.code, ex.getCode());
+        assertEquals(ResultCodeEnum.CAPTCHA_ERROR.code, ex.getCode());
     }
 
     @Test
@@ -169,8 +172,8 @@ class UserWebServiceImplTest {
         dto.setCode("wrong");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "right");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("right");
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> userWebService.register(dto, session));
@@ -186,8 +189,8 @@ class UserWebServiceImplTest {
         dto.setCode("abcd");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "abcd");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("abcd");
 
         when(userWebMapper.selectByUsername("existUser")).thenReturn(new User());
 
@@ -205,8 +208,8 @@ class UserWebServiceImplTest {
         dto.setCode("abcd");
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("captcha", "abcd");
-        session.setAttribute("date", new Date());
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        when(redisCache.getCacheObject(captchaKey)).thenReturn("abcd");
 
         when(userWebMapper.selectByUsername("newuser")).thenReturn(null);
         when(userWebMapper.register(any(UserDto.class))).thenReturn(1);

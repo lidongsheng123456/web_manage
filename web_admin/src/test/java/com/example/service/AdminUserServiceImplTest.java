@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.DigestUtils;
+import cn.hutool.crypto.digest.BCrypt;
 
 import java.util.List;
 
@@ -68,8 +68,7 @@ class AdminUserServiceImplTest {
 
         adminUserService.addUser(user);
 
-        String expectedPwd = DigestUtils.md5DigestAsHex("123456".getBytes());
-        assertEquals(expectedPwd, user.getPassword());
+        assertTrue(BCrypt.checkpw("123456", user.getPassword()));
         verify(adminUserMapper).addUser(user);
     }
 
@@ -90,8 +89,7 @@ class AdminUserServiceImplTest {
 
         adminUserService.addUser(user);
 
-        String expectedPwd = DigestUtils.md5DigestAsHex("abcdef".getBytes());
-        assertEquals(expectedPwd, user.getPassword());
+        assertTrue(BCrypt.checkpw("abcdef", user.getPassword()));
     }
 
     @Test
@@ -103,7 +101,7 @@ class AdminUserServiceImplTest {
 
         BusinessException ex = assertThrows(BusinessException.class,
                 () -> adminUserService.addUser(user));
-        assertEquals(ResultCodeEnum.PARAM_LOST_ERROR.code, ex.getCode());
+        assertEquals(ResultCodeEnum.SYSTEM_ERROR.code, ex.getCode());
     }
 
     // ========== batchDeleteUser ==========

@@ -77,11 +77,11 @@
     <div class="mobile-menu-overlay" v-show="mobileMenuOpen" @click="closeMobileMenu"></div>
 
     <router-view v-slot="{ Component }">
-      <keep-alive>
-        <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
-          <component :is="Component" />
-        </transition>
-      </keep-alive>
+      <transition :duration="{ enter: 300, leave: 150 }" mode="out-in" name="slide-fade">
+        <keep-alive>
+          <component :is="Component" :key="$route.path" />
+        </keep-alive>
+      </transition>
     </router-view>
   </div>
 </template>
@@ -109,6 +109,7 @@ let noticeTitle = ref(null)
 let top = ref(null)
 // 移动端菜单状态
 let mobileMenuOpen = ref(false)
+let noticeIntervalId = null
 
 // 切换移动端菜单
 const toggleMobileMenu = () => {
@@ -146,7 +147,7 @@ const loadNotice = () => {
     if (notice.value.length) {
       top.value = notice.value[0].noticeContent
       noticeTitle.value = notice.value[0].noticeTitle
-      setInterval(() => {
+      noticeIntervalId = setInterval(() => {
         top.value = notice.value[i].noticeContent
         noticeTitle.value = notice.value[i].noticeTitle
         i++
@@ -204,6 +205,10 @@ onMounted(() => {
 // 组件卸载时移除事件监听
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
+  if (noticeIntervalId) {
+    clearInterval(noticeIntervalId)
+    noticeIntervalId = null
+  }
 })
 </script>
 

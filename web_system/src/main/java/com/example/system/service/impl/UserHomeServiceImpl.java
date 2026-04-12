@@ -64,10 +64,12 @@ public class UserHomeServiceImpl implements UserHomeService {
         // 4.将没有命中缓存的商品，从数据库中查询出来，然后加载到缓存中
         if (ObjectUtil.isNotEmpty(noHitIdList)) {
             List<Notice> noHitNoticeList = userHomMapper.batchQueryNotice(noHitIdList);
-            // 将没有命中的文化项目加入到缓存中
+            // 将没有命中的文化项目加入到缓存中，设置 TTL 防止缓存永不过期
             String prefix = appConfig.getCache().getNoticePrefix();
             Map<String, Notice> noHitNoticeMap = noHitNoticeList.stream().collect(Collectors.toMap(notice1 -> prefix + notice1.getId().toString(), Function.identity()));
-            redisCache.getRedisTemplate().opsForValue().multiSet(noHitNoticeMap);
+            for (Map.Entry<String, Notice> entry : noHitNoticeMap.entrySet()) {
+                redisCache.setCacheObject(entry.getKey(), entry.getValue(), appConfig.getCache().getPermTtlMinutes(), java.util.concurrent.TimeUnit.MINUTES);
+            }
             cacheNoticeMap.putAll(noHitNoticeMap);
         }
 

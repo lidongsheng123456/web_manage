@@ -11,6 +11,7 @@ import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
+import com.example.common.redis.RedisCache;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Tag(name = "web相关接口")
 @RequestMapping("/admin")
@@ -34,6 +35,7 @@ public class AdminWebController {
 
     private final AdminWebService adminWebService;
     private final AppConfig appConfig;
+    private final RedisCache redisCache;
 
     /**
      * 登录后台
@@ -68,9 +70,10 @@ public class AdminWebController {
         try {
             // 输出到页面
             lineCaptcha.write(response.getOutputStream());
-            // 将 生成的验证码 和 验证码生成时间 存储到session中
-            session.setAttribute(appConfig.getCaptcha().getSessionKey(), lineCaptcha.getCode());
-            session.setAttribute(appConfig.getCaptcha().getSessionDateKey(), new Date());
+            // 将验证码存储到 Redis，以 sessionId 为 key，设置过期时间
+            String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+            redisCache.setCacheObject(captchaKey, lineCaptcha.getCode(),
+                    (int) (appConfig.getCaptcha().getExpiration() / 1000), TimeUnit.SECONDS);
             // 关闭流
             response.getOutputStream().close();
         } catch (IOException e) {

@@ -13,6 +13,8 @@ import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.example.common.util.ServiceUtil.checkSuccess;
+
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class AdminComQueryServiceImpl implements AdminComQueryService {
     @Override
     @AutoFill(BusinessType.INSERT)
     public void addComQuery(ComQuery comQuery) {
-        isSuccess(adminDictMapper.addComQuery(comQuery));
+        checkSuccess(adminDictMapper.addComQuery(comQuery));
     }
 
     /**
@@ -44,7 +46,7 @@ public class AdminComQueryServiceImpl implements AdminComQueryService {
             throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
 
-        isSuccess(adminDictMapper.batchDeleteComQuery(ids));
+        checkSuccess(adminDictMapper.batchDeleteComQuery(ids));
     }
 
     /**
@@ -55,7 +57,7 @@ public class AdminComQueryServiceImpl implements AdminComQueryService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updateComQuery(ComQuery comQuery) {
-        isSuccess(adminDictMapper.updateComQuery(comQuery));
+        checkSuccess(adminDictMapper.updateComQuery(comQuery));
     }
 
     /**
@@ -98,14 +100,4 @@ public class AdminComQueryServiceImpl implements AdminComQueryService {
         return adminDictMapper.queryComQueryById(id);
     }
 
-    /**
-     * 是否成功
-     *
-     * @param i
-     */
-    public void isSuccess(Integer i) {
-        if (i == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
 }

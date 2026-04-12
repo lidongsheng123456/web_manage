@@ -10,6 +10,7 @@ import com.example.common.exception.BusinessException;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
+import com.example.common.redis.RedisCache;
 import com.example.system.mapper.AdminRbacMapper;
 import com.example.system.mapper.AdminWebMapper;
 import com.example.system.service.AdminWebService;
@@ -17,9 +18,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-
-import java.util.Date;
+import cn.hutool.crypto.digest.BCrypt;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +27,7 @@ public class AdminWebServiceImpl implements AdminWebService {
     private final AdminWebMapper adminWebMapper;
     private final AdminRbacMapper adminRbacMapper;
     private final AppConfig appConfig;
+    private final RedisCache redisCache;
 
     /**
      * 登录后台
@@ -53,12 +53,10 @@ public class AdminWebServiceImpl implements AdminWebService {
             throw new BusinessException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
 
-        //密码比对
-        //对前端传过来的明文密码进行md5加密处理
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
-        if (!password.equals(user.getPassword())) {
+        //密码比对 BCrypt
+        if (!BCrypt.checkpw(password, user.getPassword())) {
             //密码错误
-            throw new BusinessException(ResultCodeEnum.USER_User_ERROR);
+            throw new BusinessException(ResultCodeEnum.USER_PASSWORD_ERROR);
         }
 
         UserVo userVo = new UserVo();
@@ -78,17 +76,13 @@ public class AdminWebServiceImpl implements AdminWebService {
      * @return
      */
     public Boolean validateCaptcha(String captcha, HttpSession session) {
-        // 获取存储的验证码和生成时间
-        String code = (String) session.getAttribute(appConfig.getCaptcha().getSessionKey());
-        Date createTime = (Date) session.getAttribute(appConfig.getCaptcha().getSessionDateKey());
-        System.out.println("用户验证码->" + captcha);
-        System.out.println("正确验证码->" + code);
+        // 从 Redis 获取验证码
+        String captchaKey = appConfig.getCaptcha().getSessionKey() + ":" + session.getId();
+        String code = redisCache.getCacheObject(captchaKey);
+        // 校验后立即删除，防止重放攻击
+        redisCache.deleteObject(captchaKey);
         // 判断验证码是否正确(验证码一般忽略大小写)
-        if (captcha.equalsIgnoreCase(code)) {
-            // 判断验证码是否过时
-            return createTime == null || System.currentTimeMillis() - createTime.getTime() > appConfig.getCaptcha().getExpiration();
-        }
-        return true;
+        return code == null || !captcha.equalsIgnoreCase(code);
     }
 
     /**
@@ -106,7 +100,7 @@ public class AdminWebServiceImpl implements AdminWebService {
         }
 
         if (ObjectUtil.isNotEmpty(user.getPassword())) {
-            user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+            user.setPassword(BCrypt.hashpw(user.getPassword()));
         }
 
         user.setId(loginIdAsLong);
@@ -129,10 +123,8 @@ public class AdminWebServiceImpl implements AdminWebService {
             throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
         }
 
-        String password = DigestUtils.md5DigestAsHex(formerPassword.getBytes());
-
         User user = adminWebMapper.selectByUserId(loginIdAsLong);
-        if (!user.getPassword().equals(password)) {
+        if (!BCrypt.checkpw(formerPassword, user.getPassword())) {
             throw new BusinessException(ResultCodeEnum.PASSWORD_ERROR);
         }
     }

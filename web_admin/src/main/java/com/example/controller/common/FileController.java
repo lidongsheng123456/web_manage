@@ -63,6 +63,7 @@ public class FileController {
      * @param file
      * @return
      */
+    @SaCheckLogin
     @Operation(summary = "上传文件")
     @PostMapping("/upload")
     public Result upload(MultipartFile file) {

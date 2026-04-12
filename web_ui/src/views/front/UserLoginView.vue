@@ -39,9 +39,7 @@
 import { captcha, login } from "@/api/front_request/WebRequest";
 import router from "@/router";
 import { ElMessage } from "element-plus";
-import { onMounted, ref } from 'vue';
-
-const uploadUrl = import.meta.env.VUE_APP_BASEURL
+import { onMounted, onUnmounted, ref } from 'vue';
 const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);
@@ -83,6 +81,9 @@ const logIn = () => {
 const getCaptcha = () => {
   captcha().then(imageUrl => {
     if (imageUrl) {
+      if (codeUrl.value) {
+        URL.revokeObjectURL(codeUrl.value);
+      }
       codeUrl.value = imageUrl;
     }
   }).catch(error => {
@@ -92,6 +93,12 @@ const getCaptcha = () => {
 
 onMounted(() => {
   getCaptcha();
+});
+
+onUnmounted(() => {
+  if (codeUrl.value) {
+    URL.revokeObjectURL(codeUrl.value);
+  }
 });
 </script>
 

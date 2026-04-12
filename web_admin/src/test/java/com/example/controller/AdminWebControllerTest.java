@@ -4,6 +4,7 @@ import com.example.common.config.AppConfig;
 import com.example.common.entity.Result;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
+import com.example.common.redis.RedisCache;
 import com.example.controller.admin.AdminWebController;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
@@ -15,8 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpSession;
-
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,13 +30,16 @@ class AdminWebControllerTest {
     @Mock
     private AdminWebService adminWebService;
 
+    @Mock
+    private RedisCache redisCache;
+
     private AppConfig appConfig;
     private AdminWebController controller;
 
     @BeforeEach
     void setUp() throws Exception {
         appConfig = new AppConfig();
-        controller = new AdminWebController(adminWebService, appConfig);
+        controller = new AdminWebController(adminWebService, appConfig, redisCache);
     }
 
     @Test
@@ -76,33 +78,19 @@ class AdminWebControllerTest {
     }
 
     @Test
-    @DisplayName("getCaptcha 应设置 session 属性")
-    void getCaptchaSetsSessionAttributes() throws Exception {
+    @DisplayName("getCaptcha 应将验证码存储到 Redis")
+    void getCaptchaSetsRedisCache() throws Exception {
         MockHttpSession session = new MockHttpSession();
         org.springframework.mock.web.MockHttpServletResponse response =
                 new org.springframework.mock.web.MockHttpServletResponse();
 
         controller.getCaptcha(session, response);
 
-        assertNotNull(session.getAttribute(appConfig.getCaptcha().getSessionKey()));
-        assertNotNull(session.getAttribute(appConfig.getCaptcha().getSessionDateKey()));
+        // 验证 Redis 被调用存储验证码
+        verify(redisCache).setCacheObject(
+                eq(appConfig.getCaptcha().getSessionKey() + ":" + session.getId()),
+                anyString(), anyInt(), any());
         assertEquals("image/jpeg", response.getContentType());
-    }
-
-    @Test
-    @DisplayName("getCaptcha 自定义 session key 应生效")
-    void getCaptchaCustomSessionKey() throws Exception {
-        appConfig.getCaptcha().setSessionKey("myCode");
-        appConfig.getCaptcha().setSessionDateKey("myDate");
-
-        MockHttpSession session = new MockHttpSession();
-        org.springframework.mock.web.MockHttpServletResponse response =
-                new org.springframework.mock.web.MockHttpServletResponse();
-
-        controller.getCaptcha(session, response);
-
-        assertNotNull(session.getAttribute("myCode"));
-        assertNotNull(session.getAttribute("myDate"));
     }
 
     @Test

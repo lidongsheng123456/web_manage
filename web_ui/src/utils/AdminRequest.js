@@ -36,6 +36,11 @@ adminRequest.interceptors.response.use(response => {
         } else {
             return res
         }
+    },
+    error => {
+        const msg = error.response ? `请求失败: ${error.response.status}` : '网络异常，请检查网络连接';
+        ElMessage.error(msg);
+        return Promise.reject(error);
     }
 )
 

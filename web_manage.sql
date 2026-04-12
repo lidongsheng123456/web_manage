@@ -37,7 +37,7 @@ CREATE TABLE `front_user`  (
 -- ----------------------------
 -- Records of front_user
 -- ----------------------------
-INSERT INTO `front_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1772341107029-cat.png', '2025-04-24 10:33:25', '2026-03-01 12:58:28');
+INSERT INTO `front_user` VALUES (1, 'admin', '$2b$12$t0hPX9SqUpAl0GrPWRUBQe7SypLfwiBbD9d2/lG7GKYDrekEmTnNO', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1772341107029-cat.png', '2025-04-24 10:33:25', '2026-03-01 12:58:28');
 
 -- ----------------------------
 -- Table structure for sys_com_query
@@ -320,7 +320,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1746076011429-cat.png', '2025-01-19 13:54:17', '2026-03-01 12:58:43');
+INSERT INTO `sys_user` VALUES (1, 'admin', '$2b$12$t0hPX9SqUpAl0GrPWRUBQe7SypLfwiBbD9d2/lG7GKYDrekEmTnNO', 'admin', '19976898057', '208550738@qq.com', 'http://localhost:8088/common/files/1746076011429-cat.png', '2025-01-19 13:54:17', '2026-03-01 12:58:43');
 
 -- ----------------------------
 -- Table structure for sys_user_role

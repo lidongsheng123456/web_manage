@@ -99,15 +99,12 @@ class UserHomeServiceImplTest {
         n2.setNoticeTitle("通知2");
         when(userHomMapper.batchQueryNotice(anyList())).thenReturn(List.of(n2));
 
-        when(redisCache.getRedisTemplate()).thenReturn(redisTemplate);
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-
         List<Object> result = userHomeService.queryNotice(notice);
 
         // 验证批量查询被调用
         verify(userHomMapper).batchQueryNotice(anyList());
-        // 验证 multiSet 被调用
-        verify(valueOperations).multiSet(anyMap());
+        // 验证 setCacheObject 被调用回填缓存
+        verify(redisCache).setCacheObject(eq("notice:2"), eq(n2), anyInt(), any());
     }
 
     @Test

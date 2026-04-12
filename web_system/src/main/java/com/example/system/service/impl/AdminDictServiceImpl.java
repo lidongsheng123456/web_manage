@@ -13,6 +13,8 @@ import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.example.common.util.ServiceUtil.checkSuccess;
+
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class AdminDictServiceImpl implements AdminDictService {
     @Override
     @AutoFill(BusinessType.INSERT)
     public void addDict(Dict dict) {
-        isSuccess(adminDictMapper.addDict(dict));
+        checkSuccess(adminDictMapper.addDict(dict));
     }
 
     /**
@@ -44,7 +46,7 @@ public class AdminDictServiceImpl implements AdminDictService {
             throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
 
-        isSuccess(adminDictMapper.batchDeleteDict(ids));
+        checkSuccess(adminDictMapper.batchDeleteDict(ids));
     }
 
     /**
@@ -55,7 +57,7 @@ public class AdminDictServiceImpl implements AdminDictService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updateDict(Dict dict) {
-        isSuccess(adminDictMapper.updateDict(dict));
+        checkSuccess(adminDictMapper.updateDict(dict));
     }
 
     /**
@@ -98,14 +100,4 @@ public class AdminDictServiceImpl implements AdminDictService {
         return adminDictMapper.queryDictById(id);
     }
 
-    /**
-     * 是否成功
-     *
-     * @param i
-     */
-    public void isSuccess(Integer i) {
-        if (i == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
 }

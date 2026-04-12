@@ -16,7 +16,7 @@ public enum ResultCodeEnum {
     SYSTEM_ERROR(500, "系统异常"),
     USER_EXIST_ERROR(5001, "用户名已存在"),
     USER_NOT_LOGIN(5002, "用户未登录"),
-    USER_User_ERROR(5003, "密码错误"),
+    USER_PASSWORD_ERROR(5003, "密码错误"),
     USER_NOT_EXIST_ERROR(5004, "用户不存在"),
     PARAM_PASSWORD_ERROR(5005, "原密码输入错误"),
     FILES_UPLOAD_ERROR(5006, "文件上传失败"),

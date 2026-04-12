@@ -38,7 +38,7 @@ public class AutoFillAspect {
         //获取到当前被拦截的方法上的数据库操作类型
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();//方法签名对象
         AutoFill autoFill = signature.getMethod().getAnnotation(AutoFill.class);//获得方法上的注解对象
-        BusinessType BusinessType = autoFill.value();//获得数据库操作类型
+        BusinessType businessType = autoFill.value();//获得数据库操作类型
 
         //获取到当前被拦截的方法的参数 -- 实体对象
         Object[] args = joinPoint.getArgs();
@@ -55,7 +55,7 @@ public class AutoFillAspect {
         LocalDateTime now = LocalDateTime.now();
 
         //根据当前不同的操作类型,为对应的属性赋值通过反射赋值
-        if (BusinessType == BusinessType.INSERT) {
+        if (businessType == BusinessType.INSERT) {
             try {
                 //反射获取到方法形参对象的set方法，并指定方法的参数类型为LocalDateTime
                 Method setCreateTime = pojo.getClass().getDeclaredMethod(MethodEnum.SET_CREATE_TIME.str, LocalDateTime.class);
@@ -69,7 +69,7 @@ public class AutoFillAspect {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if (BusinessType == BusinessType.UPDATE) {
+        } else if (businessType == BusinessType.UPDATE) {
             try {
                 //反射获取到方法形参对象上的set方法，并指定方法的参数类型为LocalDateTime
                 Method setUpdateTime = pojo.getClass().getDeclaredMethod(MethodEnum.SET_UPDATE_TIME.str, LocalDateTime.class);

@@ -11,6 +11,8 @@ import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.example.common.util.ServiceUtil.checkSuccess;
+
 import java.util.List;
 
 @Service
@@ -30,7 +32,7 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
             throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
 
-        isSuccess(adminOperLogMapper.batchDeleteOperLog(ids));
+        checkSuccess(adminOperLogMapper.batchDeleteOperLog(ids));
     }
 
     /**
@@ -43,7 +45,7 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
         if (ObjectUtil.isEmpty(operlog.getId())) {
             throw new BusinessException(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        isSuccess(adminOperLogMapper.updateOperLog(operlog));
+        checkSuccess(adminOperLogMapper.updateOperLog(operlog));
     }
 
     /**
@@ -86,14 +88,4 @@ public class AdminOperLogServiceImpl implements AdminOperLogService {
         return adminOperLogMapper.queryOperLogById(id);
     }
 
-    /**
-     * 是否成功
-     *
-     * @param i
-     */
-    public void isSuccess(Integer i) {
-        if (i == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
 }

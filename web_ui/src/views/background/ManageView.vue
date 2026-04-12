@@ -8,7 +8,7 @@
             毕设脚手架
           </h2>
         </div>
-        <el-menu :default-openeds="['2', '3', '4']" :router="true" class="el-menu-vertical-demo" default-active="1">
+        <el-menu :default-openeds="['4']" :router="true" class="el-menu-vertical-demo" default-active="1">
           <el-menu-item index="/Manage/ManageDataView">
             <el-icon>
               <Promotion />
@@ -153,11 +153,11 @@
         </el-header>
         <el-main>
           <router-view v-slot="{ Component }">
-            <keep-alive>
-              <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
-                <component :is="Component" />
-              </transition>
-            </keep-alive>
+            <transition :duration="{ enter: 300, leave: 150 }" mode="out-in" name="slide-fade">
+              <keep-alive>
+                <component :is="Component" :key="$route.path" />
+              </keep-alive>
+            </transition>
           </router-view>
         </el-main>
       </el-container>
@@ -193,8 +193,6 @@ const userStore = useUserStore();
 let userInfo = ref({});
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
-// 上传的ip和端口号
-const uploadUrl = import.meta.env.VUE_APP_BASEURL
 const editableTabs = ref([
   {
     title: '首页',

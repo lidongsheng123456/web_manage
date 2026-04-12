@@ -20,9 +20,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
+import cn.hutool.crypto.digest.BCrypt;
+
+import static com.example.common.util.ServiceUtil.checkSuccess;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +47,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     @AutoFill(BusinessType.INSERT)
     @Transactional
     public void addUser(User user) {
-        user.setPassword(DigestUtils.md5DigestAsHex(appConfig.getDefaultPassword().getBytes()));
-        isSuccess(adminUserMapper.addUser(user));
-        isSuccess(adminUserAndRoleMapper.addUserAndRoleId(user.getId(), RoleEnum.USER.roleId));
+        user.setPassword(BCrypt.hashpw(appConfig.getDefaultPassword()));
+        checkSuccess(adminUserMapper.addUser(user));
+        checkSuccess(adminUserAndRoleMapper.addUserAndRoleId(user.getId(), RoleEnum.USER.roleId));
     }
 
     /**
@@ -61,14 +65,14 @@ public class AdminUserServiceImpl implements AdminUserService {
         }
 
         for (Long id : ids) {
-            if (id == 1) {
+            if (Objects.equals(id, 1L)) {
                 throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
             }
         }
 
         adminNoticeMapper.batchDeleteNoticeByUserIds(ids);
         adminUserAndRoleMapper.batchDeleteUserAndRoleByUserId(ids);
-        isSuccess(adminUserMapper.batchDeleteUser(ids));
+        checkSuccess(adminUserMapper.batchDeleteUser(ids));
     }
 
     /**
@@ -79,11 +83,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     @AutoFill(BusinessType.UPDATE)
     public void updateUser(User user) {
-        if (user.getId() == 1) {
+        if (Objects.equals(user.getId(), 1L)) {
             throw new BusinessException(ResultCodeEnum.BAN_OPERATE_SUPER_ADMIN_ERROR);
         }
 
-        isSuccess(adminUserMapper.updateUser(user));
+        checkSuccess(adminUserMapper.updateUser(user));
     }
 
     /**
@@ -99,12 +103,28 @@ public class AdminUserServiceImpl implements AdminUserService {
         PageHelper.startPage(currentPage, pageSize);
         List<UserVo> list = adminUserMapper.queryUser(user);
         if (ObjectUtil.isNotEmpty(list)) {
-            for (UserVo userVo : list) {
-                userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
-                userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
-            }
+            fillPermissionsAndRoles(list);
         }
         return PageInfo.of(list);
+    }
+
+    /**
+     * 批量填充用户权限和角色（解决 N+1 查询问题）
+     */
+    private void fillPermissionsAndRoles(List<UserVo> list) {
+        List<Long> userIds = list.stream().map(UserVo::getId).toList();
+        // 批量查询权限和角色（各1次SQL）
+        List<Map<String, Object>> allPerms = adminRbacMapper.getBatchPermissionList(userIds);
+        List<Map<String, Object>> allRoles = adminRbacMapper.getBatchRoleList(userIds);
+        // 按 user_id 分组
+        Map<Long, List<Map<String, Object>>> permMap = allPerms.stream()
+                .collect(java.util.stream.Collectors.groupingBy(m -> ((Number) m.get("user_id")).longValue()));
+        Map<Long, List<Map<String, Object>>> roleMap = allRoles.stream()
+                .collect(java.util.stream.Collectors.groupingBy(m -> ((Number) m.get("user_id")).longValue()));
+        for (UserVo vo : list) {
+            vo.setPermissions(permMap.getOrDefault(vo.getId(), List.of()));
+            vo.setRoles(roleMap.getOrDefault(vo.getId(), List.of()));
+        }
     }
 
     /**
@@ -137,14 +157,4 @@ public class AdminUserServiceImpl implements AdminUserService {
         return userVo;
     }
 
-    /**
-     * 是否成功
-     *
-     * @param i
-     */
-    public void isSuccess(Integer i) {
-        if (i == 0) {
-            throw new BusinessException(ResultCodeEnum.SYSTEM_ERROR);
-        }
-    }
 }

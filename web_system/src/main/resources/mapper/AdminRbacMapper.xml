@@ -21,4 +21,28 @@
         where ur.role_id = r.id
           and ur.user_id = #{loginId}
     </select>
+
+    <select id="getBatchPermissionList" resultType="java.util.Map">
+        select distinct ur.user_id, p.permission_code
+        from sys_user_role ur,
+             sys_role_permission rp,
+             sys_permission p
+        where ur.role_id = rp.role_id
+          and rp.permission_id = p.id
+          and ur.user_id in
+        <foreach collection="userIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getBatchRoleList" resultType="java.util.Map">
+        select distinct ur.user_id, r.role_code
+        from sys_user_role ur,
+             sys_role r
+        where ur.role_id = r.id
+          and ur.user_id in
+        <foreach collection="userIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

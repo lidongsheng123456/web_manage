@@ -30,13 +30,10 @@
 </template>
 
 <script setup>
-import { captcha, login } from "@/api/admin_request/WebRequest";
+import { captcha, login, queryCurrentUser } from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import axios from "axios";
 import { ElMessage } from "element-plus";
-import { onMounted, ref } from 'vue';
-
-const uploadUrl = import.meta.env.VUE_APP_BASEURL
+import { onMounted, onUnmounted, ref } from 'vue';
 const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);
@@ -78,6 +75,10 @@ const logIn = () => {
 const getCaptcha = () => {
   captcha().then(imageUrl => {
     if (imageUrl) {
+      // 释放旧的 Blob URL 防止内存泄漏
+      if (codeUrl.value) {
+        URL.revokeObjectURL(codeUrl.value);
+      }
       codeUrl.value = imageUrl;
     }
   }).catch(error => {
@@ -85,19 +86,23 @@ const getCaptcha = () => {
   });
 };
 
-const getNotice = () => {
-  axios.get(uploadUrl + '/admin/notice').then(res => {
-    if (res.data.code === 200) {
+const checkSession = () => {
+  queryCurrentUser().then(res => {
+    if (res.code === 200) {
       router.push('/Manage');
     }
-  }).catch(error => {
-    console.log(error)
-  });
+  }).catch(() => { });
 }
 
 onMounted(() => {
   getCaptcha();
-  getNotice()
+  checkSession();
+});
+
+onUnmounted(() => {
+  if (codeUrl.value) {
+    URL.revokeObjectURL(codeUrl.value);
+  }
 });
 </script>
 
