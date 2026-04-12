@@ -4,135 +4,124 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.system.mapper.AdminDataCenterMapper">
+    <!-- 最近7天统计：后台用户 -->
     <select id="userCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
-        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
-                              UNION ALL
-                              SELECT 'Tuesday'
-                              UNION ALL
-                              SELECT 'Wednesday'
-                              UNION ALL
-                              SELECT 'Thursday'
-                              UNION ALL
-                              SELECT 'Friday'
-                              UNION ALL
-                              SELECT 'Saturday'
-                              UNION ALL
-                              SELECT 'Sunday')
-        SELECT d.day_of_week,
-               COALESCE(COUNT(l.create_time), 0) AS count
-        FROM days_of_week d
-                 LEFT JOIN
-             sys_user l
-             ON
-                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
-                                     WHEN 2 THEN 'Monday'
-                                     WHEN 3 THEN 'Tuesday'
-                                     WHEN 4 THEN 'Wednesday'
-                                     WHEN 5 THEN 'Thursday'
-                                     WHEN 6 THEN 'Friday'
-                                     WHEN 7 THEN 'Saturday'
-                                     WHEN 1 THEN 'Sunday'
-                     END
-        GROUP BY d.day_of_week
-        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_user l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
     </select>
 
+    <!-- 最近7天统计：系统通知 -->
     <select id="noticeCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
-        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
-                              UNION ALL
-                              SELECT 'Tuesday'
-                              UNION ALL
-                              SELECT 'Wednesday'
-                              UNION ALL
-                              SELECT 'Thursday'
-                              UNION ALL
-                              SELECT 'Friday'
-                              UNION ALL
-                              SELECT 'Saturday'
-                              UNION ALL
-                              SELECT 'Sunday')
-        SELECT d.day_of_week,
-               COALESCE(COUNT(l.create_time), 0) AS count
-        FROM days_of_week d
-                 LEFT JOIN
-             sys_notice l
-             ON
-                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
-                                     WHEN 2 THEN 'Monday'
-                                     WHEN 3 THEN 'Tuesday'
-                                     WHEN 4 THEN 'Wednesday'
-                                     WHEN 5 THEN 'Thursday'
-                                     WHEN 6 THEN 'Friday'
-                                     WHEN 7 THEN 'Saturday'
-                                     WHEN 1 THEN 'Sunday'
-                     END
-        GROUP BY d.day_of_week
-        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_notice l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
     </select>
 
+    <!-- 最近7天统计：操作日志 -->
     <select id="operLogCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
-        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
-                              UNION ALL
-                              SELECT 'Tuesday'
-                              UNION ALL
-                              SELECT 'Wednesday'
-                              UNION ALL
-                              SELECT 'Thursday'
-                              UNION ALL
-                              SELECT 'Friday'
-                              UNION ALL
-                              SELECT 'Saturday'
-                              UNION ALL
-                              SELECT 'Sunday')
-        SELECT d.day_of_week,
-               COALESCE(COUNT(l.oper_time), 0) AS count
-        FROM days_of_week d
-                 LEFT JOIN
-             sys_oper_log l
-             ON
-                 d.day_of_week = CASE DAYOFWEEK(l.oper_time)
-                                     WHEN 2 THEN 'Monday'
-                                     WHEN 3 THEN 'Tuesday'
-                                     WHEN 4 THEN 'Wednesday'
-                                     WHEN 5 THEN 'Thursday'
-                                     WHEN 6 THEN 'Friday'
-                                     WHEN 7 THEN 'Saturday'
-                                     WHEN 1 THEN 'Sunday'
-                     END
-        GROUP BY d.day_of_week
-        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_oper_log l ON DATE(l.oper_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
     </select>
 
+    <!-- 最近7天统计：访问权限 -->
     <select id="permissionCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
-        WITH days_of_week AS (SELECT 'Monday' AS day_of_week
-                              UNION ALL
-                              SELECT 'Tuesday'
-                              UNION ALL
-                              SELECT 'Wednesday'
-                              UNION ALL
-                              SELECT 'Thursday'
-                              UNION ALL
-                              SELECT 'Friday'
-                              UNION ALL
-                              SELECT 'Saturday'
-                              UNION ALL
-                              SELECT 'Sunday')
-        SELECT d.day_of_week,
-               COALESCE(COUNT(l.create_time), 0) AS count
-        FROM days_of_week d
-                 LEFT JOIN
-             sys_permission l
-             ON
-                 d.day_of_week = CASE DAYOFWEEK(l.create_time)
-                                     WHEN 2 THEN 'Monday'
-                                     WHEN 3 THEN 'Tuesday'
-                                     WHEN 4 THEN 'Wednesday'
-                                     WHEN 5 THEN 'Thursday'
-                                     WHEN 6 THEN 'Friday'
-                                     WHEN 7 THEN 'Saturday'
-                                     WHEN 1 THEN 'Sunday'
-                     END
-        GROUP BY d.day_of_week
-        ORDER BY FIELD(d.day_of_week, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_permission l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：前台用户 -->
+    <select id="frontUserCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN front_user l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：系统角色 -->
+    <select id="roleCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_role l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：字典数据 -->
+    <select id="dictDataCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_dict_data l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：通用查询 -->
+    <select id="comQueryCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_com_query l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：角色权限 -->
+    <select id="rolePermissionCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_role_permission l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 最近7天统计：用户角色 -->
+    <select id="userRoleCount" resultType="com.example.system.domain.vo.DataCountTypeVo">
+        SELECT DATE_FORMAT(d.dt, '%m-%d') AS day_of_week, COALESCE(COUNT(l.id), 0) AS count
+        FROM (SELECT CURDATE() - INTERVAL a DAY AS dt FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) n) d
+        LEFT JOIN sys_user_role l ON DATE(l.create_time) = d.dt
+        GROUP BY d.dt ORDER BY d.dt
+    </select>
+
+    <!-- 各表总记录数 -->
+    <select id="totalUserCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_user
+    </select>
+
+    <select id="totalNoticeCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_notice
+    </select>
+
+    <select id="totalOperLogCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_oper_log
+    </select>
+
+    <select id="totalPermissionCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_permission
+    </select>
+
+    <select id="totalFrontUserCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM front_user
+    </select>
+
+    <select id="totalRoleCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_role
+    </select>
+
+    <select id="totalDictDataCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_dict_data
+    </select>
+
+    <select id="totalComQueryCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_com_query
+    </select>
+
+    <select id="totalRolePermissionCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_role_permission
+    </select>
+
+    <select id="totalUserRoleCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM sys_user_role
     </select>
 </mapper>
