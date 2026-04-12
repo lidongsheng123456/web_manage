@@ -6,26 +6,21 @@
           <div slot="header" class="clearfix">
             <span>个人信息</span>
           </div>
-          <el-divider/>
+          <el-divider />
           <div class="text item">
-            <el-upload
-                :action="uploadUrl + '/common/files/upload'"
-                :before-upload="beforeAvatarUpload"
-                :on-success="handleAvatarSuccess"
-                :show-file-list="false"
-                class="avatar-uploader"
-                style="text-align: center"
-            >
-              <img v-if="userInfo.imgUrl" :src="userInfo.imgUrl" alt="" class="avatar"/>
+            <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
+              :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader"
+              style="text-align: center">
+              <img v-if="userInfo.imgUrl" :src="userInfo.imgUrl" alt="" class="avatar" />
               <el-icon v-else class="avatar-uploader-icon">
-                <Plus/>
+                <Plus />
               </el-icon>
             </el-upload>
-            <el-divider/>
+            <el-divider />
             <div style="display: flex;justify-content: space-between">
               <div style="display: flex; align-items: center;">
                 <el-icon>
-                  <UserFilled/>
+                  <UserFilled />
                 </el-icon>
                 <span>用户名称</span>
               </div>
@@ -33,11 +28,11 @@
                 {{ userInfo.username }}
               </div>
             </div>
-            <el-divider/>
+            <el-divider />
             <div style="display: flex;justify-content: space-between">
               <div style="display: flex; align-items: center;">
                 <el-icon>
-                  <PhoneFilled/>
+                  <PhoneFilled />
                 </el-icon>
                 <span>手机号码</span>
               </div>
@@ -45,11 +40,11 @@
                 {{ userInfo.phone }}
               </div>
             </div>
-            <el-divider/>
+            <el-divider />
             <div style="display: flex;justify-content: space-between">
               <div style="display: flex; align-items: center;">
                 <el-icon>
-                  <Message/>
+                  <Message />
                 </el-icon>
                 <span>邮箱</span>
               </div>
@@ -57,11 +52,11 @@
                 {{ userInfo.email }}
               </div>
             </div>
-            <el-divider/>
+            <el-divider />
             <div style="display: flex;justify-content: space-between">
               <div style="display: flex; align-items: center;">
                 <el-icon>
-                  <Avatar/>
+                  <Avatar />
                 </el-icon>
                 <span>角色</span>
               </div>
@@ -69,11 +64,11 @@
                 {{ roleCodes }}
               </div>
             </div>
-            <el-divider/>
+            <el-divider />
             <div style="display: flex;justify-content: space-between">
               <div style="display: flex; align-items: center;">
                 <el-icon>
-                  <Watch/>
+                  <Watch />
                 </el-icon>
                 <span>创建时间</span>
               </div>
@@ -81,7 +76,7 @@
                 {{ userInfo.createTime }}
               </div>
             </div>
-            <el-divider/>
+            <el-divider />
           </div>
         </el-card>
       </el-col>
@@ -90,7 +85,7 @@
           <div slot="header" class="clearfix">
             <span>基本资料</span>
           </div>
-          <el-divider/>
+          <el-divider />
           <div class="text item">
             <el-row>
               <el-col :span="4">
@@ -100,8 +95,8 @@
                 <router-link to="/Manage/ManagePersonView/ManagePersonPasswordView">修改密码</router-link>
               </el-col>
             </el-row>
-            <el-divider/>
-            <router-view :userInfo="userInfo" @updateUserInfo="getUserInfo"/>
+            <el-divider />
+            <router-view :userInfo="userInfo" @updateUserInfo="getUserInfo" />
           </div>
         </el-card>
       </el-col>
@@ -110,12 +105,12 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import store from "@/store";
-import {Avatar, Message, PhoneFilled, Plus, UserFilled, Watch} from "@element-plus/icons-vue";
-import {ElMessage} from "element-plus";
-import {updatePerson} from "@/api/admin_request/WebRequest";
+import { updatePerson } from "@/api/admin_request/WebRequest";
 import router from "@/router";
+import store from "@/store";
+import { Avatar, Message, PhoneFilled, Plus, UserFilled, Watch } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
+import { computed, onMounted, ref } from "vue";
 
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
@@ -149,7 +144,7 @@ const handleAvatarSuccess = (response, uploadFile) => {
     return
   }
   userInfo.value.imgUrl = response.data;
-  updatePerson({id: userInfo.value.id, imgUrl: userInfo.value.imgUrl}).then(response => {
+  updatePerson({ id: userInfo.value.id, imgUrl: userInfo.value.imgUrl }).then(response => {
     getUserInfo()
     emit('updateUserInfo');
   }).catch(error => {
@@ -179,47 +174,9 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-a {
-  padding: 5px 0;
-  z-index: 9;
-}
-
-a:hover {
-  color: #4f9bfe;
-  border-bottom: 5px solid #4f9bfe;
-  border-radius: 1px;
-}
+<style lang="scss" scoped>
+@use "@/assets/css/admin/person";
 </style>
-<style>
-.el-divider {
-  margin: 10px 0;
-}
-
-.avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-
-.avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-  border-radius: 50%;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
-}
+<style lang="scss">
+@use "@/assets/css/admin/person-global";
 </style>

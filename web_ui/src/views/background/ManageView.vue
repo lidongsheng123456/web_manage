@@ -8,65 +8,60 @@
             毕设脚手架
           </h2>
         </div>
-        <el-menu
-            :default-openeds="['2','3','4']"
-            :router="true"
-            class="el-menu-vertical-demo"
-            default-active="1"
-        >
+        <el-menu :default-openeds="['2', '3', '4']" :router="true" class="el-menu-vertical-demo" default-active="1">
           <el-menu-item index="/Manage/ManageDataView">
             <el-icon>
-              <Promotion/>
+              <Promotion />
             </el-icon>
             <span>数据中心</span>
           </el-menu-item>
           <el-sub-menu v-if="shouldShowSystemMenu" index="2">
             <template #title>
               <el-icon>
-                <Tools/>
+                <Tools />
               </el-icon>
               <span>系统管理</span>
             </template>
             <el-menu-item v-permission="'admin:notice:query'" index="/Manage/ManageNoticeView">
               <el-icon>
-                <Bell/>
+                <Bell />
               </el-icon>
               通知管理
             </el-menu-item>
             <el-menu-item v-permission="'admin:user:query'" index="/Manage/ManageUserView">
               <el-icon>
-                <User/>
+                <User />
               </el-icon>
               用户管理
             </el-menu-item>
             <el-menu-item v-permission="'admin:operLog:query'" index="/Manage/ManageLogView">
               <el-icon>
-                <Comment/>
+                <Comment />
               </el-icon>
               日志管理
             </el-menu-item>
             <el-menu-item v-permission="'admin:dict:query'" index="/Manage/ManageDictView">
               <el-icon>
-                <Collection/>
+                <Collection />
               </el-icon>
               字典管理
             </el-menu-item>
             <el-sub-menu v-permission="'admin:permission:query'" index="2-1" style="background-color: #212d3d">
               <template #title>
                 <el-icon>
-                  <Avatar/>
+                  <Avatar />
                 </el-icon>
                 权限管理
               </template>
               <el-menu-item index="/Manage/ManageRoleView">
                 <el-icon>
-                  <Stamp/>
+                  <Stamp />
                 </el-icon>
                 角色管理
               </el-menu-item>
               <el-menu-item index="/Manage/ManagePermissionView">
                 <el-icon>
-                  <Unlock/>
+                  <Unlock />
                 </el-icon>
                 权限管理
               </el-menu-item>
@@ -75,19 +70,19 @@
           <el-sub-menu v-if="shouldShowToolsMenu" index="3">
             <template #title>
               <el-icon>
-                <Avatar/>
+                <Avatar />
               </el-icon>
               <span>系统工具</span>
             </template>
             <el-menu-item v-permission="'admin:docs:query'" index="/Manage/DocsView">
               <el-icon>
-                <List/>
+                <List />
               </el-icon>
               接口文档
             </el-menu-item>
             <el-menu-item v-permission="'admin:com-query:query'" index="/Manage/ManageComQueryView">
               <el-icon>
-                <Search/>
+                <Search />
               </el-icon>
               通用查询
             </el-menu-item>
@@ -95,13 +90,13 @@
           <el-sub-menu v-if="shouldShowFrontMenu" index="4">
             <template #title>
               <el-icon>
-                <HomeFilled/>
+                <HomeFilled />
               </el-icon>
               <span>前台管理</span>
             </template>
             <el-menu-item v-permission="'admin:front-user:query'" index="/Manage/ManageFrontUserView">
               <el-icon>
-                <UserFilled/>
+                <UserFilled />
               </el-icon>
               用户管理
             </el-menu-item>
@@ -121,9 +116,9 @@
             </el-breadcrumb>
             <el-dropdown>
               <span class="el-dropdown-link">
-                <el-image :src="userInfo.imgUrl" style="width: 50px; height: 50px;border-radius: 50%"/>
+                <el-image :src="userInfo.imgUrl" style="width: 50px; height: 50px;border-radius: 50%" />
                 <el-icon class="el-icon--right">
-                  <arrow-down/>
+                  <arrow-down />
                 </el-icon>
               </span>
               <template #dropdown>
@@ -138,32 +133,29 @@
               </template>
             </el-dropdown>
           </div>
-          <el-divider/>
+          <el-divider />
           <div class="el-header-right">
-            <el-tabs
-                v-model="editableTabsValue"
-                class="demo-tabs"
-                editable
-                type="card"
-                @edit="handleTabsEdit"
-                @tab-click="handleTabClick"
-            >
-              <el-tab-pane
-                  v-for="item in editableTabs"
-                  :key="item.name"
-                  :closable="item.closable"
-                  :label="item.title"
-                  :name="item.name"
-              >
+            <el-tabs v-model="editableTabsValue" class="demo-tabs" editable type="card" @edit="handleTabsEdit"
+              @tab-click="handleTabClick">
+              <el-tab-pane v-for="item in editableTabs" :key="item.name" :closable="item.closable" :label="item.title"
+                :name="item.name">
               </el-tab-pane>
             </el-tabs>
+            <!-- 标签右键菜单 -->
+            <div v-if="ctxMenuVisible" class="tab-ctx-menu" :style="{ left: ctxMenuX + 'px', top: ctxMenuY + 'px' }">
+              <div class="ctx-item" @click="ctxCloseCurrent">关闭当前</div>
+              <div class="ctx-item" @click="ctxCloseOthers">关闭其他</div>
+              <div class="ctx-item" @click="ctxCloseLeft">关闭左侧</div>
+              <div class="ctx-item" @click="ctxCloseRight">关闭右侧</div>
+              <div class="ctx-item ctx-danger" @click="ctxCloseAll">关闭全部</div>
+            </div>
           </div>
         </el-header>
         <el-main>
           <router-view v-slot="{ Component }">
             <keep-alive>
               <transition :duration="{ enter: 500, leave: 200 }" mode="out-in" name="slide-fade">
-                <component :is="Component"/>
+                <component :is="Component" />
               </transition>
             </keep-alive>
           </router-view>
@@ -174,6 +166,9 @@
 </template>
 
 <script setup>
+import { logout } from "@/api/admin_request/WebRequest";
+import router from "@/router";
+import store from "@/store";
 import {
   ArrowDown,
   Avatar,
@@ -189,12 +184,9 @@ import {
   User,
   UserFilled
 } from "@element-plus/icons-vue";
-import {computed, onMounted, ref, watch} from "vue";
-import {useRoute} from "vue-router";
-import router from "@/router";
-import {logout} from "@/api/admin_request/WebRequest";
-import {ElMessage, ElMessageBox} from "element-plus";
-import store from "@/store";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 let userInfo = ref({});
@@ -251,6 +243,74 @@ const handleTabClick = (tab) => {
   router.push(tab.paneName);
 };
 
+// ==================== 标签右键菜单 ====================
+const ctxMenuVisible = ref(false);
+const ctxMenuX = ref(0);
+const ctxMenuY = ref(0);
+const ctxTargetTab = ref('');
+
+const openCtxMenu = (e) => {
+  // 查找被右键的 tab 元素
+  const tabEl = e.target.closest('.el-tabs__item');
+  if (!tabEl) return;
+  e.preventDefault();
+  const tabId = tabEl.id;
+  // el-tabs 生成的 id 格式为 tab-<name>
+  const tabName = tabId.replace(/^tab-/, '');
+  ctxTargetTab.value = tabName;
+  ctxMenuX.value = e.clientX;
+  ctxMenuY.value = e.clientY;
+  ctxMenuVisible.value = true;
+};
+
+const closeCtxMenu = () => { ctxMenuVisible.value = false; };
+
+const ctxCloseCurrent = () => {
+  closeCtxMenu();
+  if (ctxTargetTab.value === '/Manage/ManageDataView') return; // 首页不关闭
+  handleTabsEdit(ctxTargetTab.value, 'remove');
+};
+
+const ctxCloseOthers = () => {
+  closeCtxMenu();
+  editableTabs.value = editableTabs.value.filter(
+    t => t.name === '/Manage/ManageDataView' || t.name === ctxTargetTab.value
+  );
+  editableTabsValue.value = ctxTargetTab.value;
+  router.push(ctxTargetTab.value);
+};
+
+const ctxCloseLeft = () => {
+  closeCtxMenu();
+  const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
+  editableTabs.value = editableTabs.value.filter(
+    (t, i) => t.name === '/Manage/ManageDataView' || i >= idx
+  );
+  if (!editableTabs.value.find(t => t.name === editableTabsValue.value)) {
+    editableTabsValue.value = ctxTargetTab.value;
+    router.push(ctxTargetTab.value);
+  }
+};
+
+const ctxCloseRight = () => {
+  closeCtxMenu();
+  const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
+  editableTabs.value = editableTabs.value.filter(
+    (t, i) => t.name === '/Manage/ManageDataView' || i <= idx
+  );
+  if (!editableTabs.value.find(t => t.name === editableTabsValue.value)) {
+    editableTabsValue.value = ctxTargetTab.value;
+    router.push(ctxTargetTab.value);
+  }
+};
+
+const ctxCloseAll = () => {
+  closeCtxMenu();
+  editableTabs.value = editableTabs.value.filter(t => t.name === '/Manage/ManageDataView');
+  editableTabsValue.value = '/Manage/ManageDataView';
+  router.push('/Manage/ManageDataView');
+};
+
 const logoutLogin = () => {
   ElMessageBox.confirm('确认退出?', '提示', {
     confirmButtonText: '确定',
@@ -272,18 +332,18 @@ const logoutLogin = () => {
 
 // 监听路由变化
 watch(() => route.path, (newPath) => {
-      const tabExists = editableTabs.value.some(tab => tab.name === newPath);
-      if (!tabExists) {
-        const routeMeta = route.meta;
-        editableTabs.value.push({
-          title: routeMeta.name || newPath,
-          name: newPath,
-          content: `${routeMeta.name} 内容`, // 这里可以根据需要动态生成内容
-        });
-      }
-      editableTabsValue.value = newPath;
-    },
-    {immediate: true} // 立即执行一次
+  const tabExists = editableTabs.value.some(tab => tab.name === newPath);
+  if (!tabExists) {
+    const routeMeta = route.meta;
+    editableTabs.value.push({
+      title: routeMeta.name || newPath,
+      name: newPath,
+      content: `${routeMeta.name} 内容`, // 这里可以根据需要动态生成内容
+    });
+  }
+  editableTabsValue.value = newPath;
+},
+  { immediate: true } // 立即执行一次
 );
 
 // 检查用户是否有指定权限
@@ -300,10 +360,10 @@ const shouldShowSystemMenu = computed(() => {
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:notice:query') ||
-         hasPermission('admin:user:query') ||
-         hasPermission('admin:operLog:query') ||
-         hasPermission('admin:dict:query') ||
-         hasPermission('admin:permission:query');
+    hasPermission('admin:user:query') ||
+    hasPermission('admin:operLog:query') ||
+    hasPermission('admin:dict:query') ||
+    hasPermission('admin:permission:query');
 });
 
 // 检查系统工具子菜单是否应该显示
@@ -313,7 +373,7 @@ const shouldShowToolsMenu = computed(() => {
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:docs:query') ||
-         hasPermission('admin:com-query:query');
+    hasPermission('admin:com-query:query');
 });
 
 // 检查前台管理子菜单是否应该显示
@@ -332,10 +392,22 @@ const getUserInfo = () => {
 }
 
 onMounted(() => {
-  getUserInfo()
+  getUserInfo();
+  // 绑定右键菜单事件
+  nextTick(() => {
+    const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
+    if (tabNav) tabNav.addEventListener('contextmenu', openCtxMenu);
+  });
+  document.addEventListener('click', closeCtxMenu);
+});
+
+onBeforeUnmount(() => {
+  const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
+  if (tabNav) tabNav.removeEventListener('contextmenu', openCtxMenu);
+  document.removeEventListener('click', closeCtxMenu);
 });
 </script>
 
 <style lang="scss">
-@use "@/assets/css/manager";
+@use "@/assets/css/admin/layout";
 </style>

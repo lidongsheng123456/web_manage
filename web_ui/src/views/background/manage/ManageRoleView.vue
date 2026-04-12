@@ -2,18 +2,10 @@
   <div>
     <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="70px">
       <el-form-item label="角色代码" prop="roleCode">
-        <el-input
-            v-model="queryParams.roleCode"
-            placeholder="请输入角色代码"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.roleCode" placeholder="请输入角色代码" style="width: 200px" />
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input
-            v-model="queryParams.roleName"
-            placeholder="请输入角色名称"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.roleName" placeholder="请输入角色名称" style="width: 200px" />
       </el-form-item>
       <el-form-item>
         <el-button v-no-more-click :icon="Search" type="primary" @click="handleQuery">搜索</el-button>
@@ -25,48 +17,42 @@
         新增
       </el-button>
       <el-button v-no-more-click v-permission="'admin:role:update'" :disabled="single" :icon="EditPen" plain
-                 type="success"
-                 @click="handleUpdate">修改
+        type="success" @click="handleUpdate">修改
       </el-button>
       <el-button v-no-more-click v-permission="'admin:role:delete'" :disabled="multiple" :icon="Delete" plain
-                 type="danger"
-                 @click="handleDelete">删除
+        type="danger" @click="handleDelete">删除
       </el-button>
       <el-button v-no-more-click v-permission="'admin:role:export'" :icon="Bottom" plain type="warning"
-                 @click="handleExport">导出
+        @click="handleExport">导出
       </el-button>
     </div>
     <br>
-    <el-table v-loading="loading"
-              :data="tableData"
-              :default-sort="{ prop: 'id', order: 'descending' }"
-              :header-cell-style="{'background-color': '#f8f8f9'}"
-              style="width: 100%"
-              @selection-change="handleSelectionChange">
-      <el-table-column align="center" type="selection" width="55"/>
-      <el-table-column align="center" label="序号" prop="id" sortable width="100"/>
-      <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip/>
-      <el-table-column align="center" label="角色名称" prop="roleName" show-overflow-tooltip/>
-      <el-table-column align="center" label="角色描述" prop="description" show-overflow-tooltip/>
-      <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip/>
-      <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
+    <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
+      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column align="center" type="selection" width="55" />
+      <el-table-column align="center" label="序号" prop="id" sortable width="100" />
+      <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip />
+      <el-table-column align="center" label="角色名称" prop="roleName" show-overflow-tooltip />
+      <el-table-column align="center" label="角色描述" prop="description" show-overflow-tooltip />
+      <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip />
+      <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip />
       <el-table-column align="center" fixed="right" label="操作" width="300">
         <template #default="scope">
           <el-button v-no-more-click v-permission="'admin:role:update'" :icon="EditPen" link size="small" type="primary"
-                     @click="handleUpdate(scope.row)">
+            @click="handleUpdate(scope.row)">
             修改
           </el-button>
           <el-button v-no-more-click v-permission="'admin:role:delete'" :icon="Delete" link size="small" type="primary"
-                     @click="handleDelete(scope.row)">
+            @click="handleDelete(scope.row)">
             删除
           </el-button>
           <el-button v-no-more-click v-permission="'admin:role:assign'" :icon="CircleCheck" link size="small"
-                     type="primary"
-                     @click="handleAssign(scope.row)">
+            type="primary" @click="handleAssign(scope.row)">
             分配角色
           </el-button>
           <el-button v-no-more-click v-permission="'admin:role:remove'" :icon="Delete" link size="small" type="primary"
-                     @click="handleRemove(scope.row)">
+            @click="handleRemove(scope.row)">
             移除角色
           </el-button>
         </template>
@@ -74,44 +60,22 @@
     </el-table>
     <br>
     <div class="demo-pagination-block">
-      <el-pagination
-          :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
-          :page-sizes="[10, 20, 30, 40]"
-          :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange">
+      <el-pagination :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
+        :page-sizes="[10, 20, 30, 40]" :total="total" layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
 
-    <el-dialog
-        v-model="dialogOverflowVisible"
-        :title="title"
-        draggable
-        overflow
-        width="500"
-    >
+    <el-dialog v-model="dialogOverflowVisible" :title="title" draggable overflow width="500">
       <el-form ref="formRef" :inline="true" :model="form" :rules="rules" align="center" label-width="80px">
         <el-form-item label="角色代码" prop="roleCode">
-          <el-input
-              v-model="form.roleCode"
-              placeholder="请输入角色代码"
-              style="width: 350px"
-          />
+          <el-input v-model="form.roleCode" placeholder="请输入角色代码" style="width: 350px" />
         </el-form-item>
         <el-form-item label="角色名称" prop="roleName">
-          <el-input
-              v-model="form.roleName"
-              placeholder="请输入角色名称"
-              style="width: 350px"
-          />
+          <el-input v-model="form.roleName" placeholder="请输入角色名称" style="width: 350px" />
         </el-form-item>
         <el-form-item label="角色描述" prop="description">
-          <el-input
-              v-model="form.description"
-              placeholder="请输入角色描述"
-              style="width: 350px"
-          />
+          <el-input v-model="form.description" placeholder="请输入角色描述" style="width: 350px" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -124,23 +88,16 @@
       </template>
     </el-dialog>
 
-    <el-dialog
-        v-model="assignDialogOverflowVisible"
-        :title="assignTitle"
-        draggable
-        overflow
-        width="850"
-    >
+    <el-dialog v-model="assignDialogOverflowVisible" :title="assignTitle" draggable overflow width="850">
       <AssignRoleView ref="assignRoleViewRef" @handleAssignReset="handleAssignReset"
-                      @submitAssignForm="handleSubmitAssignForm"/>
+        @submitAssignForm="handleSubmitAssignForm" />
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import {nextTick, onMounted, ref} from 'vue';
-import {ElMessage, ElMessageBox} from 'element-plus';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { nextTick, onMounted, ref } from 'vue';
 
 import {
   addRole,
@@ -151,8 +108,8 @@ import {
   removeRole,
   updateRole
 } from "@/api/admin_request/RoleRequest";
-import {Bottom, CircleCheck, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
 import AssignRoleView from "@/components/manage/AssignRoleView.vue";
+import { Bottom, CircleCheck, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
 const tableData = ref([])
@@ -200,13 +157,13 @@ let queryParams = ref({
 // 验证规则
 const rules = {
   roleCode: [
-    {required: true, message: "角色代码不能为空", trigger: "blur"}
+    { required: true, message: "角色代码不能为空", trigger: "blur" }
   ],
   roleName: [
-    {required: true, message: "角色名称不能为空", trigger: "blur"}
+    { required: true, message: "角色名称不能为空", trigger: "blur" }
   ],
   description: [
-    {required: true, message: "角色描述不能为空", trigger: "blur"}
+    { required: true, message: "角色描述不能为空", trigger: "blur" }
   ],
 };
 // 提交表单
@@ -236,7 +193,7 @@ const submitForm = () => {
 // 提交分配角色表单
 const handleSubmitAssignForm = (ids, isAssign) => {
   if (isAssign === 'assign') {
-    assignRole({userId: ids, roleId: assignId.value}).then(res => {
+    assignRole({ userId: ids, roleId: assignId.value }).then(res => {
       ElMessage.success('分配角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
@@ -244,7 +201,7 @@ const handleSubmitAssignForm = (ids, isAssign) => {
       console.log(error)
     });
   } else {
-    removeRole({userId: ids, roleId: assignId.value}).then(res => {
+    removeRole({ userId: ids, roleId: assignId.value }).then(res => {
       ElMessage.success('移除角色成功');
       assignDialogOverflowVisible.value = false;
       getList()
@@ -389,16 +346,6 @@ onMounted(() => {
   getList();
 });
 </script>
-<style scoped>
-.demo-pagination-block {
-  float: right;
-}
-
-.demo-pagination-block + .demo-pagination-block {
-  margin-top: 10px;
-}
-
-.demo-pagination-block .demonstration {
-  margin-bottom: 16px;
-}
+<style lang="scss" scoped>
+@use "@/assets/css/admin/common";
 </style>

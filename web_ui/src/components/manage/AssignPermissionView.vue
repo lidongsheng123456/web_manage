@@ -2,46 +2,31 @@
   <div>
     <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="70px">
       <el-form-item label="角色代码" prop="roleCode">
-        <el-input
-            v-model="queryParams.roleCode"
-            placeholder="请输入角色代码"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.roleCode" placeholder="请输入角色代码" style="width: 200px" />
       </el-form-item>
       <el-form-item label="角色名称" prop="roleName">
-        <el-input
-            v-model="queryParams.roleName"
-            placeholder="请输入角色名称"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.roleName" placeholder="请输入角色名称" style="width: 200px" />
       </el-form-item>
       <el-form-item>
         <el-button :icon="Search" type="primary" @click="handleQuery">搜索</el-button>
         <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-    <el-table v-loading="loading"
-              :data="tableData"
-              :default-sort="{ prop: 'id', order: 'descending' }"
-              :header-cell-style="{'background-color': '#f8f8f9'}"
-              style="width: 100%"
-              @selection-change="handleSelectionChange">
-      <el-table-column align="center" type="selection" width="55"/>
-      <el-table-column align="center" label="序号" prop="id" sortable width="100"/>
-      <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip/>
-      <el-table-column align="center" label="角色名称" prop="roleName" show-overflow-tooltip/>
-      <el-table-column align="center" label="角色描述" prop="description" show-overflow-tooltip/>
+    <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
+      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column align="center" type="selection" width="55" />
+      <el-table-column align="center" label="序号" prop="id" sortable width="100" />
+      <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip />
+      <el-table-column align="center" label="角色名称" prop="roleName" show-overflow-tooltip />
+      <el-table-column align="center" label="角色描述" prop="description" show-overflow-tooltip />
     </el-table>
     <br>
     <div style="display: flex;justify-content: space-between">
       <div class="demo-pagination-block">
-        <el-pagination
-            :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
-            :page-sizes="[10, 20, 30, 40]"
-            :total="total"
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange">
+        <el-pagination :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
+          :page-sizes="[10, 20, 30, 40]" :total="total" layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange">
         </el-pagination>
       </div>
       <div class="dialog-footer">
@@ -55,10 +40,9 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import {Refresh, Search} from "@element-plus/icons-vue";
-import {queryRoleByPermissionId, queryRoleNotPermissionId} from "@/api/admin_request/PermissionRequest";
+import { queryRoleByPermissionId, queryRoleNotPermissionId } from "@/api/admin_request/PermissionRequest";
+import { Refresh, Search } from "@element-plus/icons-vue";
+import { ref } from "vue";
 // 定义事件
 const emit = defineEmits(['handleAssignReset', 'submitAssignForm'])
 // 表格数据
@@ -93,7 +77,7 @@ const getList = (params1, params2) => {
 
   if (isAssign.value === 'assign') {
     loading.value = true;
-    queryRoleNotPermissionId({...queryParams.value, id: id.value}).then(res => {
+    queryRoleNotPermissionId({ ...queryParams.value, id: id.value }).then(res => {
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
@@ -101,7 +85,7 @@ const getList = (params1, params2) => {
       console.log(error)
     });
   } else {
-    queryRoleByPermissionId({...queryParams.value, id: id.value}).then(res => {
+    queryRoleByPermissionId({ ...queryParams.value, id: id.value }).then(res => {
       tableData.value = res.data.list;
       total.value = res.data.total;
       loading.value = false;
@@ -150,8 +134,6 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-.demo-pagination-block {
-  float: right;
-}
+<style lang="scss" scoped>
+@use "@/assets/css/admin/common";
 </style>

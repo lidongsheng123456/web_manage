@@ -101,34 +101,6 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-a {
-  text-decoration: none;
-}
-
-.container {
-  background: url("@/assets/img/background.png") no-repeat center;
-  background-size: cover;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #858585;
-}
-
-.login-code {
-  width: 150px;
-  text-align: center;
-  height: 41px;
-  margin-left: 10px;
-}
-
-.login-code img {
-  cursor: pointer;
-}
-
-.login-code-img {
-  height: 100%;
-}
+<style lang="scss" scoped>
+@use "@/assets/css/admin/login";
 </style>

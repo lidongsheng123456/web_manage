@@ -1,3 +1,5 @@
+// 后台管理布局样式 (从 manager.scss 迁移)
+
 // 定义颜色变量
 $aside-bg-color: #314056;
 $header-margin: 10px;
@@ -127,4 +129,33 @@ a {
   }
 }
 
+// 标签右键菜单
+.tab-ctx-menu {
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  border-radius: 4px;
+  padding: 4px 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  min-width: 120px;
 
+  .ctx-item {
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #606266;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s, color .15s;
+
+    &:hover {
+      background: #ecf5ff;
+      color: #409eff;
+    }
+
+    &.ctx-danger:hover {
+      background: #fef0f0;
+      color: #f56c6c;
+    }
+  }
+}

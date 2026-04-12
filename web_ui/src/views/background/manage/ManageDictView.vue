@@ -2,18 +2,10 @@
   <div>
     <el-form ref="queryFormRef" :inline="true" :model="queryParams" label-width="70px">
       <el-form-item label="字典类型" prop="dictType">
-        <el-input
-            v-model="queryParams.dictType"
-            placeholder="请输入字典类型"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.dictType" placeholder="请输入字典类型" style="width: 200px" />
       </el-form-item>
       <el-form-item label="字典标签" prop="dictLabel">
-        <el-input
-            v-model="queryParams.dictLabel"
-            placeholder="请输入字典标签"
-            style="width: 200px"
-        />
+        <el-input v-model="queryParams.dictLabel" placeholder="请输入字典标签" style="width: 200px" />
       </el-form-item>
       <el-form-item>
         <el-button v-no-more-click :icon="Search" type="primary" @click="handleQuery">搜索</el-button>
@@ -25,47 +17,40 @@
         新增
       </el-button>
       <el-button v-no-more-click v-permission="'admin:dict:update'" :disabled="single" :icon="EditPen" plain
-                 type="success"
-                 @click="handleUpdate">修改
+        type="success" @click="handleUpdate">修改
       </el-button>
       <el-button v-no-more-click v-permission="'admin:dict:delete'" :disabled="multiple" :icon="Delete" plain
-                 type="danger"
-                 @click="handleDelete">删除
+        type="danger" @click="handleDelete">删除
       </el-button>
       <el-button v-no-more-click v-permission="'admin:dict:export'" :icon="Bottom" plain type="warning"
-                 @click="handleExport">导出
+        @click="handleExport">导出
       </el-button>
     </div>
     <br>
-    <el-table v-loading="loading"
-              :data="tableData"
-              :default-sort="{ prop: 'id', order: 'descending' }"
-              :header-cell-style="{'background-color': '#f8f8f9'}"
-              style="width: 100%"
-              @selection-change="handleSelectionChange">
-      <el-table-column align="center" type="selection" width="55"/>
-      <el-table-column align="center" label="序号" prop="id" sortable width="100"/>
-      <el-table-column align="center" label="字典类型" prop="dictType"/>
-      <el-table-column align="center" label="字典标签" prop="dictLabel"/>
-      <el-table-column align="center" label="字典键值" prop="dictValue"/>
-      <el-table-column align="center" label="描述" prop="description"/>
+    <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
+      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column align="center" type="selection" width="55" />
+      <el-table-column align="center" label="序号" prop="id" sortable width="100" />
+      <el-table-column align="center" label="字典类型" prop="dictType" />
+      <el-table-column align="center" label="字典标签" prop="dictLabel" />
+      <el-table-column align="center" label="字典键值" prop="dictValue" />
+      <el-table-column align="center" label="描述" prop="description" />
       <el-table-column align="center" label="标签类型" prop="tagType">
         <template #default="scope">
           <el-tag :type="scope.row.tagType">{{ scope.row.tagType }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip/>
-      <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip/>
+      <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip />
+      <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip />
       <el-table-column align="center" fixed="right" label="操作">
         <template #default="scope">
-          <el-button v-no-more-click v-permission="'admin:dict:update'" :icon="EditPen" link size="small"
-                     type="primary"
-                     @click="handleUpdate(scope.row)">
+          <el-button v-no-more-click v-permission="'admin:dict:update'" :icon="EditPen" link size="small" type="primary"
+            @click="handleUpdate(scope.row)">
             修改
           </el-button>
-          <el-button v-no-more-click v-permission="'admin:dict:delete'" :icon="Delete" link size="small"
-                     type="primary"
-                     @click="handleDelete(scope.row)">
+          <el-button v-no-more-click v-permission="'admin:dict:delete'" :icon="Delete" link size="small" type="primary"
+            @click="handleDelete(scope.row)">
             删除
           </el-button>
         </template>
@@ -73,62 +58,30 @@
     </el-table>
     <br>
     <div class="demo-pagination-block">
-      <el-pagination
-          :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
-          :page-sizes="[10, 20, 30, 40]"
-          :total="total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange">
+      <el-pagination :current-page="queryParams.currentPage" :page-size="queryParams.pageSize"
+        :page-sizes="[10, 20, 30, 40]" :total="total" layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
 
-    <el-dialog
-        v-model="dialogOverflowVisible"
-        :title="title"
-        draggable
-        overflow
-        width="500"
-    >
+    <el-dialog v-model="dialogOverflowVisible" :title="title" draggable overflow width="500">
       <el-form ref="formRef" :inline="true" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="字典类型" prop="dictType">
-          <el-input
-              v-model="form.dictType"
-              placeholder="请输入字典类型"
-              style="width: 350px;"
-          />
+          <el-input v-model="form.dictType" placeholder="请输入字典类型" style="width: 350px;" />
         </el-form-item>
         <el-form-item label="字典标签" prop="dictLabel">
-          <el-input
-              v-model="form.dictLabel"
-              placeholder="请输入字典标签"
-              style="width: 350px"
-          />
+          <el-input v-model="form.dictLabel" placeholder="请输入字典标签" style="width: 350px" />
         </el-form-item>
         <el-form-item label="字典键值" prop="dictValue">
-          <el-input-number v-model="form.dictValue" :max="100" :min="0"/>
+          <el-input-number v-model="form.dictValue" :max="100" :min="0" />
         </el-form-item>
         <el-form-item label="标签类型" prop="tagType">
-          <el-select
-              v-model="form.tagType"
-              placeholder="请选择标签类型"
-              style="width: 350px"
-          >
-            <el-option
-                v-for="(item,index) in tagTypeOptions"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-            />
+          <el-select v-model="form.tagType" placeholder="请选择标签类型" style="width: 350px">
+            <el-option v-for="(item, index) in tagTypeOptions" :key="index" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input
-              v-model="form.description"
-              placeholder="请输入描述"
-              style="width: 350px"
-              type="textarea"
-          />
+          <el-input v-model="form.description" placeholder="请输入描述" style="width: 350px" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -144,12 +97,11 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
-import {ElMessage, ElMessageBox} from 'element-plus';
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { onMounted, ref } from 'vue';
 
-import {addDict, batchDeleteDict, queryDict, queryDictById, updateDict} from "@/api/admin_request/DictRequest";
-import {Bottom, Delete, EditPen, Plus, Refresh, Search} from "@element-plus/icons-vue";
+import { addDict, batchDeleteDict, queryDict, queryDictById, updateDict } from "@/api/admin_request/DictRequest";
+import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
 const tableData = ref([])
@@ -214,16 +166,16 @@ let queryParams = ref({
 // 验证规则
 const rules = {
   dictType: [
-    {required: true, message: "字典类型不能为空", trigger: "blur"}
+    { required: true, message: "字典类型不能为空", trigger: "blur" }
   ],
   dictLabel: [
-    {required: true, message: "字典标签不能为空", trigger: "blur"}
+    { required: true, message: "字典标签不能为空", trigger: "blur" }
   ],
   dictValue: [
-    {required: true, message: "字典键值不能为空", trigger: "blur"}
+    { required: true, message: "字典键值不能为空", trigger: "blur" }
   ],
   tagType: [
-    {required: true, message: "标签类型不能为空", trigger: "blur"}
+    { required: true, message: "标签类型不能为空", trigger: "blur" }
   ],
 };
 // 提交表单
@@ -357,16 +309,6 @@ onMounted(() => {
   getList();
 });
 </script>
-<style scoped>
-.demo-pagination-block {
-  float: right;
-}
-
-.demo-pagination-block + .demo-pagination-block {
-  margin-top: 10px;
-}
-
-.demo-pagination-block .demonstration {
-  margin-bottom: 16px;
-}
+<style lang="scss" scoped>
+@use "@/assets/css/admin/common";
 </style>
