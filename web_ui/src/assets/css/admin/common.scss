@@ -10,3 +10,18 @@
 .demo-pagination-block .demonstration {
   margin-bottom: 16px;
 }
+
+// ==================== 移动端响应式 ====================
+@media (max-width: 768px) {
+  .demo-pagination-block {
+    float: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+
+    .el-pagination {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}

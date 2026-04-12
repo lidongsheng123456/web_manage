@@ -205,3 +205,57 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .wscn-http404-container {
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10%;
+    position: absolute;
+  }
+
+  .wscn-http404 {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    .pic-404 {
+      float: none;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .bullshit {
+      float: none;
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+
+      &__return-home {
+        float: none;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .wscn-http404 {
+    padding: 0 12px;
+
+    .pic-404 {
+      max-width: 260px;
+    }
+
+    .bullshit__oops {
+      font-size: 24px;
+    }
+
+    .bullshit__info {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+}

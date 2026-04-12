@@ -14,6 +14,15 @@ a {
   color: #858585;
 }
 
+.login-card {
+  background-color: white;
+  width: 400px;
+  max-width: 100%;
+  padding: 30px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
 .login-code {
   width: 150px;
   text-align: center;
@@ -27,4 +36,43 @@ a {
 
 .login-code-img {
   height: 100%;
+}
+
+// ==================== 移动端响应式 ====================
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+
+    > div {
+      width: 100% !important;
+      max-width: 400px;
+      padding: 24px !important;
+      box-sizing: border-box;
+    }
+  }
+
+  .login-code {
+    width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+    align-items: flex-start;
+    padding-top: 15vh;
+
+    > div {
+      padding: 20px !important;
+      border-radius: 8px !important;
+
+      > div:first-child {
+        font-size: 17px !important;
+      }
+    }
+  }
+
+  .login-code {
+    width: 100px;
+  }
 }

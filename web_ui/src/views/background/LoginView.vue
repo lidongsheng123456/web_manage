@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="background-color: white; width: 400px; padding: 30px; border-radius: 10px">
+    <div class="login-card">
       <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用毕设脚手架后台</div>
       <el-form ref="formRef" :model="form" :rules="rules">
         <el-form-item prop="username">
