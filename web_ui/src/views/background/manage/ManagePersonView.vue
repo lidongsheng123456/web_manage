@@ -107,7 +107,7 @@
 <script setup>
 import { updatePerson } from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import store from "@/store";
+import { useUserStore } from "@/store/modules/user";
 import { Avatar, Message, PhoneFilled, Plus, UserFilled, Watch } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
@@ -128,11 +128,12 @@ const userInfo = ref({
 });
 // 获取父组件自定义事件
 const emit = defineEmits(['updateUserInfo'])
+const userStore = useUserStore()
 
 // 获取用户信息
 const getUserInfo = () => {
-  store.dispatch('user/queryCurrentUser').then(() => {
-    userInfo.value = store.getters["user/userInfo"]
+  userStore.fetchCurrentUser().then(() => {
+    userInfo.value = userStore.userInfo
     router.push('/Manage/ManagePersonView/ManagePersonBaseInfoView')
   })
 }

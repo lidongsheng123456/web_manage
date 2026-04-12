@@ -168,7 +168,7 @@
 <script setup>
 import { logout } from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import store from "@/store";
+import { useUserStore } from "@/store/modules/user";
 import {
   ArrowDown,
   Avatar,
@@ -189,6 +189,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const userStore = useUserStore();
 let userInfo = ref({});
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
@@ -348,15 +349,14 @@ watch(() => route.path, (newPath) => {
 
 // 检查用户是否有指定权限
 const hasPermission = (permission) => {
-  const user = store.getters["user/userInfo"] || {};
+  const user = userStore.userInfo || {};
   const filterUser = user.permissions ? user.permissions.map(item => item.permission_code) : [];
   return filterUser && filterUser.includes(permission);
 };
 
 // 检查系统管理子菜单是否应该显示
 const shouldShowSystemMenu = computed(() => {
-  // 确保响应用户信息变化
-  const user = store.getters["user/userInfo"];
+  const user = userStore.userInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:notice:query') ||
@@ -368,8 +368,7 @@ const shouldShowSystemMenu = computed(() => {
 
 // 检查系统工具子菜单是否应该显示
 const shouldShowToolsMenu = computed(() => {
-  // 确保响应用户信息变化
-  const user = store.getters["user/userInfo"];
+  const user = userStore.userInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:docs:query') ||
@@ -378,16 +377,15 @@ const shouldShowToolsMenu = computed(() => {
 
 // 检查前台管理子菜单是否应该显示
 const shouldShowFrontMenu = computed(() => {
-  // 确保响应用户信息变化
-  const user = store.getters["user/userInfo"];
+  const user = userStore.userInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:front-user:query');
 });
 
 const getUserInfo = () => {
-  store.dispatch('user/queryCurrentUser').then(() => {
-    userInfo.value = store.getters["user/userInfo"]
+  userStore.fetchCurrentUser().then(() => {
+    userInfo.value = userStore.userInfo
   })
 }
 

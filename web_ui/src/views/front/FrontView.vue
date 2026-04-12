@@ -91,13 +91,14 @@ import { queryNotice } from "@/api/front_request/UserHomeRequest";
 import { logout } from "@/api/front_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
 import router from "@/router";
-import store from "@/store";
+import { useUserStore } from "@/store/modules/user";
 import { ArrowDown, Bell, Menu } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import { onMounted, onUnmounted, ref } from "vue";
 
 // 无头像图片
 const noImage = noImageUrl
+const userStore = useUserStore()
 // 登录用户信息
 let userInfo = ref({});
 // 通知列表
@@ -181,8 +182,8 @@ const logoutLogin = () => {
 
 // 获取当前登录用户信息
 const getUserInfo = () => {
-  store.dispatch('user/queryCurrentFrontUserInfo').then(() => {
-    userInfo.value = store.getters["user/frontUserInfo"]
+  userStore.fetchCurrentFrontUserInfo().then(() => {
+    userInfo.value = userStore.frontUserInfo
   })
 }
 

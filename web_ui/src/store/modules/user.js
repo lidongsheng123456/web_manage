@@ -1,61 +1,40 @@
-import { queryCurrentUser } from "@/api/admin_request/WebRequest";
-import axios from "axios";
+import { queryCurrentUser } from "@/api/admin_request/WebRequest"
+import axios from 'axios'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-const uploadUrl = import.meta.env.VUE_APP_BASEURL
+const silentRequest = axios.create({
+    baseURL: import.meta.env.VUE_APP_BASEURL,
+    timeout: 30000,
+})
 
-const state = {
-    userInfo: {},
-    frontUserInfo: {}
-};
+export const useUserStore = defineStore('user', () => {
+    const userInfo = ref({})
+    const frontUserInfo = ref({})
 
-const mutations = {
-    SET_USERINFO(state, userInfo) {
-        state.userInfo = userInfo;
-    },
-    SET_FRONT_USERINFO(state, userInfo) {
-        state.frontUserInfo = userInfo;
+    async function fetchCurrentUser() {
+        const res = await queryCurrentUser()
+        userInfo.value = res.data
+        return res
     }
-};
 
-const actions = {
-    queryCurrentUser({commit}) {
-        return new Promise((resolve, reject) => {
-            queryCurrentUser()
-                .then(res => {
-                    commit("SET_USERINFO", res.data);
-                    resolve(res);
-                })
-                .catch(error => {
-                    console.log(error);
-                    reject(error);
-                });
-        });
-    },
-    queryCurrentFrontUserInfo({commit}) {
-        return new Promise((resolve, reject) => {
-            axios.get(uploadUrl + '/user/current')
-                .then(res => {
-                    if (res.data.code === 200) {
-                        commit("SET_FRONT_USERINFO", res.data.data);
-                        resolve(res);
-                    }
-                }).catch(error => {
-                console.log(error);
-                reject(error);
-            });
-        });
-    },
-};
+    async function fetchCurrentFrontUserInfo() {
+        try {
+            const response = await silentRequest.get('/user/current')
+            const res = response.data
+            if (res.code === 200) {
+                frontUserInfo.value = res.data
+            }
+            return res
+        } catch {
+            return null
+        }
+    }
 
-const getters = {
-    userInfo: state => state.userInfo,
-    frontUserInfo: state => state.frontUserInfo
-};
+    function $reset() {
+        userInfo.value = {}
+        frontUserInfo.value = {}
+    }
 
-export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions,
-    getters
-};
+    return { userInfo, frontUserInfo, fetchCurrentUser, fetchCurrentFrontUserInfo, $reset }
+})

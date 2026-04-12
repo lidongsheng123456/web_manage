@@ -2,7 +2,7 @@ import router from "@/router";
 import axios from 'axios';
 import { ElMessage } from "element-plus";
 
-const adminRequest = axios.create({
+const userRequest = axios.create({
     baseURL: import.meta.env.VUE_APP_BASEURL,
     timeout: 30000,
 })
@@ -10,11 +10,11 @@ const adminRequest = axios.create({
 /**
  * 通过 /api 前缀代理转发到后端，同源请求自动携带 Cookie
  */
-adminRequest.interceptors.request.use(config => {
+userRequest.interceptors.request.use(config => {
     return config
 })
 
-adminRequest.interceptors.response.use(response => {
+userRequest.interceptors.response.use(response => {
         let res = response.data;
 
         // 401 token令牌效验失败
@@ -31,4 +31,4 @@ adminRequest.interceptors.response.use(response => {
     }
 )
 
-export default adminRequest
+export default userRequest

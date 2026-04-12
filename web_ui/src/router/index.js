@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
     //后台路由
@@ -128,7 +128,7 @@ const routes = [
             {
                 path: 'PersonView',
                 name: 'PersonView',
-                meta: {name: '个人中心'},
+                meta: {name: '个人中心', requiresFrontAuth: true},
                 component: () => import('@/views/front/home/PersonView.vue')
             },
         ]
@@ -146,13 +146,4 @@ const router = createRouter({
     routes
 })
 
-// 全局前置守卫
-// router.beforeEach((to, from, next) => {
-//     const user = localStorage.getItem('xm-usr') || {}
-//     if (!user.id) {
-//         Cookies.remove("satoken");
-//         next('/')
-//     }
-//     console.log(user)
-// })
 export default router
