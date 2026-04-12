@@ -34,8 +34,64 @@ a {
     .aside-logo {
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
-      margin: $header-margin 0;
+      height: 56px;
+      padding: 0 20px;
+      text-decoration: none;
+      color: white;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: background 0.25s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .aside-logo-img {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+      }
+
+      &:hover .aside-logo-img {
+        transform: scale(1.08);
+      }
+
+      .aside-logo-title {
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        margin: 0 0 0 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1;
+        color: #fff;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    // Logo 文字淡入淡出动画
+    .logo-fade-enter-active {
+      transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+    }
+
+    .logo-fade-leave-active {
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .logo-fade-enter-from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+
+    .logo-fade-leave-to {
+      opacity: 0;
+      transform: translateX(-8px);
     }
 
     .el-menu {

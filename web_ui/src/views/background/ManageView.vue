@@ -4,12 +4,14 @@
       <div class="sidebar-overlay" :class="{ visible: mobileSidebarOpen }" @click="mobileSidebarOpen = false" />
       <el-aside :width="settingsStore.sidebarCollapse ? '64px' : '200px'" :class="{ 'mobile-open': mobileSidebarOpen }"
         style="transition: width 0.3s, transform 0.3s">
-        <div class="aside-logo">
-          <img alt="管理" src="@/assets/img/管理.png">
-          <h2 v-show="!settingsStore.sidebarCollapse">
-            {{ settingsStore.siteName }}
-          </h2>
-        </div>
+        <router-link class="aside-logo" to="/Manage/ManageDataView">
+          <img alt="Logo" class="aside-logo-img" src="@/assets/img/logo.svg">
+          <transition name="logo-fade">
+            <h1 v-show="!settingsStore.sidebarCollapse" class="aside-logo-title">
+              {{ settingsStore.siteName }}
+            </h1>
+          </transition>
+        </router-link>
         <el-menu :default-openeds="['4']" :router="true" :collapse="settingsStore.sidebarCollapse"
           :active-text-color="settingsStore.themeColor" class="el-menu-vertical-demo" default-active="1">
           <el-menu-item index="/Manage/ManageDataView">
