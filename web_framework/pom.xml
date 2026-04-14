@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>web_framework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
 
     <description>
         web核心框架
@@ -21,6 +20,10 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>web_system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>

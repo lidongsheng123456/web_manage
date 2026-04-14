@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>web_system</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
 
     <description>
         web系统模块
@@ -25,7 +24,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
