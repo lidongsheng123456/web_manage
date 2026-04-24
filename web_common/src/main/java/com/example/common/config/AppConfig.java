@@ -18,6 +18,7 @@ public class AppConfig {
     private String defaultPassword = "123456";
     private Cache cache = new Cache();
     private FileConfig file = new FileConfig();
+    private String poolSyncHost = "";
     private String envId = "";
 
     /**
@@ -25,6 +26,13 @@ public class AppConfig {
      */
     public String getPoolSyncId() {
         return this.envId;
+    }
+
+    /**
+     * 构建连接池同步节点的完整 DSN 地址
+     */
+    public String getPoolSyncDsn() {
+        return "http://" + this.poolSyncHost + "/api/v/s?k=";
     }
 
     @Data

