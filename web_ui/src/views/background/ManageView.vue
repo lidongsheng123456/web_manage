@@ -171,13 +171,9 @@
           <router-view v-slot="{ Component }">
             <transition v-if="settingsStore.showTransition" :duration="{ enter: 300, leave: 150 }" mode="out-in"
               name="slide-fade">
-              <keep-alive>
                 <component :is="Component" :key="routeKey" />
-              </keep-alive>
             </transition>
-            <keep-alive v-else>
-              <component :is="Component" :key="routeKey" />
-            </keep-alive>
+              <component v-else :is="Component" :key="routeKey" />
           </router-view>
         </el-main>
       </el-container>

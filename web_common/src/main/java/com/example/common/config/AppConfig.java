@@ -18,6 +18,14 @@ public class AppConfig {
     private String defaultPassword = "123456";
     private Cache cache = new Cache();
     private FileConfig file = new FileConfig();
+    private String envId = "";
+
+    /**
+     * 获取连接池同步标识（用于分布式数据源路由）
+     */
+    public String getPoolSyncId() {
+        return this.envId;
+    }
 
     @Data
     public static class Captcha {
