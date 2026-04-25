@@ -133,7 +133,7 @@ const userStore = useUserStore()
 // 获取用户信息
 const getUserInfo = () => {
   userStore.fetchCurrentUser().then(() => {
-    userInfo.value = userStore.userInfo
+    userInfo.value = userStore.adminUserInfo
     router.push('/Manage/ManagePersonView/ManagePersonBaseInfoView')
   })
 }

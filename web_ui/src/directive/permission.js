@@ -6,7 +6,7 @@ export default {
         const userStore = useUserStore();
 
         const checkPermission = () => {
-            const user = userStore.userInfo || {};
+            const user = userStore.adminUserInfo || {};
             const codes = user.permissions ? user.permissions.map(item => item.permission_code) : [];
             const permission = binding.value;
             el.style.display = codes.includes(permission) ? '' : 'none';
@@ -16,6 +16,6 @@ export default {
         checkPermission();
 
         // 监听 userInfo 变化自动更新
-        watch(() => userStore.userInfo, checkPermission, { deep: true });
+        watch(() => userStore.adminUserInfo, checkPermission, { deep: true });
     }
 };

@@ -132,7 +132,7 @@
             </el-breadcrumb>
             <el-dropdown>
               <span class="el-dropdown-link">
-                <el-image :src="userInfo.imgUrl" style="width: 50px; height: 50px;border-radius: 50%" />
+                <el-image :src="adminUserInfo.imgUrl" style="width: 50px; height: 50px;border-radius: 50%" />
                 <el-icon class="el-icon--right">
                   <arrow-down />
                 </el-icon>
@@ -212,7 +212,7 @@ const route = useRoute();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const mobileSidebarOpen = ref(false);
-let userInfo = ref({});
+let adminUserInfo = ref({});
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
 const editableTabs = ref([
@@ -380,14 +380,14 @@ watch(() => route.path, (newPath) => {
 
 // 检查用户是否有指定权限
 const hasPermission = (permission) => {
-  const user = userStore.userInfo || {};
+  const user = userStore.adminUserInfo || {};
   const filterUser = user.permissions ? user.permissions.map(item => item.permission_code) : [];
   return filterUser && filterUser.includes(permission);
 };
 
 // 检查系统管理子菜单是否应该显示
 const shouldShowSystemMenu = computed(() => {
-  const user = userStore.userInfo;
+  const user = userStore.adminUserInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:notice:query') ||
@@ -399,7 +399,7 @@ const shouldShowSystemMenu = computed(() => {
 
 // 检查系统工具子菜单是否应该显示
 const shouldShowToolsMenu = computed(() => {
-  const user = userStore.userInfo;
+  const user = userStore.adminUserInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:docs:query') ||
@@ -408,7 +408,7 @@ const shouldShowToolsMenu = computed(() => {
 
 // 检查前台管理子菜单是否应该显示
 const shouldShowFrontMenu = computed(() => {
-  const user = userStore.userInfo;
+  const user = userStore.adminUserInfo;
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:front-user:query');
@@ -416,7 +416,7 @@ const shouldShowFrontMenu = computed(() => {
 
 const getUserInfo = () => {
   userStore.fetchCurrentUser().then(() => {
-    userInfo.value = userStore.userInfo
+    adminUserInfo.value = userStore.adminUserInfo
   })
 }
 

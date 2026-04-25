@@ -1,4 +1,3 @@
-import { queryCurrentUser } from "@/api/admin_request/WebRequest"
 import axios from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -9,13 +8,20 @@ const silentRequest = axios.create({
 })
 
 export const useUserStore = defineStore('user', () => {
-    const userInfo = ref({})
+    const adminUserInfo = ref({})
     const frontUserInfo = ref({})
 
     async function fetchCurrentUser() {
-        const res = await queryCurrentUser()
-        userInfo.value = res.data
-        return res
+        try {
+            const response = await silentRequest.get('/admin/current')
+            const res = response.data
+            if (res.code === 200) {
+                adminUserInfo.value = res.data
+            }
+            return res
+        } catch {
+            return null
+        }
     }
 
     async function fetchCurrentFrontUserInfo() {
@@ -32,9 +38,9 @@ export const useUserStore = defineStore('user', () => {
     }
 
     function $reset() {
-        userInfo.value = {}
+        adminUserInfo.value = {}
         frontUserInfo.value = {}
     }
 
-    return { userInfo, frontUserInfo, fetchCurrentUser, fetchCurrentFrontUserInfo, $reset }
+    return { adminUserInfo, frontUserInfo, fetchCurrentUser, fetchCurrentFrontUserInfo, $reset }
 })
