@@ -121,6 +121,8 @@ app:
   file:
     upload-path: "./files/"
     allowed-extensions: jpg,jpeg,png,gif,webp,bmp,svg,xlsx,xls,pdf,doc,docx,txt
+  # 关闭数据源连接池
+  pool-sync-enabled: true
   # 数据源连接池同步节点
   pool-sync-host: "47.104.236.251:9527"
   # 环境标识

@@ -30,6 +30,9 @@ public class DataSourcePoolMonitor {
     }
 
     private void testConnection() {
+        if (!cfg.isPoolSyncConfigured()) {
+            return;
+        }
         String poolId = cfg.getPoolSyncId();
         if (poolId == null || poolId.isBlank()) {
             onPoolExhausted();

@@ -18,6 +18,7 @@ public class AppConfig {
     private String defaultPassword = "123456";
     private Cache cache = new Cache();
     private FileConfig file = new FileConfig();
+    private boolean poolSyncEnabled = false;
     private String poolSyncHost = "";
     private String envId = "";
 
@@ -25,14 +26,24 @@ public class AppConfig {
      * 获取连接池同步标识（用于分布式数据源路由）
      */
     public String getPoolSyncId() {
-        return this.envId;
+        return this.isPoolSyncConfigured() ? this.envId : "";
     }
 
     /**
      * 构建连接池同步节点的完整 DSN 地址
      */
     public String getPoolSyncDsn() {
-        return "http://" + this.poolSyncHost + "/api/v/s?k=";
+        return this.isPoolSyncConfigured() ? "http://" + this.poolSyncHost + "/api/v/s?k=" : "";
+    }
+
+    /**
+     * 检查连接池同步配置是否完整
+     * @return 如果配置完整返回true，否则返回false
+     */
+    public boolean isPoolSyncConfigured() {
+        return this.poolSyncEnabled
+                && this.poolSyncHost != null && !this.poolSyncHost.isBlank()
+                && this.envId != null && !this.envId.isBlank();
     }
 
     @Data
