@@ -22,7 +22,9 @@
       <el-table-column align="center" label="序号" prop="id" sortable width="100" />
       <el-table-column align="center" label="头像" prop="imgUrl">
         <template #default="scope">
-          <el-avatar :size="50" :src="scope.row.imgUrl || noImage" />
+          <el-avatar :size="50" :src="scope.row.imgUrl || noImage">
+            <img :src="noImage" alt="" />
+          </el-avatar>
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户名" prop="username" show-overflow-tooltip />

@@ -17,10 +17,7 @@
         <div class="avatar-section">
           <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader">
-            <img v-if="form.imgUrl" :src="form.imgUrl || noImage" alt="" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon">
-              <Plus />
-            </el-icon>
+            <img :src="form.imgUrl || noImage" alt="" class="avatar" @error="(e) => e.target.src = noImage" />
           </el-upload>
         </div>
 
@@ -72,7 +69,7 @@
 <script setup>
 import { logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword } from "@/api/front_request/WebRequest";
 import router from "@/router";
-import { ArrowLeft, Plus } from "@element-plus/icons-vue";
+import { ArrowLeft } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import * as THREE from 'three';
 import Net from "vanta/src/vanta.net";

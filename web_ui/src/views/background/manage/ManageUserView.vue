@@ -37,7 +37,9 @@
       <el-table-column align="center" label="序号" prop="id" sortable width="100" />
       <el-table-column align="center" label="头像" prop="imgUrl">
         <template #default="scope">
-          <el-avatar :size="50" :src="scope.row.imgUrl || noImage" />
+          <el-avatar :size="50" :src="scope.row.imgUrl || noImage">
+            <img :src="noImage" alt="" />
+          </el-avatar>
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户名" prop="username" show-overflow-tooltip />
@@ -89,10 +91,7 @@
         <el-form-item label="头像" style="display: flex;align-items: center;justify-content: space-around">
           <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader" style="margin: 0 auto">
-            <img v-if="form.imgUrl" :src="form.imgUrl" alt="" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon">
-              <Plus />
-            </el-icon>
+            <img :src="form.imgUrl || noImage" alt="" class="avatar" @error="(e) => e.target.src = noImage" />
           </el-upload>
         </el-form-item>
         <el-form-item label="用户名" prop="username">

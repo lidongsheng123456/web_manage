@@ -132,7 +132,11 @@
             </el-breadcrumb>
             <el-dropdown>
               <span class="el-dropdown-link">
-                <el-image :src="adminUserInfo.imgUrl" style="width: 50px; height: 50px;border-radius: 50%" />
+                <el-image :src="adminUserInfo.imgUrl || noImage" style="width: 50px; height: 50px;border-radius: 50%">
+                  <template #error>
+                    <img :src="noImage" style="width: 50px; height: 50px;border-radius: 50%" alt="" />
+                  </template>
+                </el-image>
                 <el-icon class="el-icon--right">
                   <arrow-down />
                 </el-icon>
@@ -183,6 +187,8 @@
 
 <script setup>
 import { logout } from "@/api/admin_request/WebRequest";
+import noImageUrl from '@/assets/img/no_image.png';
+const noImage = noImageUrl;
 import router from "@/router";
 import { useSettingsStore } from "@/store/modules/settings";
 import { useUserStore } from "@/store/modules/user";

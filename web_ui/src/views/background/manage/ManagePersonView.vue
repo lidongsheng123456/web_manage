@@ -11,10 +11,7 @@
             <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
               :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader"
               style="text-align: center">
-              <img v-if="userInfo.imgUrl" :src="userInfo.imgUrl" alt="" class="avatar" />
-              <el-icon v-else class="avatar-uploader-icon">
-                <Plus />
-              </el-icon>
+              <img :src="userInfo.imgUrl || noImage" alt="" class="avatar" @error="(e) => e.target.src = noImage" />
             </el-upload>
             <el-divider />
             <div style="display: flex;justify-content: space-between">
@@ -106,9 +103,11 @@
 
 <script setup>
 import { updatePerson } from "@/api/admin_request/WebRequest";
+import noImageUrl from '@/assets/img/no_image.png';
+const noImage = noImageUrl;
 import router from "@/router";
 import { useUserStore } from "@/store/modules/user";
-import { Avatar, Message, PhoneFilled, Plus, UserFilled, Watch } from "@element-plus/icons-vue";
+import { Avatar, Message, PhoneFilled, UserFilled, Watch } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
 

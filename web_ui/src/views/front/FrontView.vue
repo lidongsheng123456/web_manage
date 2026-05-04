@@ -15,7 +15,11 @@
         </div>
         <el-dropdown v-else class="user-dropdown">
           <span class="el-dropdown-link">
-            <el-image :src="userInfo.imgUrl || noImage" class="user-avatar" />
+            <el-image :src="userInfo.imgUrl || noImage" class="user-avatar">
+              <template #error>
+                <img :src="noImage" class="user-avatar" alt="" />
+              </template>
+            </el-image>
             <el-icon class="el-icon--right">
               <arrow-down />
             </el-icon>
@@ -78,9 +82,7 @@
 
     <router-view v-slot="{ Component }">
       <transition :duration="{ enter: 300, leave: 150 }" mode="out-in" name="slide-fade">
-        <keep-alive>
-          <component :is="Component" :key="$route.path" />
-        </keep-alive>
+        <component :is="Component" :key="$route.path" />
       </transition>
     </router-view>
   </div>

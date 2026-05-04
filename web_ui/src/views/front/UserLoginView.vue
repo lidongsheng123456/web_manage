@@ -44,7 +44,7 @@ const codeUrl = ref('');
 const loading = ref(false);
 const formRef = ref(null);
 const form = ref({
-  username: 'admin',
+  username: 'user',
   password: '123456',
   code: ''
 });
