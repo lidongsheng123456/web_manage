@@ -1,6 +1,7 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, ComQuery, ComQueryQueryParams } from "@/types"
 
-export function addComQuery(data) {
+export function addComQuery(data: Partial<ComQuery>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/com-query',
         method: 'POST',
@@ -8,7 +9,7 @@ export function addComQuery(data) {
     })
 }
 
-export function batchDeleteComQuery(data) {
+export function batchDeleteComQuery(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/com-query/batchDelete',
         method: 'DELETE',
@@ -18,7 +19,7 @@ export function batchDeleteComQuery(data) {
     })
 }
 
-export function updateComQuery(data) {
+export function updateComQuery(data: ComQuery): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/com-query',
         method: 'PUT',
@@ -26,7 +27,7 @@ export function updateComQuery(data) {
     })
 }
 
-export function queryComQuery(data) {
+export function queryComQuery(data: ComQueryQueryParams): Promise<ApiResponse<PageResult<ComQuery>>> {
     return adminRequest({
         url: '/admin/com-query',
         method: 'GET',
@@ -34,7 +35,7 @@ export function queryComQuery(data) {
     })
 }
 
-export function queryComQueryById(data) {
+export function queryComQueryById(data: number): Promise<ApiResponse<ComQuery>> {
     return adminRequest({
         url: `/admin/com-query/${data}`,
         method: 'GET'

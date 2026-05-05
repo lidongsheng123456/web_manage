@@ -30,10 +30,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {captcha, login} from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import {useUserStore} from "@/store/modules/user.js";
+import {useUserStore} from "@/store/modules/user";
 import {ElMessage} from "element-plus";
 import {onMounted, onUnmounted, ref} from 'vue';
 

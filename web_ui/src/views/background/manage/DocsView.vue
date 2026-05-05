@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from "vue";
 
 const src = ref(import.meta.env.VUE_APP_API_TARGET + "/doc.html")

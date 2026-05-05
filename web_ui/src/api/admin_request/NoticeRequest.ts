@@ -1,6 +1,7 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, Notice, NoticeQueryParams } from "@/types"
 
-export function addNotice(data) {
+export function addNotice(data: Partial<Notice>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/notice',
         method: 'POST',
@@ -8,7 +9,7 @@ export function addNotice(data) {
     })
 }
 
-export function batchDeleteNotice(data) {
+export function batchDeleteNotice(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/notice/batchDelete',
         method: 'DELETE',
@@ -18,7 +19,7 @@ export function batchDeleteNotice(data) {
     })
 }
 
-export function updateNotice(data) {
+export function updateNotice(data: Notice): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/notice',
         method: 'PUT',
@@ -26,7 +27,7 @@ export function updateNotice(data) {
     })
 }
 
-export function queryNotice(data) {
+export function queryNotice(data: NoticeQueryParams): Promise<ApiResponse<PageResult<Notice>>> {
     return adminRequest({
         url: '/admin/notice',
         method: 'GET',
@@ -34,7 +35,7 @@ export function queryNotice(data) {
     })
 }
 
-export function queryNoticeById(data) {
+export function queryNoticeById(data: number): Promise<ApiResponse<Notice>> {
     return adminRequest({
         url: `/admin/notice/${data}`,
         method: 'GET'

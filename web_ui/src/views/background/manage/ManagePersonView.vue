@@ -101,7 +101,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { updatePerson } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
 const noImage = noImageUrl;

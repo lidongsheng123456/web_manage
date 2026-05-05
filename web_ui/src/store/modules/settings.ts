@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
+import type { SettingsState } from '@/types'
 
 const STORAGE_KEY = 'admin-settings'
 
-function loadSettings() {
+function loadSettings(): Partial<SettingsState> {
     try {
         const raw = localStorage.getItem(STORAGE_KEY)
         return raw ? JSON.parse(raw) : {}
@@ -16,21 +17,21 @@ export const useSettingsStore = defineStore('settings', () => {
     const saved = loadSettings()
 
     // ==================== 个性化设置 ====================
-    const themeColor = ref(saved.themeColor || '#409eff')
-    const sidebarCollapse = ref(saved.sidebarCollapse ?? false)
-    const showTagsView = ref(saved.showTagsView ?? true)
-    const showTransition = ref(saved.showTransition ?? true)
-    const grayMode = ref(saved.grayMode ?? false)
-    const colorWeakMode = ref(saved.colorWeakMode ?? false)
+    const themeColor = ref<string>(saved.themeColor || '#409eff')
+    const sidebarCollapse = ref<boolean>(saved.sidebarCollapse ?? false)
+    const showTagsView = ref<boolean>(saved.showTagsView ?? true)
+    const showTransition = ref<boolean>(saved.showTransition ?? true)
+    const grayMode = ref<boolean>(saved.grayMode ?? false)
+    const colorWeakMode = ref<boolean>(saved.colorWeakMode ?? false)
 
     // ==================== 网站信息 ====================
-    const siteName = ref(saved.siteName || '东神脚手架')
-    const siteDescription = ref(saved.siteDescription || '基于 Spring Boot 3 + Vue 3 的全栈管理系统')
-    const siteFooter = ref(saved.siteFooter || '')
-    const siteIcp = ref(saved.siteIcp || '')
+    const siteName = ref<string>(saved.siteName || '东神脚手架')
+    const siteDescription = ref<string>(saved.siteDescription || '基于 Spring Boot 3 + Vue 3 的全栈管理系统')
+    const siteFooter = ref<string>(saved.siteFooter || '')
+    const siteIcp = ref<string>(saved.siteIcp || '')
 
     // ==================== 持久化 ====================
-    function persist() {
+    function persist(): void {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
             themeColor: themeColor.value,
             sidebarCollapse: sidebarCollapse.value,
@@ -52,7 +53,13 @@ export const useSettingsStore = defineStore('settings', () => {
     )
 
     // ==================== 应用主题到 DOM ====================
-    function hexToRgb(hex) {
+    interface RgbColor {
+        r: number
+        g: number
+        b: number
+    }
+
+    function hexToRgb(hex: string): RgbColor {
         hex = hex.replace('#', '')
         return {
             r: parseInt(hex.substring(0, 2), 16),
@@ -61,7 +68,7 @@ export const useSettingsStore = defineStore('settings', () => {
         }
     }
 
-    function mixColor(color1, color2, weight) {
+    function mixColor(color1: string, color2: string, weight: number): string {
         const c1 = hexToRgb(color1)
         const c2 = hexToRgb(color2)
         const w = weight / 100
@@ -71,7 +78,7 @@ export const useSettingsStore = defineStore('settings', () => {
         return `rgb(${r}, ${g}, ${b})`
     }
 
-    function applyTheme() {
+    function applyTheme(): void {
         const el = document.documentElement
         const primary = themeColor.value
 
@@ -98,7 +105,7 @@ export const useSettingsStore = defineStore('settings', () => {
         el.classList.toggle('color-weak', colorWeakMode.value)
     }
 
-    function resetPersonalization() {
+    function resetPersonalization(): void {
         themeColor.value = '#409eff'
         sidebarCollapse.value = false
         showTagsView.value = true
@@ -107,7 +114,7 @@ export const useSettingsStore = defineStore('settings', () => {
         colorWeakMode.value = false
     }
 
-    function resetSiteInfo() {
+    function resetSiteInfo(): void {
         siteName.value = '东神脚手架'
         siteDescription.value = '基于 Spring Boot 3 + Vue 3 的全栈管理系统'
         siteFooter.value = ''

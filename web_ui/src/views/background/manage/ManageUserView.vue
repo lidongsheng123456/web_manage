@@ -119,7 +119,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { addUser, batchDeleteUser, queryUser, queryUserById, updateUser } from "@/api/admin_request/UserRequest";
 import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from 'element-plus';

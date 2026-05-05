@@ -63,7 +63,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { queryData } from '@/api/admin_request/DataCenterRequest'
 import { Avatar, Bell, Collection, Connection, DataAnalysis, Document, Key, Search, Unlock, User, UserFilled } from '@element-plus/icons-vue'
 import { TransitionPresets, useTransition } from '@vueuse/core'

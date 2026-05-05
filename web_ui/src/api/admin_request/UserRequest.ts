@@ -1,6 +1,7 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, AdminUser, UserQueryParams } from "@/types"
 
-export function addUser(data) {
+export function addUser(data: Partial<AdminUser>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/user',
         method: 'POST',
@@ -8,7 +9,7 @@ export function addUser(data) {
     })
 }
 
-export function batchDeleteUser(data) {
+export function batchDeleteUser(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/user/batchDelete',
         method: 'DELETE',
@@ -18,7 +19,7 @@ export function batchDeleteUser(data) {
     })
 }
 
-export function updateUser(data) {
+export function updateUser(data: AdminUser): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/user',
         method: 'PUT',
@@ -26,7 +27,7 @@ export function updateUser(data) {
     })
 }
 
-export function queryUser(data) {
+export function queryUser(data: UserQueryParams): Promise<ApiResponse<PageResult<AdminUser>>> {
     return adminRequest({
         url: '/admin/user',
         method: 'GET',
@@ -34,7 +35,7 @@ export function queryUser(data) {
     })
 }
 
-export function queryUserById(data) {
+export function queryUserById(data: number): Promise<ApiResponse<AdminUser>> {
     return adminRequest({
         url: `/admin/user/${data}`,
         method: 'GET'

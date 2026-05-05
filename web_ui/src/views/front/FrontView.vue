@@ -88,7 +88,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { queryNotice } from "@/api/front_request/UserHomeRequest";
 import { logout } from "@/api/front_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';

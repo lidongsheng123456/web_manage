@@ -1,6 +1,7 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, OperLog, OperLogQueryParams } from "@/types"
 
-export function addOperLog(data) {
+export function addOperLog(data: Partial<OperLog>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/operLog',
         method: 'POST',
@@ -8,7 +9,7 @@ export function addOperLog(data) {
     })
 }
 
-export function batchDeleteOperLog(data) {
+export function batchDeleteOperLog(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/operLog/batchDelete',
         method: 'DELETE',
@@ -18,7 +19,7 @@ export function batchDeleteOperLog(data) {
     })
 }
 
-export function updateOperLog(data) {
+export function updateOperLog(data: OperLog): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/operLog',
         method: 'PUT',
@@ -26,7 +27,7 @@ export function updateOperLog(data) {
     })
 }
 
-export function queryOperLog(data) {
+export function queryOperLog(data: OperLogQueryParams): Promise<ApiResponse<PageResult<OperLog>>> {
     return adminRequest({
         url: '/admin/operLog',
         method: 'GET',
@@ -34,7 +35,7 @@ export function queryOperLog(data) {
     })
 }
 
-export function queryOperLogById(data) {
+export function queryOperLogById(data: number): Promise<ApiResponse<OperLog>> {
     return adminRequest({
         url: `/admin/operLog/${data}`,
         method: 'GET'

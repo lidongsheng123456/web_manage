@@ -67,7 +67,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { queryUserByRoleId, queryUserNotRoleId } from "@/api/admin_request/RoleRequest";
 import noImage from "@/assets/img/no_image.png";
 import { Refresh, Search } from "@element-plus/icons-vue";

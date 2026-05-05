@@ -1,6 +1,8 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, Permission, PermissionQueryParams, PermissionRoleQueryParams, Role, AssignPermissionDTO } from "@/types"
+import type { AxiosResponse } from "axios"
 
-export function addPermission(data) {
+export function addPermission(data: Partial<Permission>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/permission',
         method: 'POST',
@@ -8,7 +10,7 @@ export function addPermission(data) {
     })
 }
 
-export function batchDeletePermission(data) {
+export function batchDeletePermission(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/permission/batchDelete',
         method: 'DELETE',
@@ -18,7 +20,7 @@ export function batchDeletePermission(data) {
     })
 }
 
-export function updatePermission(data) {
+export function updatePermission(data: Permission): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/permission',
         method: 'PUT',
@@ -26,7 +28,7 @@ export function updatePermission(data) {
     })
 }
 
-export function queryPermission(data) {
+export function queryPermission(data: PermissionQueryParams): Promise<ApiResponse<PageResult<Permission>>> {
     return adminRequest({
         url: '/admin/permission',
         method: 'GET',
@@ -34,14 +36,14 @@ export function queryPermission(data) {
     })
 }
 
-export function queryPermissionById(data) {
+export function queryPermissionById(data: number): Promise<ApiResponse<Permission>> {
     return adminRequest({
         url: `/admin/permission/${data}`,
         method: 'GET'
     })
 }
 
-export function queryRoleNotPermissionId(data) {
+export function queryRoleNotPermissionId(data: PermissionRoleQueryParams): Promise<ApiResponse<PageResult<Role>>> {
     return adminRequest({
         url: '/admin/permission/NotPermissionId',
         method: 'GET',
@@ -49,7 +51,7 @@ export function queryRoleNotPermissionId(data) {
     })
 }
 
-export function queryRoleByPermissionId(data) {
+export function queryRoleByPermissionId(data: PermissionRoleQueryParams): Promise<ApiResponse<PageResult<Role>>> {
     return adminRequest({
         url: '/admin/permission/permission',
         method: 'GET',
@@ -57,26 +59,26 @@ export function queryRoleByPermissionId(data) {
     })
 }
 
-export function exportPermission() {
+export function exportPermission(): Promise<AxiosResponse<Blob>> {
     return adminRequest({
         url: '/admin/permission/export',
         method: 'GET',
         responseType: 'blob'
-    });
+    })
 }
 
-export function assignPermission(data) {
+export function assignPermission(data: AssignPermissionDTO): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/permission/assign',
         method: 'POST',
         data: data
-    });
+    })
 }
 
-export function removePermission(data) {
+export function removePermission(data: AssignPermissionDTO): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/permission/remove',
         method: 'POST',
         data: data
-    });
+    })
 }

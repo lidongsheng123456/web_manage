@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 import router from "@/router";
 import {logout, updatePerson, validateFormerPassword} from "@/api/admin_request/WebRequest";

@@ -359,7 +359,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import * as THREE from 'three';
 import Clouds from "vanta/src/vanta.clouds";
 import { onBeforeUnmount, onMounted, ref } from "vue";

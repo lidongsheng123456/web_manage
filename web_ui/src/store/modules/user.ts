@@ -1,19 +1,20 @@
-import axios from 'axios'
+import axios, { type AxiosInstance } from 'axios'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { AdminUser, FrontUser, ApiResponse } from '@/types'
 
-const silentRequest = axios.create({
+const silentRequest: AxiosInstance = axios.create({
     baseURL: import.meta.env.VUE_APP_BASEURL,
     timeout: 30000,
 })
 
 export const useUserStore = defineStore('user', () => {
-    const adminUserInfo = ref({})
-    const frontUserInfo = ref({})
+    const adminUserInfo = ref<AdminUser | null>(null)
+    const frontUserInfo = ref<FrontUser | null>(null)
 
-    async function fetchCurrentUser() {
+    async function fetchCurrentUser(): Promise<ApiResponse<AdminUser> | null> {
         try {
-            const response = await silentRequest.get('/admin/current')
+            const response = await silentRequest.get<ApiResponse<AdminUser>>('/admin/current')
             const res = response.data
             if (res.code === 200) {
                 adminUserInfo.value = res.data
@@ -24,9 +25,9 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    async function fetchCurrentFrontUserInfo() {
+    async function fetchCurrentFrontUserInfo(): Promise<ApiResponse<FrontUser> | null> {
         try {
-            const response = await silentRequest.get('/user/current')
+            const response = await silentRequest.get<ApiResponse<FrontUser>>('/user/current')
             const res = response.data
             if (res.code === 200) {
                 frontUserInfo.value = res.data
@@ -37,9 +38,9 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
-    function $reset() {
-        adminUserInfo.value = {}
-        frontUserInfo.value = {}
+    function $reset(): void {
+        adminUserInfo.value = null
+        frontUserInfo.value = null
     }
 
     return { adminUserInfo, frontUserInfo, fetchCurrentUser, fetchCurrentFrontUserInfo, $reset }

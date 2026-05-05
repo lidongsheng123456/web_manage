@@ -95,7 +95,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { nextTick, onMounted, ref } from 'vue';
 

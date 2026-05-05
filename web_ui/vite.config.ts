@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: env.VUE_APP_API_TARGET,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          rewrite: (path: string) => path.replace(/^\/api/, '')
         }
       }
     },
@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => {
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-          manualChunks(id) {
+          manualChunks(id: string) {
             if (id.includes('node_modules')) {
               if (id.includes('echarts') || id.includes('zrender')) {
                 return 'vendor-echarts'

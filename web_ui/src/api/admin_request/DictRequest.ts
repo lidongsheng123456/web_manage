@@ -1,6 +1,7 @@
-import adminRequest from "@/utils/AdminRequest";
+import adminRequest from "@/utils/AdminRequest"
+import type { ApiResponse, PageResult, Dict, DictQueryParams } from "@/types"
 
-export function addDict(data) {
+export function addDict(data: Partial<Dict>): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/dict',
         method: 'POST',
@@ -8,7 +9,7 @@ export function addDict(data) {
     })
 }
 
-export function batchDeleteDict(data) {
+export function batchDeleteDict(data: string): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/dict/batchDelete',
         method: 'DELETE',
@@ -18,7 +19,7 @@ export function batchDeleteDict(data) {
     })
 }
 
-export function updateDict(data) {
+export function updateDict(data: Dict): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/dict',
         method: 'PUT',
@@ -26,7 +27,7 @@ export function updateDict(data) {
     })
 }
 
-export function queryDict(data) {
+export function queryDict(data: DictQueryParams): Promise<ApiResponse<PageResult<Dict>>> {
     return adminRequest({
         url: '/admin/dict',
         method: 'GET',
@@ -34,7 +35,7 @@ export function queryDict(data) {
     })
 }
 
-export function queryDictById(data) {
+export function queryDictById(data: number): Promise<ApiResponse<Dict>> {
     return adminRequest({
         url: `/admin/dict/${data}`,
         method: 'GET'

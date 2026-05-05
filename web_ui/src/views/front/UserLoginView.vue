@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { captcha, login } from "@/api/front_request/WebRequest";
 import router from "@/router";
 import { ElMessage } from "element-plus";

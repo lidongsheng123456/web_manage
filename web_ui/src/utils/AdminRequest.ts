@@ -1,8 +1,9 @@
-import router from "@/router";
-import axios from 'axios';
-import { ElMessage, ElMessageBox } from "element-plus";
+import router from "@/router"
+import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
+import { ElMessage, ElMessageBox } from "element-plus"
+import type { ApiResponse } from "@/types"
 
-const adminRequest = axios.create({
+const adminRequest: AxiosInstance = axios.create({
     baseURL: import.meta.env.VUE_APP_BASEURL,
     timeout: 30000,
 })
@@ -14,8 +15,9 @@ adminRequest.interceptors.request.use(config => {
     return config
 })
 
-adminRequest.interceptors.response.use(response => {
-        let res = response.data;
+adminRequest.interceptors.response.use(
+    (response: AxiosResponse<ApiResponse>) => {
+        const res = response.data
 
         // 401 token令牌效验失败
         if (res.code === 401) {
@@ -26,21 +28,22 @@ adminRequest.interceptors.response.use(response => {
                 }
             ).then(() => {
                 router.push('/Login').catch(() => {
-                });
-            }).catch(error => {
+                })
+            }).catch(() => {
             })
             return Promise.reject(new Error(res.msg))
         } else if (res.code !== 200) {
-            ElMessage.error(res.msg);
+            ElMessage.error(res.msg)
             return Promise.reject(new Error(res.msg))
         } else {
-            return res
+            return res as unknown as AxiosResponse
         }
     },
-    error => {
-        const msg = error.response ? `请求失败: ${error.response.status}` : '网络异常，请检查网络连接';
-        ElMessage.error(msg);
-        return Promise.reject(error);
+    (error: unknown) => {
+        const err = error as { response?: { status: number } }
+        const msg = err.response ? `请求失败: ${err.response.status}` : '网络异常，请检查网络连接'
+        ElMessage.error(msg)
+        return Promise.reject(error)
     }
 )
 

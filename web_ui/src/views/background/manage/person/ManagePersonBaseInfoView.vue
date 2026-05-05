@@ -37,7 +37,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // 表单
 import {ref, watch} from "vue";
 import router from "@/router";

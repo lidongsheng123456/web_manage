@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { queryRoleByPermissionId, queryRoleNotPermissionId } from "@/api/admin_request/PermissionRequest";
 import { Refresh, Search } from "@element-plus/icons-vue";
 import { ref } from "vue";
