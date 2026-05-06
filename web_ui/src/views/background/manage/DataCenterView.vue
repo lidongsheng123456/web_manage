@@ -70,8 +70,8 @@ import { TransitionPresets, useTransition } from '@vueuse/core'
 import * as echarts from 'echarts'
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, reactive, ref } from 'vue'
 
-const lineRef = ref(null), pieRef = ref(null), barRef = ref(null), radarRef = ref(null)
-let lineChart, pieChart, barChart, radarChart
+const lineRef = ref<HTMLElement | null>(null), pieRef = ref<HTMLElement | null>(null), barRef = ref<HTMLElement | null>(null), radarRef = ref<HTMLElement | null>(null)
+let lineChart: echarts.ECharts | null = null, pieChart: echarts.ECharts | null = null, barChart: echarts.ECharts | null = null, radarChart: echarts.ECharts | null = null
 const activeKey = ref('user')
 const dateLabels = ref(['', '', '', '', '', '', ''])
 
@@ -109,12 +109,12 @@ const legends = [
   { key: 'frontUser', label: '前台用户', color: '#06b6d4' }
 ]
 
-const formatNum = n => n >= 10000 ? (n / 10000).toFixed(1) + 'w' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n)
-const sparkLine = k => {
-  const d = weekly[k], mx = Math.max(...d, 1)
+const formatNum = (n: number) => n >= 10000 ? (n / 10000).toFixed(1) + 'w' : n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n)
+const sparkLine = (k: string) => {
+  const d = weekly[k as keyof typeof weekly], mx = Math.max(...d, 1)
   return 'M' + d.map((v, i) => `${(i / 6) * 60},${22 - (v / mx) * 20}`).join(' L')
 }
-const sparkArea = k => { const p = sparkLine(k); return p ? p + ' L60,24 L0,24 Z' : '' }
+const sparkArea = (k: string) => { const p = sparkLine(k); return p ? p + ' L60,24 L0,24 Z' : '' }
 
 const TIP = { backgroundColor: '#fff', borderColor: '#e4e7ed', textStyle: { color: '#303133', fontSize: 12 }, extraCssText: 'box-shadow:0 2px 12px rgba(0,0,0,0.1)' }
 const TC = '#909399', GC = '#ebeef5'
@@ -132,7 +132,7 @@ const updateLine = () => {
     backgroundColor: 'transparent', tooltip: { ...TIP, trigger: 'axis' },
     grid: { top: 20, right: 20, bottom: 30, left: 50 },
     xAxis: { type: 'category', data: dateLabels.value, boundaryGap: false, axisLine: { lineStyle: { color: GC } }, axisLabel: { color: TC }, splitLine: { show: false } },
-    yAxis: { type: 'value', axisLine: { show: false }, axisLabel: { color: TC }, splitLine: { lineStyle: { color: GC, type: 'dashed' } } },
+    yAxis: { type: 'value', alignTicks: false, axisLine: { show: false }, axisLabel: { color: TC }, splitLine: { lineStyle: { color: GC, type: 'dashed' } } },
     series
   }, true)
 }
@@ -171,10 +171,11 @@ const updateRadar = () => {
   const keys = ['user', 'notice', 'operLog', 'permission', 'frontUser']
   const clr = { user: '#409eff', notice: '#e6a23c', operLog: '#67c23a', permission: '#8b5cf6', frontUser: '#06b6d4' }
   const allMax = Math.max(...keys.flatMap(k => weekly[k]), 5)
+  const radarMax = Math.ceil((allMax + 2) / 4) * 4
   radarChart.setOption({
     backgroundColor: 'transparent', tooltip: { ...TIP },
     radar: {
-      indicator: dateLabels.value.map(d => ({ name: d, max: allMax + 2 })), shape: 'polygon', splitNumber: 4,
+      indicator: dateLabels.value.map(d => ({ name: d, max: radarMax })), shape: 'polygon', splitNumber: 4,
       axisName: { color: TC, fontSize: 11 }, splitLine: { lineStyle: { color: GC } },
       splitArea: { areaStyle: { color: ['#fafafa', '#f5f7fa'] } },
       axisLine: { lineStyle: { color: GC } }
@@ -203,8 +204,8 @@ const init = async () => {
 }
 
 onMounted(() => {
-  lineChart = echarts.init(lineRef.value); pieChart = echarts.init(pieRef.value)
-  barChart = echarts.init(barRef.value); radarChart = echarts.init(radarRef.value)
+  lineChart = echarts.init(lineRef.value!); pieChart = echarts.init(pieRef.value!)
+  barChart = echarts.init(barRef.value!); radarChart = echarts.init(radarRef.value!)
   init()
   window.addEventListener('resize', onResize)
 })
