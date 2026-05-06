@@ -142,6 +142,8 @@
 </template>
 
 <script setup lang="ts">
+import type { OperLog, OperLogQueryParams } from "@/types";
+import type { FormInstance } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
@@ -149,9 +151,9 @@ import { batchDeleteOperLog, queryOperLog, queryOperLogById } from "@/api/admin_
 import { Bottom, Delete, Refresh, Search, View } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<OperLog[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 对话框显示
@@ -159,23 +161,23 @@ const dialogOverflowVisible = ref(false)
 // 对话框标题
 const title = ref('')
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 非多个禁用
 const multiple = ref(true)
 // 表格加载层
 const loading = ref(true);
 // 详细表单
-const from = ref({})
+const from = ref<Partial<OperLog>>({})
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<OperLogQueryParams>({
   currentPage: 1,
   pageSize: 10,
   title: null,
 });
 // 控制详细
-const handleDetail = (row) => {
+const handleDetail = (row: OperLog) => {
   queryOperLogById(row.id).then(res => {
 
     from.value = res.data
@@ -192,7 +194,7 @@ const handleDetail = (row) => {
   });
 }
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<OperLog>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -226,8 +228,8 @@ const handleExport = () => {
   window.location.href = uploadUrl + '/admin/operLog/export'
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: OperLog[]) => {
+  ids.value = selection.map(item => item.id!);
   multiple.value = !selection.length
 };
 // 控制查询
@@ -236,12 +238,12 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }

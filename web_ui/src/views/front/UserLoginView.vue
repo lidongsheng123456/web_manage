@@ -38,12 +38,18 @@
 <script setup lang="ts">
 import { captcha, login } from "@/api/front_request/WebRequest";
 import router from "@/router";
+import type { FormInstance } from "element-plus";
 import { ElMessage } from "element-plus";
 import { onMounted, onUnmounted, ref } from 'vue';
 const codeUrl = ref('');
 const loading = ref(false);
-const formRef = ref(null);
-const form = ref({
+const formRef = ref<FormInstance>();
+interface LoginForm {
+  username: string
+  password: string
+  code: string
+}
+const form = ref<LoginForm>({
   username: 'user',
   password: '123456',
   code: ''
@@ -62,7 +68,7 @@ const rules = {
 };
 
 const logIn = () => {
-  formRef.value.validate((valid) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       loading.value = true;
       login(form.value).then(res => {

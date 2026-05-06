@@ -88,6 +88,8 @@
 </template>
 
 <script setup lang="ts">
+import type { ComQuery, ComQueryQueryParams } from "@/types";
+import type { FormInstance } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
@@ -101,17 +103,17 @@ import {
 import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<ComQuery[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 对话框标题
 const title = ref("");
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 表单元素
-const formRef = ref(null)
+const formRef = ref<FormInstance>()
 // 非单个禁用
 const single = ref(true)
 // 非多个禁用
@@ -123,14 +125,14 @@ const dialogOverflowVisible = ref(false)
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 表单
-const form = ref({
-  name: null,
-  code: null,
-  customSql: null,
-  description: null
+const form = ref<Partial<ComQuery>>({
+  name: null as unknown as string,
+  code: null as unknown as string,
+  customSql: null as unknown as string,
+  description: null as unknown as string
 });
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<ComQueryQueryParams>({
   currentPage: 1,
   pageSize: 10,
   name: null,
@@ -150,10 +152,10 @@ const rules = {
 };
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updateComQuery(form.value).then(res => {
+        updateComQuery(form.value as ComQuery).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -173,7 +175,7 @@ const submitForm = () => {
   });
 };
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<ComQuery>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -192,10 +194,10 @@ const handleDelete = (row) => {
   });
 };
 // 控制更新
-const handleUpdate = (row) => {
+const handleUpdate = (row: Partial<ComQuery>) => {
   resetFrom();
-  const id = row.id || ids.value;
-  queryComQueryById(id).then(res => {
+  const cqId = row.id || ids.value[0];
+  queryComQueryById(cqId).then(res => {
     form.value = res.data
     dialogOverflowVisible.value = true;
     title.value = "修改通用查询";
@@ -225,8 +227,8 @@ const handleAdd = () => {
   title.value = "添加通用查询";
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: ComQuery[]) => {
+  ids.value = selection.map(item => item.id!);
   single.value = selection.length !== 1
   multiple.value = !selection.length
 };
@@ -236,12 +238,12 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }

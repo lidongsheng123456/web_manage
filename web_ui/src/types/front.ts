@@ -17,7 +17,7 @@ export interface FrontUserDto {
   id?: number
   username: string
   password: string
-  name: string
+  name?: string
   phone?: string
   email?: string
   imgUrl?: string | null

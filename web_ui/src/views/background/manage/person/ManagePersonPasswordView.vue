@@ -3,15 +3,15 @@
     <el-form ref="formRef" :model="form" :rules="rules">
       <el-form-item label="原来密码" prop="formerPassword">
         <el-input v-model="form.formerPassword" placeholder="请输入原密码" prefix-icon="User"
-                  style="width: 350px;height: 40px"></el-input>
+          style="width: 350px;height: 40px"></el-input>
       </el-form-item>
       <el-form-item label="新的密码" prop="newPassword">
-        <el-input v-model="form.newPassword" placeholder="请输入新密码" prefix-icon="Lock"
-                  show-password style="width: 350px;height: 40px"></el-input>
+        <el-input v-model="form.newPassword" placeholder="请输入新密码" prefix-icon="Lock" show-password
+          style="width: 350px;height: 40px"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="confirmPassword">
-        <el-input v-model="form.confirmPassword" placeholder="请确认新密码" prefix-icon="Lock"
-                  show-password style="width: 350px;height: 40px"></el-input>
+        <el-input v-model="form.confirmPassword" placeholder="请确认新密码" prefix-icon="Lock" show-password
+          style="width: 350px;height: 40px"></el-input>
       </el-form-item>
     </el-form>
     <el-button v-no-more-click @click="handleReset">取消</el-button>
@@ -22,19 +22,25 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { logout, updatePerson, validateFormerPassword } from "@/api/admin_request/WebRequest";
 import router from "@/router";
-import {logout, updatePerson, validateFormerPassword} from "@/api/admin_request/WebRequest";
-import {ElMessage} from "element-plus";
+import type { FormInstance } from "element-plus";
+import { ElMessage } from "element-plus";
+import { ref } from "vue";
 
-const formRef = ref(null);
-const form = ref({
+interface PasswordForm {
+  formerPassword: string | null
+  newPassword: string | null
+  confirmPassword: string | null
+}
+const formRef = ref<FormInstance>();
+const form = ref<PasswordForm>({
   formerPassword: null,
   newPassword: null,
   confirmPassword: null
 });
 
-const formerPassword = (rule, confirmPwd, callback) => {
+const formerPassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   validateFormerPassword(confirmPwd).then(res => {
     callback();
   }).catch(error => {
@@ -42,7 +48,7 @@ const formerPassword = (rule, confirmPwd, callback) => {
   });
 };
 
-const validatePassword = (rule, confirmPwd, callback) => {
+const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   if (confirmPwd !== form.value.newPassword) {
     callback(new Error("两次输入的密码不一致"));
   } else {
@@ -52,27 +58,27 @@ const validatePassword = (rule, confirmPwd, callback) => {
 
 const rules = {
   formerPassword: [
-    {required: true, message: '请输入原密码', trigger: 'blur'},
-    {validator: formerPassword, trigger: 'blur'}
+    { required: true, message: '请输入原密码', trigger: 'blur' },
+    { validator: formerPassword, trigger: 'blur' }
   ],
   newPassword: [
-    {required: true, message: '请输入新密码', trigger: 'blur'}
+    { required: true, message: '请输入新密码', trigger: 'blur' }
   ],
   confirmPassword: [
-    {required: true, message: '请确认新密码', trigger: 'blur'},
-    {validator: validatePassword, trigger: 'blur'}
+    { required: true, message: '请确认新密码', trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' }
   ]
 };
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
-      updatePerson({password: form.value.confirmPassword}).then(res => {
+      updatePerson({ password: form.value.confirmPassword } as any).then(res => {
         ElMessage.success('修改成功');
         logout().then(res => {
           router.push('/Login');
           setTimeout(() => {
-            window.location.reload(true);
+            window.location.reload();
           }, 500)
         }).catch(error => {
           console.log(error)
@@ -89,6 +95,4 @@ const handleReset = () => {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

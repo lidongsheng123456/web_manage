@@ -135,6 +135,7 @@ export interface OperLog {
   requestMethod: string
   operName: string
   operUrl: string
+  operIp?: string
   operParam: string
   jsonResult: string
   status: number

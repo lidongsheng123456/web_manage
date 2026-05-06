@@ -41,24 +41,28 @@
 
 <script setup lang="ts">
 import { queryRoleByPermissionId, queryRoleNotPermissionId } from "@/api/admin_request/PermissionRequest";
+import type { PermissionRoleQueryParams, Role } from "@/types";
 import { Refresh, Search } from "@element-plus/icons-vue";
 import { ref } from "vue";
 // 定义事件
-const emit = defineEmits(['handleAssignReset', 'submitAssignForm'])
+const emit = defineEmits<{
+  (e: 'handleAssignReset'): void
+  (e: 'submitAssignForm', ids: number[], isAssign: string | null): void
+}>()
 // 表格数据
-const tableData = ref([])
+const tableData = ref<Role[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 表格加载层
 const loading = ref(true);
 // 决定是分配还是移除
-const isAssign = ref(null)
+const isAssign = ref<string | null>(null)
 // 移除当前角色的id
-const id = ref(null)
+const id = ref<number | null>(null)
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<PermissionRoleQueryParams>({
   currentPage: 1,
   pageSize: 10,
   roleCode: null,
@@ -69,7 +73,7 @@ const handleSubmitAssignForm = () => {
   emit('submitAssignForm', ids.value, isAssign.value);
 }
 // 获取列表数据
-const getList = (params1, params2) => {
+const getList = (params1?: string, params2?: number) => {
   if (params1) {
     isAssign.value = params1
     id.value = params2
@@ -95,16 +99,16 @@ const getList = (params1, params2) => {
   }
 }
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: Role[]) => {
+  ids.value = selection.map(item => item.id!);
 };
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }
@@ -122,9 +126,8 @@ const resetQuery = () => {
   queryParams.value = {
     currentPage: 1,
     pageSize: 10,
-    username: null,
-    phone: null,
-    email: null,
+    roleCode: null,
+    roleName: null,
   }
   handleQuery();
 };

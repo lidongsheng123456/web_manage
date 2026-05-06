@@ -94,6 +94,7 @@ import { logout } from "@/api/front_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
 import router from "@/router";
 import { useUserStore } from "@/store/modules/user";
+import type { FrontUser, Notice } from "@/types";
 import { ArrowDown, Bell, Menu } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import { onMounted, onUnmounted, ref } from "vue";
@@ -102,16 +103,16 @@ import { onMounted, onUnmounted, ref } from "vue";
 const noImage = noImageUrl
 const userStore = useUserStore()
 // 登录用户信息
-let userInfo = ref({});
+const userInfo = ref<Partial<FrontUser>>({});
 // 通知列表
-let notice = ref([])
+const notice = ref<Notice[]>([])
 // 通知标题
-let noticeTitle = ref(null)
+const noticeTitle = ref<string | null>(null)
 //通知内容
-let top = ref(null)
+const top = ref<string | null>(null)
 // 移动端菜单状态
-let mobileMenuOpen = ref(false)
-let noticeIntervalId = null
+const mobileMenuOpen = ref(false)
+let noticeIntervalId: ReturnType<typeof setInterval> | null = null
 
 // 切换移动端菜单
 const toggleMobileMenu = () => {
@@ -130,21 +131,21 @@ const handleLogoutFromMobile = () => {
 }
 
 // 点击外部区域关闭菜单
-const handleClickOutside = (event) => {
+const handleClickOutside = (event: MouseEvent) => {
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn')
   const mobileMenu = document.querySelector('.mobile-menu')
 
   if (mobileMenuOpen.value &&
-    !mobileMenuBtn?.contains(event.target) &&
-    !mobileMenu?.contains(event.target)) {
+    !mobileMenuBtn?.contains(event.target as Node) &&
+    !mobileMenu?.contains(event.target as Node)) {
     closeMobileMenu()
   }
 }
 
 // 加载通知
 const loadNotice = () => {
-  queryNotice().then(res => {
-    notice.value = res.data
+  queryNotice({ currentPage: 1, pageSize: 100 }).then(res => {
+    notice.value = res.data.list
     let i = 0
     if (notice.value.length) {
       top.value = notice.value[0].noticeContent
@@ -174,7 +175,7 @@ const logoutLogin = () => {
       ElMessage.success('退出成功');
       router.push('/Front')
       setTimeout(() => {
-        window.location.reload(true);
+        window.location.reload();
       }, 500)
     }).catch(error => {
       console.log(error)

@@ -97,6 +97,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Dict, DictQueryParams } from "@/types";
+import type { FormInstance } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
@@ -104,17 +106,17 @@ import { addDict, batchDeleteDict, queryDict, queryDictById, updateDict } from "
 import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<Dict[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 对话框标题
 const title = ref("");
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 表单元素
-const formRef = ref(null)
+const formRef = ref<FormInstance>()
 // 非单个禁用
 const single = ref(true)
 // 非多个禁用
@@ -149,15 +151,15 @@ const tagTypeOptions = ref([
   }
 ])
 // 表单
-const form = ref({
-  dictType: null,
-  dictLabel: null,
-  dictValue: null,
+const form = ref<Partial<Dict>>({
+  dictType: null as unknown as string,
+  dictLabel: null as unknown as string,
+  dictValue: null as unknown as number,
   description: null,
   tagType: null
 });
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<DictQueryParams>({
   currentPage: 1,
   pageSize: 10,
   dictType: null,
@@ -180,10 +182,10 @@ const rules = {
 };
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updateDict(form.value).then(res => {
+        updateDict(form.value as Dict).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -203,7 +205,7 @@ const submitForm = () => {
   });
 };
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<Dict>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -222,10 +224,10 @@ const handleDelete = (row) => {
   });
 };
 // 控制更新
-const handleUpdate = (row) => {
+const handleUpdate = (row: Partial<Dict>) => {
   resetFrom();
-  const id = row.id || ids.value;
-  queryDictById(id).then(res => {
+  const dictId = row.id || ids.value[0];
+  queryDictById(dictId).then(res => {
     form.value = res.data
     dialogOverflowVisible.value = true;
     title.value = "修改字典";
@@ -255,8 +257,8 @@ const handleAdd = () => {
   title.value = "添加字典";
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: Dict[]) => {
+  ids.value = selection.map(item => item.id!);
   single.value = selection.length !== 1
   multiple.value = !selection.length
 };
@@ -266,12 +268,12 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }

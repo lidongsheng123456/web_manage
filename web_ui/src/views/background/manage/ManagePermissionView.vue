@@ -96,6 +96,8 @@
 </template>
 
 <script setup lang="ts">
+import type { Permission, PermissionQueryParams } from "@/types";
+import type { FormInstance } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { nextTick, onMounted, ref } from 'vue';
 
@@ -112,11 +114,11 @@ import AssignPermissionView from "@/components/manage/AssignPermissionView.vue";
 import { Bottom, CircleCheck, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<Permission[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 权限选中id
-const assignId = ref(null);
+const assignId = ref<number | null>(null);
 // 数据总数
 const total = ref(0);
 // 对话框标题
@@ -124,9 +126,9 @@ const title = ref("");
 // 分配权限对话框标题
 const assignTitle = ref("");
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 表单元素
-const formRef = ref(null)
+const formRef = ref<FormInstance>()
 // 非单个禁用
 const single = ref(true)
 // 非多个禁用
@@ -138,17 +140,17 @@ const dialogOverflowVisible = ref(false)
 // 分配权限对话框显示
 const assignDialogOverflowVisible = ref(false)
 // 引用子组件实例
-const assignPermissionViewRef = ref(null);
+const assignPermissionViewRef = ref<InstanceType<typeof AssignPermissionView>>();
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 表单
-const form = ref({
-  permissionCode: null,
-  permissionName: null,
-  description: null
+const form = ref<Partial<Permission>>({
+  permissionCode: null as unknown as string,
+  permissionName: null as unknown as string,
+  description: null as unknown as string
 });
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<PermissionQueryParams>({
   currentPage: 1,
   pageSize: 10,
   permissionCode: null,
@@ -168,10 +170,10 @@ const rules = {
 };
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updatePermission(form.value).then(res => {
+        updatePermission(form.value as Permission).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -191,7 +193,7 @@ const submitForm = () => {
   });
 };
 // 提交分配权限表单
-const handleSubmitAssignForm = (ids, isAssign) => {
+const handleSubmitAssignForm = (ids: number[], isAssign: string | null) => {
   if (isAssign === 'assign') {
     assignPermission({ roleId: ids, permissionId: assignId.value }).then(res => {
       ElMessage.success('分配权限成功');
@@ -211,7 +213,7 @@ const handleSubmitAssignForm = (ids, isAssign) => {
   }
 }
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<Permission>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -230,10 +232,10 @@ const handleDelete = (row) => {
   });
 };
 // 控制更新
-const handleUpdate = (row) => {
+const handleUpdate = (row: Partial<Permission>) => {
   resetFrom();
-  const id = row.id || ids.value;
-  queryPermissionById(id).then(res => {
+  const permId = row.id || ids.value[0];
+  queryPermissionById(permId).then(res => {
     Object.assign(form.value, res.data);
     dialogOverflowVisible.value = true;
     title.value = "修改访问权限";
@@ -242,7 +244,7 @@ const handleUpdate = (row) => {
   });
 };
 // 分配权限
-const handleAssign = (row) => {
+const handleAssign = (row: Permission) => {
   handleAssignReset()
   assignDialogOverflowVisible.value = true
   assignTitle.value = '分配权限'
@@ -255,7 +257,7 @@ const handleAssign = (row) => {
   });
 }
 // 移除权限
-const handleRemove = (row) => {
+const handleRemove = (row: Permission) => {
   handleAssignReset()
   assignDialogOverflowVisible.value = true
   assignTitle.value = '移除权限'
@@ -289,8 +291,8 @@ const handleAdd = () => {
   title.value = "添加访问权限";
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: Permission[]) => {
+  ids.value = selection.map(item => item.id!);
   single.value = selection.length !== 1
   multiple.value = !selection.length
 };
@@ -300,12 +302,12 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }

@@ -70,8 +70,8 @@
           style="display: flex;margin-left: 70px;align-items: center;justify-content: space-around">
           <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader">
-            <img style="width: 178px;height: 178px;margin: 0 auto" :src="form.imgUrl || noImage"
-              alt="" class="avatar" @error="(e) => e.target.src = noImage" />
+            <img style="width: 178px;height: 178px;margin: 0 auto" :src="form.imgUrl || noImage" alt="" class="avatar"
+              @error="(e: Event) => (e.target as HTMLImageElement).src = noImage" />
           </el-upload>
         </el-form-item>
         <el-form-item label="用户名" prop="username">
@@ -100,6 +100,8 @@
 </template>
 
 <script setup lang="ts">
+import type { FrontUser, FrontUserQueryParams, UploadResponse } from "@/types";
+import type { FormInstance, UploadRawFile } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
@@ -113,17 +115,17 @@ import {
 import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<FrontUser[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 对话框标题
 const title = ref("");
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 表单元素
-const formRef = ref(null)
+const formRef = ref<FormInstance>()
 // 非单个禁用
 const single = ref(true)
 // 非多个禁用
@@ -138,21 +140,21 @@ const noImage = noImageUrl
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 表单
-const form = ref({
+const form = ref<Partial<FrontUser>>({
   imgUrl: null,
-  username: null,
-  name: null,
-  phone: null,
-  email: null
+  username: null as unknown as string,
+  name: null as unknown as string,
+  phone: null as unknown as string,
+  email: null as unknown as string
 });
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<FrontUserQueryParams>({
   currentPage: 1,
   pageSize: 10,
   username: null,
 });
 // 自定义手机号验证函数
-const validatePhone = (rule, value, callback) => {
+const validatePhone = (rule: unknown, value: string, callback: (error?: Error) => void) => {
   const phoneRegex = /^1[3-9]\d{9}$/;
   if (!value) {
     callback(new Error('手机号不能为空'));
@@ -163,7 +165,7 @@ const validatePhone = (rule, value, callback) => {
   }
 };
 // 自定义邮箱验证函数
-const validateEmail = (rule, value, callback) => {
+const validateEmail = (rule: unknown, value: string, callback: (error?: Error) => void) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   if (!value) {
     callback(new Error('邮箱不能为空'));
@@ -192,10 +194,10 @@ const rules = {
 };
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updateFrontUser(form.value).then(res => {
+        updateFrontUser(form.value as FrontUser).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -215,7 +217,7 @@ const submitForm = () => {
   });
 };
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<FrontUser>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -234,10 +236,10 @@ const handleDelete = (row) => {
   });
 };
 // 控制更新
-const handleUpdate = (row) => {
+const handleUpdate = (row: Partial<FrontUser>) => {
   resetFrom();
-  const id = row.id || ids.value;
-  queryFrontUserById(id).then(res => {
+  const userId = row.id || ids.value[0];
+  queryFrontUserById(userId).then(res => {
     form.value = res.data
     dialogOverflowVisible.value = true;
     title.value = "修改前台用户";
@@ -267,8 +269,8 @@ const handleAdd = () => {
   title.value = "添加前台用户";
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: FrontUser[]) => {
+  ids.value = selection.map(item => item.id!);
   single.value = selection.length !== 1
   multiple.value = !selection.length
 };
@@ -278,17 +280,17 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }
 // 控制上传成功
-const handleAvatarSuccess = (response, uploadFile) => {
+const handleAvatarSuccess = (response: UploadResponse) => {
   if (response.code !== 200) {
     ElMessage.error(response.msg)
     return
@@ -296,7 +298,7 @@ const handleAvatarSuccess = (response, uploadFile) => {
   form.value.imgUrl = response.data;
 };
 // 上传之前验证文件
-const beforeAvatarUpload = (rawFile) => {
+const beforeAvatarUpload = (rawFile: UploadRawFile) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
     ElMessage.error('头像图片必须是 JPG 或 PNG 格式!');
     return false;

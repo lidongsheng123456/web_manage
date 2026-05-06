@@ -175,9 +175,9 @@
           <router-view v-slot="{ Component }">
             <transition v-if="settingsStore.showTransition" :duration="{ enter: 300, leave: 150 }" mode="out-in"
               name="slide-fade">
-                <component :is="Component" :key="routeKey" />
+              <component :is="Component" :key="routeKey" />
             </transition>
-              <component v-else :is="Component" :key="routeKey" />
+            <component v-else :is="Component" :key="routeKey" />
           </router-view>
         </el-main>
       </el-container>
@@ -188,10 +188,10 @@
 <script setup lang="ts">
 import { logout } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
-const noImage = noImageUrl;
 import router from "@/router";
 import { useSettingsStore } from "@/store/modules/settings";
 import { useUserStore } from "@/store/modules/user";
+import type { AdminUser } from "@/types";
 import {
   ArrowDown,
   Avatar,
@@ -210,18 +210,26 @@ import {
   User,
   UserFilled
 } from "@element-plus/icons-vue";
+import type { TabPaneName, TabsPaneContext } from "element-plus";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+const noImage = noImageUrl;
 
 const route = useRoute();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const mobileSidebarOpen = ref(false);
-let adminUserInfo = ref({});
+let adminUserInfo = ref<AdminUser | Record<string, never>>({});
+interface TabItem {
+  title: string
+  name: string
+  content: string
+  closable?: boolean
+}
 let tabIndex = 2;
 const editableTabsValue = ref(route.path);
-const editableTabs = ref([
+const editableTabs = ref<TabItem[]>([
   {
     title: '首页',
     name: '/Manage/ManageDataView',
@@ -248,13 +256,14 @@ const breadcrumbItems = computed(() => {
   }));
 });
 
-const handleTabsEdit = (targetName, action) => {
+const handleTabsEdit = (targetName: TabPaneName | undefined, action: 'add' | 'remove') => {
   if (action === 'add') {
     const newTabName = `${++tabIndex}`;
     editableTabs.value.push({
       title: '新标签',
       name: newTabName,
       content: '新标签内容',
+      closable: true,
     });
     editableTabsValue.value = newTabName;
   } else if (action === 'remove') {
@@ -276,8 +285,8 @@ const handleTabsEdit = (targetName, action) => {
   }
 };
 
-const handleTabClick = (tab) => {
-  router.push(tab.paneName);
+const handleTabClick = (tab: TabsPaneContext) => {
+  router.push(tab.paneName as string);
 };
 
 // ==================== 标签右键菜单 ====================
@@ -286,9 +295,9 @@ const ctxMenuX = ref(0);
 const ctxMenuY = ref(0);
 const ctxTargetTab = ref('');
 
-const openCtxMenu = (e) => {
+const openCtxMenu = (e: MouseEvent) => {
   // 查找被右键的 tab 元素
-  const tabEl = e.target.closest('.el-tabs__item');
+  const tabEl = (e.target as HTMLElement)?.closest('.el-tabs__item');
   if (!tabEl) return;
   e.preventDefault();
   const tabId = tabEl.id;
@@ -358,7 +367,7 @@ const logoutLogin = () => {
       ElMessage.success('退出成功');
       router.push('/Login');
       setTimeout(() => {
-        window.location.reload(true);
+        window.location.reload();
       }, 500)
     }).catch(error => {
       console.log(error)
@@ -374,9 +383,10 @@ watch(() => route.path, (newPath) => {
   if (!tabExists) {
     const routeMeta = route.meta;
     editableTabs.value.push({
-      title: routeMeta.name || newPath,
+      title: (routeMeta.name as string) || newPath,
       name: newPath,
-      content: `${routeMeta.name} 内容`, // 这里可以根据需要动态生成内容
+      content: `${routeMeta.name} 内容`,
+      closable: true,
     });
   }
   editableTabsValue.value = newPath;
@@ -385,9 +395,9 @@ watch(() => route.path, (newPath) => {
 );
 
 // 检查用户是否有指定权限
-const hasPermission = (permission) => {
-  const user = userStore.adminUserInfo || {};
-  const filterUser = user.permissions ? user.permissions.map(item => item.permission_code) : [];
+const hasPermission = (permission: string) => {
+  const user = userStore.adminUserInfo;
+  const filterUser = user?.permissions ? user.permissions.map(item => item.permission_code) : [];
   return filterUser && filterUser.includes(permission);
 };
 

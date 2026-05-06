@@ -365,8 +365,8 @@ import Clouds from "vanta/src/vanta.clouds";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
 // Vanta 相关
-const vantaRef = ref(null)
-let vantaEffect = null
+const vantaRef = ref<HTMLElement | null>(null)
+let vantaEffect: { destroy: () => void } | null = null
 
 // SVG icon helper
 const svgIcon = (d, color = '#2563eb') =>

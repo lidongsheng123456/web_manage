@@ -11,7 +11,8 @@
             <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
               :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader"
               style="text-align: center">
-              <img :src="userInfo.imgUrl || noImage" alt="" class="avatar" @error="(e) => e.target.src = noImage" />
+              <img :src="userInfo.imgUrl || noImage" alt="" class="avatar"
+                @error="(e: Event) => (e.target as HTMLImageElement).src = noImage" />
             </el-upload>
             <el-divider />
             <div style="display: flex;justify-content: space-between">
@@ -104,27 +105,19 @@
 <script setup lang="ts">
 import { updatePerson } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
-const noImage = noImageUrl;
 import router from "@/router";
 import { useUserStore } from "@/store/modules/user";
+import type { AdminUser, UploadResponse } from "@/types";
 import { Avatar, Message, PhoneFilled, UserFilled, Watch } from "@element-plus/icons-vue";
+import type { UploadRawFile } from "element-plus";
 import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
+const noImage = noImageUrl;
 
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 用户信息
-const userInfo = ref({
-  createTime: null,
-  email: null,
-  imgUrl: null,
-  roles: [{}],
-  name: null,
-  permissions: [{}],
-  phone: null,
-  updateTime: null,
-  username: null
-});
+const userInfo = ref<AdminUser>({} as AdminUser);
 // 获取父组件自定义事件
 const emit = defineEmits(['updateUserInfo'])
 const userStore = useUserStore()
@@ -138,7 +131,7 @@ const getUserInfo = () => {
 }
 
 // 控制上传成功
-const handleAvatarSuccess = (response, uploadFile) => {
+const handleAvatarSuccess = (response: UploadResponse) => {
   if (response.code !== 200) {
     ElMessage.error(response.msg)
     return
@@ -153,7 +146,7 @@ const handleAvatarSuccess = (response, uploadFile) => {
 };
 
 // 上传之前验证文件
-const beforeAvatarUpload = (rawFile) => {
+const beforeAvatarUpload = (rawFile: UploadRawFile) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
     ElMessage.error('头像图片必须是 JPG 或 PNG 格式!');
     return false;
@@ -166,7 +159,7 @@ const beforeAvatarUpload = (rawFile) => {
 
 // 计算角色属性
 const roleCodes = computed(() => {
-  return userInfo.value.roles.map(role => role.role_code).join(', ');
+  return userInfo.value.roles?.map(role => role.role_code).join(', ') || '';
 });
 
 onMounted(() => {

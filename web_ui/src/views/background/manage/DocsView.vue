@@ -10,12 +10,11 @@ import { onMounted, ref } from "vue";
 
 const src = ref(import.meta.env.VUE_APP_API_TARGET + "/doc.html")
 const height = ref(document.documentElement.clientHeight - 94.5 + "px;")
-let loading = ref(true)
+const loading = ref(true)
 
 const init = () => {
-  const that = this;
-  window.onresize = function temp() {
-    that.height = document.documentElement.clientHeight - 94.5 + "px;";
+  window.onresize = () => {
+    height.value = document.documentElement.clientHeight - 94.5 + "px;";
   };
 }
 

@@ -39,19 +39,26 @@
 <script setup lang="ts">
 import { captcha, register } from "@/api/front_request/WebRequest";
 import router from "@/router";
+import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
-const formRef = ref(null);
+const formRef = ref<FormInstance>();
 const codeUrl = ref('');
-const form = ref({
+interface RegisterForm {
+  username: string
+  password: string
+  confirmPwd: string
+  code: string
+}
+const form = ref<RegisterForm>({
   username: '',
   password: '',
   confirmPwd: '',
   code: ''
 });
 
-const validatePassword = (rule, confirmPwd, callback) => {
+const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   if (confirmPwd === '') {
     callback(new Error("请确认密码"));
   } else if (confirmPwd !== form.value.password) {
@@ -77,7 +84,7 @@ const rules = {
 };
 
 const registe = () => {
-  formRef.value.validate((valid) => {
+  formRef.value?.validate((valid) => {
     if (valid) {
       register(form.value).then(res => {
         router.push('/UserLogin');

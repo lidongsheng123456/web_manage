@@ -80,6 +80,8 @@
 </template>
 
 <script setup lang="ts">
+import type { DictVo, Notice, NoticeQueryParams } from "@/types";
+import type { FormInstance } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
@@ -95,17 +97,17 @@ import { selectDictLabel } from "@/utils/env";
 import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
 
 // 表格数据
-const tableData = ref([])
+const tableData = ref<Notice[]>([])
 // 复选框选中ids
-const ids = ref([]);
+const ids = ref<number[]>([]);
 // 数据总数
 const total = ref(0);
 // 对话框标题
 const title = ref("");
 // 查询表单元素
-const queryFormRef = ref(null);
+const queryFormRef = ref<FormInstance>();
 // 表单元素
-const formRef = ref(null)
+const formRef = ref<FormInstance>()
 // 非单个禁用
 const single = ref(true)
 // 非多个禁用
@@ -117,14 +119,14 @@ const dialogOverflowVisible = ref(false)
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
 // 用户选项
-const userOption = ref([]);
+const userOption = ref<DictVo[]>([]);
 // 表单
-const form = ref({
-  noticeTitle: null,
-  noticeContent: null
+const form = ref<Partial<Notice>>({
+  noticeTitle: null as unknown as string,
+  noticeContent: null as unknown as string
 });
 // 查询参数
-let queryParams = ref({
+const queryParams = ref<NoticeQueryParams & { noticeContent?: string | null }>({
   currentPage: 1,
   pageSize: 10,
   noticeTitle: null,
@@ -140,15 +142,15 @@ const rules = {
   ]
 };
 // 翻译用户id
-const userIdFormatter = (row) => {
+const userIdFormatter = (row: Notice) => {
   return selectDictLabel(userOption.value, row.createUserId)
 }
 // 提交表单
 const submitForm = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       if (form.value.id != null) {
-        updateNotice(form.value).then(res => {
+        updateNotice(form.value as Notice).then(res => {
           ElMessage.success("修改成功");
           dialogOverflowVisible.value = false;
           getList();
@@ -168,7 +170,7 @@ const submitForm = () => {
   });
 };
 // 控制删除
-const handleDelete = (row) => {
+const handleDelete = (row: Partial<Notice>) => {
   const id = row.id || ids.value;
 
   const idsToDelete = Array.isArray(id) ? id : [id];
@@ -187,10 +189,10 @@ const handleDelete = (row) => {
   });
 };
 // 控制更新
-const handleUpdate = (row) => {
+const handleUpdate = (row: Partial<Notice>) => {
   resetFrom();
-  const id = row.id || ids.value;
-  queryNoticeById(id).then(res => {
+  const noticeId = row.id || ids.value[0];
+  queryNoticeById(noticeId).then(res => {
     form.value = res.data
     dialogOverflowVisible.value = true;
     title.value = "修改通知";
@@ -220,8 +222,8 @@ const handleAdd = () => {
   title.value = "添加通知";
 };
 // 控制表格复选框
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
+const handleSelectionChange = (selection: Notice[]) => {
+  ids.value = selection.map(item => item.id!);
   single.value = selection.length !== 1
   multiple.value = !selection.length
 };
@@ -231,12 +233,12 @@ const handleQuery = () => {
   getList();
 }
 // 控制当前表格大小
-const handleSizeChange = (val) => {
+const handleSizeChange = (val: number) => {
   queryParams.value.pageSize = val
   getList()
 }
 // 控制当前页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   queryParams.value.currentPage = val
   getList()
 }
@@ -270,7 +272,7 @@ const resetQuery = () => {
 onMounted(() => {
   getList();
   queryComQueryByCode('user_query').then(res => {
-    userOption.value = res.data
+    userOption.value = res.data as unknown as DictVo[]
   })
 });
 </script>

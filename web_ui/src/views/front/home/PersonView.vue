@@ -17,7 +17,8 @@
         <div class="avatar-section">
           <el-upload :action="uploadUrl + '/common/files/upload'" :before-upload="beforeAvatarUpload"
             :on-success="handleAvatarSuccess" :show-file-list="false" class="avatar-uploader">
-            <img :src="form.imgUrl || noImage" alt="" class="avatar" @error="(e) => e.target.src = noImage" />
+            <img :src="form.imgUrl || noImage" alt="" class="avatar"
+              @error="(e: Event) => (e.target as HTMLImageElement).src = noImage" />
           </el-upload>
         </div>
 
@@ -69,7 +70,9 @@
 <script setup lang="ts">
 import { logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword } from "@/api/front_request/WebRequest";
 import router from "@/router";
+import type { FrontUser, UploadResponse } from "@/types";
 import { ArrowLeft } from "@element-plus/icons-vue";
+import type { FormInstance, UploadRawFile } from "element-plus";
 import { ElMessage } from "element-plus";
 import * as THREE from 'three';
 import Net from "vanta/src/vanta.net";
@@ -78,30 +81,35 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import noImageUrl from '@/assets/img/no_image.png';
 const noImage = noImageUrl
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
-const formRef = ref(null)
-const pwdFormRef = ref(null)
+const formRef = ref<FormInstance>()
+const pwdFormRef = ref<FormInstance>()
 // 对话框显示
 const dialogOverflowVisible = ref(false)
 // Vanta 相关
-const vantaRef = ref(null)
-let vantaEffect = null
+const vantaRef = ref<HTMLElement | null>(null)
+let vantaEffect: { destroy: () => void } | null = null
 
-const form = ref({
-  username: null,
-  name: null,
+const form = ref<Partial<FrontUser>>({
+  username: null as unknown as string,
+  name: null as unknown as string,
   phone: null,
   email: null,
   imgUrl: null
 })
 
-const pwdForm = ref({
+interface PwdForm {
+  oldPassword: string
+  newPassword: string
+  conPassword: string
+}
+const pwdForm = ref<PwdForm>({
   oldPassword: '',
   newPassword: '',
   conPassword: '',
 });
 
 // 自定义手机号验证函数
-const validatePhone = (rule, value, callback) => {
+const validatePhone = (rule: unknown, value: string, callback: (error?: Error) => void) => {
   const phoneRegex = /^1[3-9]\d{9}$/;
   if (!value) {
     callback(new Error('手机号不能为空'));
@@ -112,7 +120,7 @@ const validatePhone = (rule, value, callback) => {
   }
 };
 // 自定义邮箱验证函数
-const validateEmail = (rule, value, callback) => {
+const validateEmail = (rule: unknown, value: string, callback: (error?: Error) => void) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   if (!value) {
     callback(new Error('邮箱不能为空'));
@@ -122,7 +130,7 @@ const validateEmail = (rule, value, callback) => {
     callback();
   }
 };
-const formerPassword = (rule, confirmPwd, callback) => {
+const formerPassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   validateFormerPassword(confirmPwd).then(res => {
     callback();
   }).catch(error => {
@@ -130,7 +138,7 @@ const formerPassword = (rule, confirmPwd, callback) => {
   });
 };
 
-const validatePassword = (rule, confirmPwd, callback) => {
+const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   if (confirmPwd !== pwdForm.value.newPassword) {
     callback(new Error("两次输入的密码不一致"));
   } else {
@@ -166,7 +174,7 @@ const rules = {
   ]
 };
 // 控制上传成功
-const handleAvatarSuccess = (response, uploadFile) => {
+const handleAvatarSuccess = (response: UploadResponse) => {
   if (response.code !== 200) {
     ElMessage.error(response.msg)
     return
@@ -175,7 +183,7 @@ const handleAvatarSuccess = (response, uploadFile) => {
 };
 
 // 上传之前验证文件
-const beforeAvatarUpload = (rawFile) => {
+const beforeAvatarUpload = (rawFile: UploadRawFile) => {
   if (rawFile.type !== 'image/jpeg' && rawFile.type !== 'image/png') {
     ElMessage.error('头像图片必须是 JPG 或 PNG 格式!');
     return false;
@@ -218,7 +226,7 @@ const loadVanta = () => {
 }
 
 const submit = () => {
-  formRef.value.validate(valid => {
+  formRef.value?.validate(valid => {
     if (valid) {
       updatePerson(form.value).then(res => {
         ElMessage.success('修改成功')
@@ -230,14 +238,14 @@ const submit = () => {
 
 // 提交表单
 const submitForm = () => {
-  pwdFormRef.value.validate(valid => {
+  pwdFormRef.value?.validate(valid => {
     if (valid) {
-      updatePerson({ password: pwdForm.value.conPassword }).then(res => {
+      updatePerson({ password: pwdForm.value.conPassword } as any).then(res => {
         ElMessage.success('修改成功');
         logout().then(res => {
           router.push('/Front');
           setTimeout(() => {
-            window.location.reload(true);
+            window.location.reload();
           }, 500)
         }).catch(error => {
           console.log(error)
