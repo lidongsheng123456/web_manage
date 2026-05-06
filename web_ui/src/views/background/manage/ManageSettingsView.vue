@@ -5,7 +5,9 @@
       <el-tab-pane label="个性化设置" name="personalization">
         <div class="settings-section">
           <h3 class="section-title">
-            <el-icon><Brush /></el-icon>外观设置
+            <el-icon>
+              <Brush />
+            </el-icon>外观设置
           </h3>
           <div class="setting-item">
             <div class="setting-label">
@@ -15,8 +17,7 @@
             <div class="setting-control">
               <div class="color-presets">
                 <div v-for="color in presetColors" :key="color" class="color-dot"
-                  :class="{ active: settingsStore.themeColor === color }"
-                  :style="{ backgroundColor: color }"
+                  :class="{ active: settingsStore.themeColor === color }" :style="{ backgroundColor: color }"
                   @click="changeThemeColor(color)" />
               </div>
               <el-color-picker v-model="settingsStore.themeColor" @change="onThemeColorChange" />
@@ -25,7 +26,9 @@
           <el-divider />
 
           <h3 class="section-title">
-            <el-icon><Setting /></el-icon>布局设置
+            <el-icon>
+              <Setting />
+            </el-icon>布局设置
           </h3>
           <div class="setting-item">
             <div class="setting-label">
@@ -51,7 +54,9 @@
           <el-divider />
 
           <h3 class="section-title">
-            <el-icon><View /></el-icon>辅助功能
+            <el-icon>
+              <View />
+            </el-icon>辅助功能
           </h3>
           <div class="setting-item">
             <div class="setting-label">
@@ -72,7 +77,9 @@
             <el-popconfirm title="确定要恢复所有个性化设置为默认值吗？" @confirm="resetPersonalization">
               <template #reference>
                 <el-button type="warning" plain>
-                  <el-icon><RefreshLeft /></el-icon>恢复默认
+                  <el-icon>
+                    <RefreshLeft />
+                  </el-icon>恢复默认
                 </el-button>
               </template>
             </el-popconfirm>
@@ -84,15 +91,17 @@
       <el-tab-pane label="网站信息" name="site">
         <div class="settings-section">
           <h3 class="section-title">
-            <el-icon><Monitor /></el-icon>基本信息
+            <el-icon>
+              <Monitor />
+            </el-icon>基本信息
           </h3>
           <el-form label-width="100px" class="site-form">
             <el-form-item label="网站名称">
               <el-input v-model="settingsStore.siteName" placeholder="请输入网站名称" maxlength="20" show-word-limit />
             </el-form-item>
             <el-form-item label="网站描述">
-              <el-input v-model="settingsStore.siteDescription" type="textarea" :rows="3"
-                placeholder="请输入网站描述" maxlength="100" show-word-limit />
+              <el-input v-model="settingsStore.siteDescription" type="textarea" :rows="3" placeholder="请输入网站描述"
+                maxlength="100" show-word-limit />
             </el-form-item>
             <el-form-item label="页脚信息">
               <el-input v-model="settingsStore.siteFooter" placeholder="例如：Copyright © 2025 xxx" maxlength="100" />
@@ -106,7 +115,9 @@
             <el-popconfirm title="确定要恢复网站信息为默认值吗？" @confirm="resetSiteInfo">
               <template #reference>
                 <el-button type="warning" plain>
-                  <el-icon><RefreshLeft /></el-icon>恢复默认
+                  <el-icon>
+                    <RefreshLeft />
+                  </el-icon>恢复默认
                 </el-button>
               </template>
             </el-popconfirm>
@@ -126,7 +137,9 @@
           </div>
           <el-divider />
           <h3 class="section-title">
-            <el-icon><InfoFilled /></el-icon>系统信息
+            <el-icon>
+              <InfoFilled />
+            </el-icon>系统信息
           </h3>
           <el-descriptions :column="2" border>
             <el-descriptions-item label="系统版本">v1.0.0</el-descriptions-item>
@@ -140,29 +153,42 @@
           </el-descriptions>
           <el-divider />
           <h3 class="section-title">
-            <el-icon><Cpu /></el-icon>技术栈
+            <el-icon>
+              <Cpu />
+            </el-icon>技术栈
           </h3>
           <div class="tech-tags">
-            <el-tag v-for="tag in techTags" :key="tag.name" :type="tag.type" class="tech-tag" effect="plain" round>
+            <el-tag v-for="tag in techTags" :key="tag.name" :type="tag.type || undefined" class="tech-tag"
+              effect="plain" round>
               {{ tag.name }}
             </el-tag>
           </div>
           <el-divider />
           <h3 class="section-title">
-            <el-icon><Link /></el-icon>相关链接
+            <el-icon>
+              <Link />
+            </el-icon>相关链接
           </h3>
           <div class="about-links">
             <el-link type="primary" href="https://cn.vuejs.org/" target="_blank">
-              <el-icon><Link /></el-icon>Vue 3 官方文档
+              <el-icon>
+                <Link />
+              </el-icon>Vue 3 官方文档
             </el-link>
             <el-link type="primary" href="https://element-plus.org/zh-CN/" target="_blank">
-              <el-icon><Link /></el-icon>Element Plus
+              <el-icon>
+                <Link />
+              </el-icon>Element Plus
             </el-link>
             <el-link type="primary" href="https://spring.io/projects/spring-boot" target="_blank">
-              <el-icon><Link /></el-icon>Spring Boot
+              <el-icon>
+                <Link />
+              </el-icon>Spring Boot
             </el-link>
             <el-link type="primary" href="https://sa-token.cc/" target="_blank">
-              <el-icon><Link /></el-icon>Sa-Token
+              <el-icon>
+                <Link />
+              </el-icon>Sa-Token
             </el-link>
           </div>
         </div>
@@ -204,13 +230,13 @@ const techTags = [
   { name: 'Swagger/Knife4j', type: 'success' },
 ];
 
-const changeThemeColor = (color) => {
+const changeThemeColor = (color: string) => {
   settingsStore.themeColor = color;
   settingsStore.applyTheme();
   ElMessage.success('主题色已更新');
 };
 
-const onThemeColorChange = (val) => {
+const onThemeColorChange = (val: string | null) => {
   if (val) {
     settingsStore.applyTheme();
     ElMessage.success('主题色已更新');
