@@ -1,10 +1,12 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.Role;
 import com.example.system.domain.vo.UserVo;
 
 import java.util.List;
 
+@TenantIgnore
 public interface AdminRoleMapper {
     /**
      * 新增角色

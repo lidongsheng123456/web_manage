@@ -8,6 +8,7 @@ import com.example.common.util.ExcelExportUtil;
 import com.example.system.domain.Permission;
 import com.example.system.domain.Role;
 import com.example.system.domain.dto.AssignPermissionDTO;
+import com.example.framework.web.security.StpInterfaceImpl;
 import com.example.system.service.AdminPermissionService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ import java.util.List;
 public class AdminPermissionController {
 
     private final AdminPermissionService adminPermissionService;
+    private final StpInterfaceImpl stpInterface;
 
     /**
      * 新增权限
@@ -155,6 +157,7 @@ public class AdminPermissionController {
     @PostMapping("/assign")
     public Result assignPermission(@RequestBody @Valid AssignPermissionDTO assignPermissionDTO) {
         adminPermissionService.assignPermission(assignPermissionDTO);
+        stpInterface.clearCacheByRoleIds(assignPermissionDTO.getRoleId());
         return Result.success();
     }
 
@@ -170,6 +173,7 @@ public class AdminPermissionController {
     @PostMapping("/remove")
     public Result removePermission(@RequestBody @Valid AssignPermissionDTO assignPermissionDTO) {
         adminPermissionService.removePermission(assignPermissionDTO);
+        stpInterface.clearCacheByRoleIds(assignPermissionDTO.getRoleId());
         return Result.success();
     }
 

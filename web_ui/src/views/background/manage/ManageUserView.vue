@@ -28,11 +28,14 @@
       <el-button v-no-more-click v-permission="'admin:user:export'" :icon="Bottom" plain type="warning"
         @click="handleExport">导出
       </el-button>
+      <el-upload v-permission="'admin:user:add'" :show-file-list="false" accept=".xlsx,.xls"
+        :before-upload="handleImport" style="display:inline-block;margin-left:12px;">
+        <el-button v-no-more-click :icon="Top" plain type="info">导入</el-button>
+      </el-upload>
     </div>
     <br>
     <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
-      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
-      @selection-change="handleSelectionChange">
+      style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55" />
       <el-table-column align="center" label="序号" prop="id" sortable width="100" />
       <el-table-column align="center" label="头像" prop="imgUrl">
@@ -46,6 +49,11 @@
       <el-table-column align="center" label="姓名" prop="name" show-overflow-tooltip />
       <el-table-column align="center" label="手机号" prop="phone" show-overflow-tooltip />
       <el-table-column align="center" label="邮箱" prop="email" show-overflow-tooltip />
+      <el-table-column align="center" label="所属租户" prop="tenantId" width="120">
+        <template #default="scope">
+          <span>{{ tenantMap[scope.row.tenantId] || scope.row.tenantId }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="创建时间" prop="createTime" show-overflow-tooltip />
       <el-table-column align="center" label="更新时间" prop="updateTime" show-overflow-tooltip />
       <el-table-column align="center" label="角色" prop="roles">
@@ -107,6 +115,11 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="请输入邮箱" style="width: 350px;height: 40px" />
         </el-form-item>
+        <el-form-item label="所属租户" prop="tenantId">
+          <el-select v-model="form.tenantId" placeholder="请选择租户" style="width: 350px">
+            <el-option v-for="t in tenantList" :key="t.id" :label="t.tenantName" :value="t.id" />
+          </el-select>
+        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -121,9 +134,10 @@
 </template>
 
 <script setup lang="ts">
-import { addUser, batchDeleteUser, queryUser, queryUserById, updateUser } from "@/api/admin_request/UserRequest";
-import type { AdminUser, UploadResponse, UserQueryParams } from "@/types";
-import { Bottom, Delete, EditPen, Plus, Refresh, Search } from "@element-plus/icons-vue";
+import { queryAllTenant } from "@/api/admin_request/TenantRequest";
+import { addUser, batchDeleteUser, importUser, queryUser, queryUserById, updateUser } from "@/api/admin_request/UserRequest";
+import type { AdminUser, Tenant, UploadResponse, UserQueryParams } from "@/types";
+import { Bottom, Delete, EditPen, Plus, Refresh, Search, Top } from "@element-plus/icons-vue";
 import type { FormInstance, UploadRawFile } from 'element-plus';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { onMounted, ref } from 'vue';
@@ -153,6 +167,10 @@ import noImageUrl from '@/assets/img/no_image.png';
 const noImage = noImageUrl
 // 上传的ip和端口号
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
+// 租户列表
+const tenantList = ref<Tenant[]>([])
+// 租户名称映射
+const tenantMap = ref<Record<number, string>>({})
 // 表单
 const form = ref<Partial<AdminUser>>({
   username: null as unknown as string,
@@ -278,6 +296,16 @@ const getList = () => {
 const handleExport = () => {
   window.location.href = uploadUrl + '/admin/user/export'
 };
+// 控制导入
+const handleImport = (file: File) => {
+  importUser(file).then(res => {
+    ElMessage.success(res.data || '导入成功')
+    getList()
+  }).catch(() => {
+    ElMessage.error('导入失败')
+  })
+  return false // 阻止 el-upload 默认上传
+};
 // 控制添加
 const handleAdd = () => {
   resetFrom();
@@ -354,9 +382,20 @@ const resetQuery = () => {
   }
   handleQuery();
 };
+// 加载租户列表
+const loadTenants = () => {
+  queryAllTenant().then(res => {
+    tenantList.value = res.data
+    tenantMap.value = {}
+    res.data.forEach((t: Tenant) => {
+      if (t.id) tenantMap.value[t.id] = t.tenantName
+    })
+  })
+}
 // 页面挂载时获取数据
 onMounted(() => {
   getList();
+  loadTenants();
 });
 </script>
 <style lang="scss" scoped>

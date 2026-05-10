@@ -1,9 +1,11 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
 
+@TenantIgnore
 public interface AdminWebMapper {
     /**
      * 根据用户名查询
@@ -35,4 +37,9 @@ public interface AdminWebMapper {
      * @return
      */
     UserVo queryCurrentUser(Long id);
+
+    /**
+     * 查询用户基本信息（在线用户列表用）
+     */
+    java.util.Map<String, Object> selectUserBaseById(Long id);
 }

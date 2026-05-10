@@ -1,7 +1,10 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
+
 import java.util.List;
 
+@TenantIgnore
 public interface AdminRoleAndPermissionMapper {
     /**
      * 根据角色id批量删除角色和权限关联表

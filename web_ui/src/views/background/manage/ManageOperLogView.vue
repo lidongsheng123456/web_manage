@@ -19,48 +19,45 @@
     </div>
     <br>
     <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
-      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
-      @selection-change="handleSelectionChange">
+      style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55" />
       <el-table-column align="center" label="序号" prop="id" sortable width="100" />
       <el-table-column align="center" label="模块标题" prop="title" show-overflow-tooltip />
       <el-table-column align="center" label="业务类型" prop="businessType" show-overflow-tooltip>
         <template #default="scope">
-          <span v-if="scope.row.businessType === 'insert'"
-            style="background-color: #ecf5ff;padding: 5px;border-radius: 20%">{{ scope.row.businessType }}</span>
-          <span v-else-if="scope.row.businessType === 'delete'"
-            style="background-color: #fef0f0;padding: 5px;border-radius: 20%">{{ scope.row.businessType }}</span>
-          <span v-else-if="scope.row.businessType === 'update'"
-            style="background-color: #eff9eb;padding: 5px;border-radius: 20%">{{ scope.row.businessType }}</span>
-          <span v-else style="background-color: #fcf6ec;padding: 5px;border-radius: 20%">{{ scope.row.businessType
-          }}</span>
+          <el-tag v-if="scope.row.businessType === 'insert'" type="primary" size="small">{{ scope.row.businessType
+            }}</el-tag>
+          <el-tag v-else-if="scope.row.businessType === 'delete'" type="danger" size="small">{{ scope.row.businessType
+            }}</el-tag>
+          <el-tag v-else-if="scope.row.businessType === 'update'" type="success" size="small">{{ scope.row.businessType
+            }}</el-tag>
+          <el-tag v-else type="warning" size="small">{{ scope.row.businessType }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="方法名称" prop="method" show-overflow-tooltip />
       <el-table-column align="center" label="请求方式" prop="requestMethod" show-overflow-tooltip>
         <template #default="scope">
-          <span v-if="scope.row.requestMethod === 'POST'"
-            style="background-color: #ecf5ff;padding: 5px;border-radius: 20%">{{ scope.row.requestMethod }}</span>
-          <span v-else-if="scope.row.requestMethod === 'DELETE'"
-            style="background-color: #fef0f0;padding: 5px;border-radius: 20%">{{ scope.row.requestMethod }}</span>
-          <span v-else-if="scope.row.requestMethod === 'PUT'"
-            style="background-color: #eff9eb;padding: 5px;border-radius: 20%">{{ scope.row.requestMethod }}</span>
-          <span v-else style="background-color: #fcf6ec;padding: 5px;border-radius: 20%">{{ scope.row.requestMethod
-          }}</span>
+          <el-tag v-if="scope.row.requestMethod === 'POST'" type="primary" size="small">{{ scope.row.requestMethod
+            }}</el-tag>
+          <el-tag v-else-if="scope.row.requestMethod === 'DELETE'" type="danger" size="small">{{ scope.row.requestMethod
+            }}</el-tag>
+          <el-tag v-else-if="scope.row.requestMethod === 'PUT'" type="success" size="small">{{ scope.row.requestMethod
+            }}</el-tag>
+          <el-tag v-else type="warning" size="small">{{ scope.row.requestMethod }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作人员" prop="operName" show-overflow-tooltip />
       <el-table-column align="center" label="请求URL" prop="operUrl" show-overflow-tooltip />
       <el-table-column align="center" label="主机地址" prop="operIp" show-overflow-tooltip />
+      <el-table-column align="center" label="浏览器" prop="browser" show-overflow-tooltip width="120" />
+      <el-table-column align="center" label="操作系统" prop="os" show-overflow-tooltip width="120" />
       <el-table-column align="center" label="请求参数" prop="operParam" show-overflow-tooltip />
       <el-table-column align="center" label="返回参数" prop="jsonResult" show-overflow-tooltip />
       <el-table-column align="center" label="操作状态" prop="status" show-overflow-tooltip>
         <template #default="scope">
-          <span v-if="scope.row.status === 0"
-            style="background-color: #eff9eb;padding: 5px;border-radius: 20%">正常</span>
-          <span v-else-if="scope.row.status === 1"
-            style="background-color: #fef0f0;padding: 5px;border-radius: 20%">失败</span>
-          <span v-else style="background-color: #fcf6ec;padding: 5px;border-radius: 20%">异常</span>
+          <el-tag v-if="scope.row.status === 0" type="success" size="small">正常</el-tag>
+          <el-tag v-else-if="scope.row.status === 1" type="danger" size="small">失败</el-tag>
+          <el-tag v-else type="warning" size="small">异常</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="错误消息" prop="errorMsg" show-overflow-tooltip />
@@ -110,6 +107,12 @@
         </el-descriptions-item>
         <el-descriptions-item label="主机地址">
           {{ from.operIp }}
+        </el-descriptions-item>
+        <el-descriptions-item label="浏览器">
+          {{ from.browser }}
+        </el-descriptions-item>
+        <el-descriptions-item label="操作系统">
+          {{ from.os }}
         </el-descriptions-item>
         <el-descriptions-item label="请求参数">
           <span class="log-detail-text">{{ from.operParam }}</span>

@@ -1,9 +1,11 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.OperLog;
 
 import java.util.List;
 
+@TenantIgnore
 public interface AdminOperLogMapper {
     /**
      * 新增日志

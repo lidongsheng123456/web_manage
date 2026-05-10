@@ -1,9 +1,11 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.Notice;
 
 import java.util.List;
 
+@TenantIgnore
 public interface UserHomMapper {
     /**
      * 查询通知

@@ -51,6 +51,25 @@
               </el-icon>
               字典管理
             </el-menu-item>
+            <el-menu-item v-permission="'admin:user:query'" index="/Manage/ManageOnlineView">
+              <el-icon>
+                <Monitor />
+              </el-icon>
+              在线用户
+            </el-menu-item>
+            <el-menu-item index="/Manage/ManageMessageView">
+              <el-icon>
+                <ChatDotRound />
+              </el-icon>
+              <span>消息中心</span>
+              <span v-if="unreadCount > 0" class="msg-badge-dot">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
+            </el-menu-item>
+            <el-menu-item index="/Manage/ManageSettingsView">
+              <el-icon>
+                <Setting />
+              </el-icon>
+              系统设置
+            </el-menu-item>
             <el-sub-menu v-permission="'admin:permission:query'" index="2-1" style="background-color: #212d3d">
               <template #title>
                 <el-icon>
@@ -91,6 +110,18 @@
               </el-icon>
               通用查询
             </el-menu-item>
+            <el-menu-item index="/Manage/ManageFileView">
+              <el-icon>
+                <FolderOpened />
+              </el-icon>
+              文件管理
+            </el-menu-item>
+            <el-menu-item v-permission="'admin:tenant:query'" index="/Manage/ManageTenantView">
+              <el-icon>
+                <OfficeBuilding />
+              </el-icon>
+              租户管理
+            </el-menu-item>
           </el-sub-menu>
           <el-sub-menu v-if="shouldShowFrontMenu" index="4">
             <template #title>
@@ -106,12 +137,6 @@
               用户管理
             </el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="/Manage/ManageSettingsView">
-            <el-icon>
-              <Setting />
-            </el-icon>
-            <span>系统设置</span>
-          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
@@ -186,21 +211,28 @@
 </template>
 
 <script setup lang="ts">
+import { queryUnreadCount } from "@/api/admin_request/MessageRequest";
 import { logout } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
 import router from "@/router";
 import { useSettingsStore } from "@/store/modules/settings";
 import { useUserStore } from "@/store/modules/user";
 import type { AdminUser } from "@/types";
+import { removeWatermark, setWatermark } from "@/utils/watermark";
+import { connectWebSocket, disconnectWebSocket } from "@/utils/websocket";
 import {
   ArrowDown,
   Avatar,
   Bell,
+  ChatDotRound,
   Collection,
   Comment,
   Fold,
+  FolderOpened,
   HomeFilled,
   List,
+  Monitor,
+  OfficeBuilding,
   Promotion,
   Search,
   Setting,
@@ -220,6 +252,11 @@ const route = useRoute();
 const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const mobileSidebarOpen = ref(false);
+const unreadCount = ref(0);
+let unreadTimer: ReturnType<typeof setInterval> | null = null;
+const fetchUnread = () => {
+  queryUnreadCount().then(res => { unreadCount.value = res.data ?? 0 }).catch(() => { })
+};
 let adminUserInfo = ref<AdminUser | Record<string, never>>({});
 interface TabItem {
   title: string
@@ -419,7 +456,8 @@ const shouldShowToolsMenu = computed(() => {
   if (!user || !user.permissions) return false;
 
   return hasPermission('admin:docs:query') ||
-    hasPermission('admin:com-query:query');
+    hasPermission('admin:com-query:query') ||
+    hasPermission('admin:tenant:query');
 });
 
 // 检查前台管理子菜单是否应该显示
@@ -433,12 +471,18 @@ const shouldShowFrontMenu = computed(() => {
 const getUserInfo = () => {
   userStore.fetchCurrentUser().then(() => {
     adminUserInfo.value = userStore.adminUserInfo
+    if (adminUserInfo.value?.username) {
+      setWatermark(adminUserInfo.value.username)
+    }
   })
 }
 
 onMounted(() => {
   getUserInfo();
   settingsStore.applyTheme();
+  connectWebSocket();
+  fetchUnread();
+  unreadTimer = setInterval(fetchUnread, 30000);
   // 绑定右键菜单事件
   nextTick(() => {
     const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
@@ -448,6 +492,9 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  removeWatermark();
+  disconnectWebSocket();
+  if (unreadTimer) { clearInterval(unreadTimer); unreadTimer = null; }
   const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
   if (tabNav) tabNav.removeEventListener('contextmenu', openCtxMenu);
   document.removeEventListener('click', closeCtxMenu);

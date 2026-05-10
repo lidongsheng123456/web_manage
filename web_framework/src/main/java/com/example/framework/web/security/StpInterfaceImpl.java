@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import com.example.common.config.AppConfig;
 import com.example.common.redis.RedisCache;
 import com.example.system.mapper.AdminRbacMapper;
+import com.example.system.mapper.AdminUserAndRoleMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,11 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class StpInterfaceImpl implements StpInterface {
 
     private final AdminRbacMapper adminRbacMapper;
+    private final AdminUserAndRoleMapper adminUserAndRoleMapper;
     private final RedisCache redisCache;
     private final AppConfig appConfig;
 
-    public StpInterfaceImpl(AdminRbacMapper adminRbacMapper, RedisCache redisCache, AppConfig appConfig) {
+    public StpInterfaceImpl(AdminRbacMapper adminRbacMapper, AdminUserAndRoleMapper adminUserAndRoleMapper,
+                            RedisCache redisCache, AppConfig appConfig) {
         this.adminRbacMapper = adminRbacMapper;
+        this.adminUserAndRoleMapper = adminUserAndRoleMapper;
         this.redisCache = redisCache;
         this.appConfig = appConfig;
     }
@@ -67,6 +71,18 @@ public class StpInterfaceImpl implements StpInterface {
     public void clearCache(Long userId) {
         redisCache.deleteObject(appConfig.getCache().getPermPrefix() + userId);
         redisCache.deleteObject(appConfig.getCache().getRolePrefix() + userId);
+    }
+
+    /**
+     * 根据角色ID列表清除对应用户的权限/角色缓存
+     */
+    public void clearCacheByRoleIds(List<Long> roleIds) {
+        for (Long roleId : roleIds) {
+            List<Long> userIds = adminUserAndRoleMapper.getUserIdsByRoleId(roleId);
+            if (userIds != null) {
+                userIds.forEach(this::clearCache);
+            }
+        }
     }
 
 }

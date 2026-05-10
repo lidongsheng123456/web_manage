@@ -106,6 +106,19 @@ public class AdminDictController {
     }
 
     /**
+     * 根据字典类型查询字典列表（用于前端缓存/下拉）
+     *
+     * @param dictType
+     * @return
+     */
+    @Operation(summary = "根据字典类型查询")
+    @GetMapping("/type/{dictType}")
+    public Result<List<Dict>> queryDictByType(@PathVariable String dictType) {
+        List<Dict> list = adminDictService.queryDictByType(dictType);
+        return Result.success(list);
+    }
+
+    /**
      * 导出字典信息
      *
      * @param response

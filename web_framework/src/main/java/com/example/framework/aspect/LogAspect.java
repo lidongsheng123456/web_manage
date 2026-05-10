@@ -2,6 +2,8 @@ package com.example.framework.aspect;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.json.JSONUtil;
 import com.example.common.annotation.Log;
 import com.example.common.enums.BusinessType;
@@ -9,6 +11,7 @@ import com.example.common.enums.ResultCodeEnum;
 import com.example.common.exception.BusinessException;
 import com.example.system.domain.OperLog;
 import com.example.system.domain.User;
+import com.example.framework.notify.NotificationHelper;
 import com.example.system.mapper.AdminOperLogMapper;
 import com.example.system.mapper.AdminUserMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,9 +38,12 @@ public class LogAspect {
 
     private final AdminOperLogMapper adminOperLogMapper;
 
-    public LogAspect(AdminOperLogMapper adminOperLogMapper, AdminUserMapper adminUserMapper) {
+    private final NotificationHelper notificationHelper;
+
+    public LogAspect(AdminOperLogMapper adminOperLogMapper, AdminUserMapper adminUserMapper, NotificationHelper notificationHelper) {
         this.adminOperLogMapper = adminOperLogMapper;
         this.adminUserMapper = adminUserMapper;
+        this.notificationHelper = notificationHelper;
     }
 
     /**
@@ -85,6 +91,21 @@ public class LogAspect {
         //7.请求URL
         String requestUrl = request.getRequestURL().toString();
 
+        //7.1 IP地址
+        String operIp = getIpAddr(request);
+
+        //7.2 浏览器 & OS
+        String uaStr = request.getHeader("User-Agent");
+        String browserName = "Unknown";
+        String osName = "Unknown";
+        if (uaStr != null) {
+            UserAgent ua = UserAgentUtil.parse(uaStr);
+            if (ua != null) {
+                browserName = ua.getBrowser() != null ? ua.getBrowser().getName() + " " + ua.getVersion() : "Unknown";
+                osName = ua.getOs() != null ? ua.getOs().getName() : "Unknown";
+            }
+        }
+
         //9.请求参数
         Object[] args = joinPoint.getArgs();
         String methodParams = Arrays.toString(args);
@@ -127,7 +148,8 @@ public class LogAspect {
             //记录方法执行总耗时
             Long costTime = end - begin;
 
-            OperLog operLog = new OperLog(null, title, businessType.name, methodName, requestMethod, operatorName, requestUrl, methodParams, returnValue, status, errorMsg, operateTime, costTime);
+            OperLog operLog = buildOperLog(title, businessType, methodName, requestMethod, operatorName,
+                    operIp, browserName, osName, requestUrl, methodParams, returnValue, status, errorMsg, operateTime, costTime);
 
             try {
                 adminOperLogMapper.addOperLog(operLog);
@@ -144,7 +166,8 @@ public class LogAspect {
             errorMsg = throwable.getMessage();
             status = 1;
 
-            OperLog operLog = new OperLog(null, title, businessType.name, methodName, requestMethod, operatorName, requestUrl, methodParams, returnValue, status, errorMsg, operateTime, costTime);
+            OperLog operLog = buildOperLog(title, businessType, methodName, requestMethod, operatorName,
+                    operIp, browserName, osName, requestUrl, methodParams, returnValue, status, errorMsg, operateTime, costTime);
 
             try {
                 adminOperLogMapper.addOperLog(operLog);
@@ -152,8 +175,58 @@ public class LogAspect {
                 log.error("操作日志写入失败", e);
                 throw new BusinessException(ResultCodeEnum.LOG_ERROR);
             }
+            // 操作异常时向超级管理员发送预警站内信
+            try {
+                notificationHelper.warnAdmin("操作异常预警：" + title,
+                        "操作人：" + operatorName + "\n方法：" + methodName + "\n错误：" + errorMsg);
+            } catch (Exception ignored) {
+            }
             throw throwable;
         }
     }
 
+    private OperLog buildOperLog(String title, BusinessType businessType, String method, String requestMethod,
+                                 String operName, String operIp, String browser, String os,
+                                 String operUrl, String operParam, String jsonResult,
+                                 int status, String errorMsg, LocalDateTime operTime, Long costTime) {
+        OperLog operLog = new OperLog();
+        operLog.setTitle(title);
+        operLog.setBusinessType(businessType.name);
+        operLog.setMethod(method);
+        operLog.setRequestMethod(requestMethod);
+        operLog.setOperName(operName);
+        operLog.setOperIp(operIp);
+        operLog.setOperLocation("");
+        operLog.setBrowser(browser);
+        operLog.setOs(os);
+        operLog.setOperUrl(operUrl);
+        operLog.setOperParam(operParam);
+        operLog.setJsonResult(jsonResult);
+        operLog.setStatus(status);
+        operLog.setErrorMsg(errorMsg);
+        operLog.setOperTime(operTime);
+        operLog.setCostTime(costTime);
+        return operLog;
+    }
+
+    private String getIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 多级代理取第一个
+        if (ip != null && ip.contains(",")) {
+            ip = ip.split(",")[0].trim();
+        }
+        return ip;
+    }
 }

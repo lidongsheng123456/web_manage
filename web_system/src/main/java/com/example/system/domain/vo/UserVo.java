@@ -38,6 +38,9 @@ public class UserVo implements Serializable {
     @Schema(description = "用户头像地址")
     private String imgUrl;
 
+    @Schema(description = "租户ID")
+    private Long tenantId;
+
     @Schema(description = "用户创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;

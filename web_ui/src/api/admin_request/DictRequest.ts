@@ -1,5 +1,5 @@
+import type { ApiResponse, Dict, DictQueryParams, PageResult } from "@/types"
 import adminRequest from "@/utils/AdminRequest"
-import type { ApiResponse, PageResult, Dict, DictQueryParams } from "@/types"
 
 export function addDict(data: Partial<Dict>): Promise<ApiResponse<null>> {
     return adminRequest({
@@ -38,6 +38,13 @@ export function queryDict(data: DictQueryParams): Promise<ApiResponse<PageResult
 export function queryDictById(data: number): Promise<ApiResponse<Dict>> {
     return adminRequest({
         url: `/admin/dict/${data}`,
+        method: 'GET'
+    })
+}
+
+export function queryDictByType(dictType: string): Promise<ApiResponse<Dict[]>> {
+    return adminRequest({
+        url: `/admin/dict/type/${dictType}`,
         method: 'GET'
     })
 }

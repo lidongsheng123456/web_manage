@@ -127,3 +127,6 @@ app:
   pool-sync-host: "47.104.236.251:9527"
   # 环境标识
   env-id: "0da44410-7d61-486c-9886-fc553110be86"
+  # 多租户隔离
+  tenant:
+    enabled: true

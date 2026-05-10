@@ -10,11 +10,13 @@ export interface UserState {
 /** Settings Store 状态 */
 export interface SettingsState {
   themeColor: string
+  darkMode: boolean
   sidebarCollapse: boolean
   showTagsView: boolean
   showTransition: boolean
   grayMode: boolean
   colorWeakMode: boolean
+  locale: string
   siteName: string
   siteDescription: string
   siteFooter: string

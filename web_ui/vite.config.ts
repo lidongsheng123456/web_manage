@@ -8,7 +8,7 @@ import { defineConfig, loadEnv } from 'vite'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  
+
   return {
     plugins: [
       vue(),
@@ -64,7 +64,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
-      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
+      __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+      global: 'globalThis',
     },
     envPrefix: 'VUE_APP_',
     test: {

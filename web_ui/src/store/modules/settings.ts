@@ -1,6 +1,6 @@
+import type { SettingsState } from '@/types'
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import type { SettingsState } from '@/types'
 
 const STORAGE_KEY = 'admin-settings'
 
@@ -18,11 +18,13 @@ export const useSettingsStore = defineStore('settings', () => {
 
     // ==================== 个性化设置 ====================
     const themeColor = ref<string>(saved.themeColor || '#409eff')
+    const darkMode = ref<boolean>(saved.darkMode ?? false)
     const sidebarCollapse = ref<boolean>(saved.sidebarCollapse ?? false)
     const showTagsView = ref<boolean>(saved.showTagsView ?? true)
     const showTransition = ref<boolean>(saved.showTransition ?? true)
     const grayMode = ref<boolean>(saved.grayMode ?? false)
     const colorWeakMode = ref<boolean>(saved.colorWeakMode ?? false)
+    const locale = ref<string>(saved.locale || 'zh-cn')
 
     // ==================== 网站信息 ====================
     const siteName = ref<string>(saved.siteName || '东神脚手架')
@@ -34,11 +36,13 @@ export const useSettingsStore = defineStore('settings', () => {
     function persist(): void {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
             themeColor: themeColor.value,
+            darkMode: darkMode.value,
             sidebarCollapse: sidebarCollapse.value,
             showTagsView: showTagsView.value,
             showTransition: showTransition.value,
             grayMode: grayMode.value,
             colorWeakMode: colorWeakMode.value,
+            locale: locale.value,
             siteName: siteName.value,
             siteDescription: siteDescription.value,
             siteFooter: siteFooter.value,
@@ -47,8 +51,8 @@ export const useSettingsStore = defineStore('settings', () => {
     }
 
     // 监听所有设置变化自动持久化
-    watch([themeColor, sidebarCollapse, showTagsView, showTransition,
-        grayMode, colorWeakMode, siteName, siteDescription, siteFooter, siteIcp],
+    watch([themeColor, darkMode, sidebarCollapse, showTagsView, showTransition,
+        grayMode, colorWeakMode, locale, siteName, siteDescription, siteFooter, siteIcp],
         () => persist(), { deep: true }
     )
 
@@ -82,6 +86,9 @@ export const useSettingsStore = defineStore('settings', () => {
         const el = document.documentElement
         const primary = themeColor.value
 
+        // 暗黑模式
+        el.classList.toggle('dark', darkMode.value)
+
         // 主题色
         el.style.setProperty('--el-color-primary', primary)
 
@@ -107,6 +114,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     function resetPersonalization(): void {
         themeColor.value = '#409eff'
+        darkMode.value = false
         sidebarCollapse.value = false
         showTagsView.value = true
         showTransition.value = true
@@ -122,8 +130,8 @@ export const useSettingsStore = defineStore('settings', () => {
     }
 
     return {
-        themeColor, sidebarCollapse, showTagsView, showTransition,
-        grayMode, colorWeakMode,
+        themeColor, darkMode, sidebarCollapse, showTagsView, showTransition,
+        grayMode, colorWeakMode, locale,
         siteName, siteDescription, siteFooter, siteIcp,
         applyTheme, resetPersonalization, resetSiteInfo, persist,
     }

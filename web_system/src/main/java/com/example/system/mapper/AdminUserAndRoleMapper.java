@@ -1,10 +1,12 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import org.apache.ibatis.annotations.MapKey;
 
 import java.util.List;
 import java.util.Map;
 
+@TenantIgnore
 public interface AdminUserAndRoleMapper {
     /**
      * 新增用户和角色关联id
@@ -64,4 +66,12 @@ public interface AdminUserAndRoleMapper {
      */
     @MapKey("user_id")
     List<Map<Long, Long>> getUserAndRoleByUserId(Long userId);
+
+    /**
+     * 根据角色id查询用户id列表
+     *
+     * @param roleId
+     * @return
+     */
+    List<Long> getUserIdsByRoleId(Long roleId);
 }

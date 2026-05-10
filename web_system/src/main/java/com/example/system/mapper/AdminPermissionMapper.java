@@ -1,10 +1,12 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.Permission;
 import com.example.system.domain.Role;
 
 import java.util.List;
 
+@TenantIgnore
 public interface AdminPermissionMapper {
     /**
      * 新增权限

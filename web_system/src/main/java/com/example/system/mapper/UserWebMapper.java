@@ -1,9 +1,11 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.User;
 import com.example.system.domain.dto.UserDto;
 import com.example.system.domain.vo.UserVo;
 
+@TenantIgnore
 public interface UserWebMapper {
     /**
      * 根据用户名查询

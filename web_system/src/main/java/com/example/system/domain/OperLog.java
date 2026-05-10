@@ -35,6 +35,18 @@ public class OperLog implements Serializable {
     @Schema(description = "操作用户名")
     private String operName;
 
+    @Schema(description = "操作IP")
+    private String operIp;
+
+    @Schema(description = "操作地点")
+    private String operLocation;
+
+    @Schema(description = "浏览器")
+    private String browser;
+
+    @Schema(description = "操作系统")
+    private String os;
+
     @Schema(description = "操作路由")
     private String operUrl;
 

@@ -131,6 +131,39 @@ public class FileController {
         }
     }
 
+    /**
+     * 获取文件列表（文件管理器）
+     */
+    @SaCheckLogin
+    @Operation(summary = "获取文件列表")
+    @GetMapping("/list")
+    public Result listFiles() {
+        java.io.File dir = new java.io.File(filePath);
+        if (!dir.exists() || !dir.isDirectory()) {
+            return Result.success(java.util.Collections.emptyList());
+        }
+        java.io.File[] files = dir.listFiles();
+        if (files == null) {
+            return Result.success(java.util.Collections.emptyList());
+        }
+        java.util.List<java.util.Map<String, Object>> list = new java.util.ArrayList<>();
+        String http = "http://" + ip + ":" + port + "/common/files/";
+        for (java.io.File f : files) {
+            if (f.isFile()) {
+                java.util.Map<String, Object> item = new java.util.LinkedHashMap<>();
+                item.put("name", f.getName());
+                item.put("size", f.length());
+                item.put("lastModified", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(f.lastModified())));
+                item.put("url", http + f.getName());
+                String ext = FileUtil.extName(f.getName());
+                item.put("ext", ext != null ? ext.toLowerCase() : "");
+                list.add(item);
+            }
+        }
+        list.sort((a, b) -> ((String) b.get("lastModified")).compareTo((String) a.get("lastModified")));
+        return Result.success(list);
+    }
+
     @SaCheckLogin
     @Operation(summary = "删除文件")
     @DeleteMapping("/{flag}")

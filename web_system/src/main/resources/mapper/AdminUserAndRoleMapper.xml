@@ -56,4 +56,8 @@
         from sys_user_role
         where user_id = #{userId}
     </select>
+
+    <select id="getUserIdsByRoleId" resultType="java.lang.Long">
+        select user_id from sys_user_role where role_id = #{roleId}
+    </select>
 </mapper>

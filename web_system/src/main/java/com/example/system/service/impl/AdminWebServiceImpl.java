@@ -64,6 +64,10 @@ public class AdminWebServiceImpl implements AdminWebService {
         userVo.setPermissions(adminRbacMapper.getPermissionList(userVo.getId()));
         userVo.setRoles(adminRbacMapper.getRoleList(userVo.getId()));
 
+        // 登录前清除权限缓存，确保最新权限生效
+        redisCache.deleteObject(appConfig.getCache().getPermPrefix() + userVo.getId());
+        redisCache.deleteObject(appConfig.getCache().getRolePrefix() + userVo.getId());
+
         StpUtil.login(userVo.getId());
         return userVo;
     }

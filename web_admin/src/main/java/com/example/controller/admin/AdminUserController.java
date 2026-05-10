@@ -16,6 +16,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.common.util.ExcelImportUtil;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -126,5 +129,25 @@ public class AdminUserController {
         // 将 Excel 文件写入响应输出流
         response.getOutputStream().write(excelBytes);
         response.getOutputStream().flush();
+    }
+
+    /**
+     * 导入用户信息
+     */
+    @Operation(summary = "导入用户信息")
+    @SaCheckPermission("admin:user:add")
+    @Log(title = "导入用户", businessType = BusinessType.INSERT)
+    @PostMapping("/import")
+    public Result importExcel(@RequestParam("file") MultipartFile file) throws Exception {
+        List<User> users = ExcelImportUtil.importFromExcel(file.getInputStream(), User.class);
+        int count = 0;
+        for (User user : users) {
+            try {
+                adminUserService.addUser(user);
+                count++;
+            } catch (Exception ignored) {
+            }
+        }
+        return Result.success("成功导入 " + count + " 条，共 " + users.size() + " 条");
     }
 }

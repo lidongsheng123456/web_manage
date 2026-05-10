@@ -36,4 +36,10 @@
         from sys_user
         where id = #{id}
     </select>
+
+    <select id="selectUserBaseById" resultType="java.util.Map">
+        select username, name, img_url
+        from sys_user
+        where id = #{id}
+    </select>
 </mapper>

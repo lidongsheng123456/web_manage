@@ -51,4 +51,12 @@ public interface AdminDictService {
      * @return
      */
     Dict queryDictById(Long id);
+
+    /**
+     * 根据字典类型查询
+     *
+     * @param dictType
+     * @return
+     */
+    List<Dict> queryDictByType(String dictType);
 }

@@ -4,9 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.system.mapper.AdminOperLogMapper">
     <insert id="addOperLog">
-        insert into sys_oper_log(title, business_type, method, request_method, oper_name, oper_url,
+        insert into sys_oper_log(title, business_type, method, request_method, oper_name, oper_ip,
+                                 oper_location, browser, os, oper_url,
                                  oper_param, json_result, status, error_msg, oper_time, cost_time)
-        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operName}, #{operUrl},
+        values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operName}, #{operIp},
+                #{operLocation}, #{browser}, #{os}, #{operUrl},
                 #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{operTime},
                 #{costTime})
     </insert>

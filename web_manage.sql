@@ -11,7 +11,7 @@
  Target Server Version : 80024 (8.0.24)
  File Encoding         : 65001
 
- Date: 04/05/2026 16:19:28
+ Date: 10/05/2026 20:54:38
 */
 
 SET NAMES utf8mb4;
@@ -49,6 +49,7 @@ CREATE TABLE `sys_com_query`  (
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '代码',
   `custom_sql` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'sql语句',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `tenant_id` bigint NULL DEFAULT 1 COMMENT '租户ID',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -57,8 +58,8 @@ CREATE TABLE `sys_com_query`  (
 -- ----------------------------
 -- Records of sys_com_query
 -- ----------------------------
-INSERT INTO `sys_com_query` VALUES (1, '后台用户查询', 'user_query', 'SELECT username as dictLabel,id as dictValue FROM sys_user', NULL, '2025-05-01 13:16:39', '2025-05-01 15:48:26');
-INSERT INTO `sys_com_query` VALUES (4, '前台用户查询', 'front_user_query', 'SELECT username as dictLabel,id as dictValue FROM front_user', NULL, '2025-05-13 21:50:29', '2025-05-20 22:01:20');
+INSERT INTO `sys_com_query` VALUES (1, '后台用户查询', 'user_query', 'SELECT username as dictLabel,id as dictValue FROM sys_user', NULL, 1, '2025-05-01 13:16:39', '2025-05-01 15:48:26');
+INSERT INTO `sys_com_query` VALUES (4, '前台用户查询', 'front_user_query', 'SELECT username as dictLabel,id as dictValue FROM front_user', NULL, 1, '2025-05-13 21:50:29', '2025-05-20 22:01:20');
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -71,6 +72,7 @@ CREATE TABLE `sys_dict_data`  (
   `dict_value` int NOT NULL COMMENT '字典键值',
   `tag_type` enum('primary','success','info','warning','danger') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标签类型',
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `tenant_id` bigint NULL DEFAULT 1 COMMENT '租户ID',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -79,8 +81,30 @@ CREATE TABLE `sys_dict_data`  (
 -- ----------------------------
 -- Records of sys_dict_data
 -- ----------------------------
-INSERT INTO `sys_dict_data` VALUES (1, 'shop_status', '打烊', 0, 'warning', '打烊', '2025-05-01 13:14:40', '2025-05-01 22:50:24');
-INSERT INTO `sys_dict_data` VALUES (2, 'shop_status', '营业', 1, 'success', '营业', '2025-05-01 13:14:56', '2025-05-04 13:29:30');
+INSERT INTO `sys_dict_data` VALUES (1, 'shop_status', '打烊', 0, 'warning', '打烊', 1, '2025-05-01 13:14:40', '2025-05-01 22:50:24');
+INSERT INTO `sys_dict_data` VALUES (2, 'shop_status', '营业', 1, 'success', '营业', 1, '2025-05-01 13:14:56', '2025-05-04 13:29:30');
+
+-- ----------------------------
+-- Table structure for sys_message
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_message`;
+CREATE TABLE `sys_message`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '消息标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '消息内容',
+  `msg_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'system' COMMENT '消息类型(system/notice/warn)',
+  `sender_id` bigint NULL DEFAULT 0 COMMENT '发送者ID(0=系统)',
+  `receiver_id` bigint NOT NULL COMMENT '接收者ID',
+  `is_read` tinyint NOT NULL DEFAULT 0 COMMENT '是否已读(0未读 1已读)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `read_time` datetime NULL DEFAULT NULL COMMENT '阅读时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_receiver_read`(`receiver_id` ASC, `is_read` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '个人消息表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_message
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -93,6 +117,7 @@ CREATE TABLE `sys_notice`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `create_user_id` bigint NOT NULL COMMENT '创建用户id',
+  `tenant_id` bigint NULL DEFAULT 1 COMMENT '租户ID',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `notice_ibfk_1`(`create_user_id` ASC) USING BTREE,
   CONSTRAINT `sys_notice_ibfk_1` FOREIGN KEY (`create_user_id`) REFERENCES `sys_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -101,8 +126,8 @@ CREATE TABLE `sys_notice`  (
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO `sys_notice` VALUES (1, '使用说明', '一个为毕业设计快速开发打造的脚手架系统，支持前后端二次开发。', '2025-01-19 13:59:59', '2025-05-21 20:48:57', 1);
-INSERT INTO `sys_notice` VALUES (44, '提示', '当前页面为前台页面需要自定义，但后台模板是完整的。', '2025-05-27 13:29:10', '2025-05-27 13:30:10', 1);
+INSERT INTO `sys_notice` VALUES (1, '使用说明', '一个为毕业设计快速开发打造的脚手架系统，支持前后端二次开发。', '2025-01-19 13:59:59', '2025-05-21 20:48:57', 1, 1);
+INSERT INTO `sys_notice` VALUES (44, '提示', '当前页面为前台页面需要自定义，但后台模板是完整的。', '2025-05-27 13:29:10', '2025-05-27 13:30:10', 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_oper_log
@@ -115,6 +140,10 @@ CREATE TABLE `sys_oper_log`  (
   `method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '方法名称',
   `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求方式',
   `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作人员',
+  `oper_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作IP',
+  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作地点',
+  `browser` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '浏览器',
+  `os` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作系统',
   `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求URL',
   `oper_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求参数',
   `json_result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '返回参数',
@@ -131,24 +160,24 @@ CREATE TABLE `sys_oper_log`  (
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (956, '分配角色', 'insert', 'com.example.controller.admin.AdminRoleController.assignRole()', 'POST', 'lidongsheng', 'http://localhost:8088/admin/role/assign', '[AssignRoleDTO(roleId=3, userId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-01 21:22:57', 9);
-INSERT INTO `sys_oper_log` VALUES (957, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'scx', 'http://localhost:8088/admin/logout/18', '[18]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-01 21:26:34', 3);
-INSERT INTO `sys_oper_log` VALUES (958, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', 'http://localhost:8088/admin/user', '[User(id=null, username=null, password=null, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null)]', '', 1, 'Cannot invoke \"java.lang.Long.longValue()\" because the return value of \"com.example.system.domain.User.getId()\" is null', '2025-02-02 15:17:02', 4);
-INSERT INTO `sys_oper_log` VALUES (959, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', 'http://localhost:8088/admin/user', '[User(id=null, username=null, password=null, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null)]', '', 1, 'Cannot invoke \"java.lang.Long.longValue()\" because the return value of \"com.example.system.domain.User.getId()\" is null', '2025-02-02 15:17:09', 1);
-INSERT INTO `sys_oper_log` VALUES (960, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', 'http://localhost:8088/admin/user', '[User(id=1, username=null, password=null, name=null, phone=null, email=null, imgUrl=http://139.196.196.178:8088/common/files/1737722850101-cat.jpg, createTime=null, updateTime=null)]', '', 1, '禁止操作超级管理员', '2025-02-02 15:18:45', 1);
-INSERT INTO `sys_oper_log` VALUES (961, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'lidongsheng', 'http://localhost:8088/admin/logout/1', '[1]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-02 15:19:01', 52);
-INSERT INTO `sys_oper_log` VALUES (962, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=podzi), org.apache.catalina.session.StandardSessionFacade@32eec554]', '', 1, '验证码错误', '2025-02-02 15:19:14', 0);
-INSERT INTO `sys_oper_log` VALUES (963, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=x8mll), org.apache.catalina.session.StandardSessionFacade@32eec554]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":18,\"username\":\"scx\",\"name\":\"史晨翔\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1737964108818-微信图片_20250105205358.jpg\",\"createTime\":1737964050000,\"updateTime\":1737964127000,\"permissions\":[{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:person:query\"}],\"roles\":[{\"role_code\":\"user\"}]}}', 0, '', '2025-02-02 15:19:20', 21);
-INSERT INTO `sys_oper_log` VALUES (1374, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=9122n), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '', 1, '验证码错误', '2026-05-04 16:04:55', 5);
-INSERT INTO `sys_oper_log` VALUES (1375, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=yibsz), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1737266057000,\"updateTime\":1772341123000,\"permissions\":[{\"permission_code\":\"admin:notice:add\"},{\"permission_code\":\"admin:notice:delete\"},{\"permission_code\":\"admin:notice:update\"},{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:user:add\"},{\"permission_code\":\"admin:user:delete\"},{\"permission_code\":\"admin:user:update\"},{\"permission_code\":\"admin:operLog:delete\"},{\"permission_code\":\"admin:operLog:update\"},{\"permission_code\":\"admin:operLog:query\"},{\"permission_code\":\"admin:notice:export\"},{\"permission_code\":\"admin:user:export\"},{\"permission_code\":\"admin:operLog:export\"},{\"permission_code\":\"admin:person:query\"},{\"permission_code\":\"admin:permission:query\"},{\"permission_code\":\"admin:permission:remove\"},{\"permission_code\":\"admin:permission:assign\"},{\"permission_code\":\"admin:permission:export\"},{\"permission_code\":\"admin:permission:update\"},{\"permission_code\":\"admin:permission:delete\"},{\"permission_code\":\"admin:permission:add\"},{\"permission_code\":\"admin:role:remove\"},{\"permission_code\":\"admin:role:assign\"},{\"permission_code\":\"admin:role:export\"},{\"permission_code\":\"admin:role:query\"},{\"permission_code\":\"admin:role:update\"},{\"permission_code\":\"admin:role:delete\"},{\"permission_code\":\"admin:role:add\"},{\"permission_code\":\"admin:docs:query\"},{\"permission_code\":\"admin:dict:query\"},{\"permission_code\":\"admin:com-query:query\"},{\"permission_code\":\"admin:com-query:export\"},{\"permission_code\":\"admin:com-query:update\"},{\"permission_code\":\"admin:com-query:delete\"},{\"permission_code\":\"admin:com-query:add\"},{\"permission_code\":\"admin:dict:export\"},{\"permission_code\":\"admin:dict:update\"},{\"permission_code\":\"admin:dict:delete\"},{\"permission_code\":\"admin:dict:add\"},{\"permission_code\":\"admin:front-user:add\"},{\"permission_code\":\"admin:front-user:delete\"},{\"permission_code\":\"admin:front-user:update\"},{\"permission_code\":\"admin:front-user:query\"},{\"permission_code\":\"admin:front-user:export\"},{\"permission_code\":\"admin:user:query\"}],\"roles\":[{\"role_code\":\"admin\"},{\"role_code\":\"super_admin\"},{\"role_code\":\"user\"}]}}', 0, '', '2026-05-04 16:04:58', 329);
-INSERT INTO `sys_oper_log` VALUES (1376, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=brb2e), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '', 1, '验证码错误', '2026-05-04 16:05:06', 1);
-INSERT INTO `sys_oper_log` VALUES (1377, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=ctcma), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1745462005000,\"updateTime\":1772341108000,\"permissions\":[],\"roles\":[]}}', 0, '', '2026-05-04 16:05:10', 304);
-INSERT INTO `sys_oper_log` VALUES (1378, '修改个人信息', 'update', 'com.example.controller.user.UserWebController.updatePerson()', 'POST', 'admin', 'http://localhost:8088/user/person', '[User(id=1, username=user, password=null, name=user, phone=19976898057, email=208550738@qq.com, imgUrl=, createTime=2025-04-24T10:33:25, updateTime=2026-03-01T12:58:28)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:05:22', 9);
-INSERT INTO `sys_oper_log` VALUES (1379, '退出前台', 'force', 'com.example.controller.user.UserWebController.logout()', 'GET', 'admin', 'http://localhost:8088/user/logout', '[]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:05:39', 18);
-INSERT INTO `sys_oper_log` VALUES (1380, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', 'http://localhost:8088/user/login', '[UserDto(id=null, username=user, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=5megy), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"user\",\"name\":\"user\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1745462005000,\"updateTime\":1777881922000,\"permissions\":[],\"roles\":[]}}', 0, '', '2026-05-04 16:06:07', 299);
-INSERT INTO `sys_oper_log` VALUES (1381, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'admin', 'http://localhost:8088/admin/user', '[User(id=1, username=admin, password=null, name=admin, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-01-19T13:54:17, updateTime=2026-03-01T12:58:43)]', '', 1, '禁止操作超级管理员', '2026-05-04 16:18:00', 0);
-INSERT INTO `sys_oper_log` VALUES (1382, '修改个人信息', 'update', 'com.example.controller.admin.AdminWebController.updatePerson()', 'POST', 'admin', 'http://localhost:8088/admin/person', '[User(id=1, username=admin, password=null, name=admin, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-01-19T13:54:17, updateTime=2026-03-01T12:58:43)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:18:12', 7);
-INSERT INTO `sys_oper_log` VALUES (1383, '修改前台用户', 'update', 'com.example.controller.admin.AdminFrontUserController.updateFrontUser()', 'PUT', 'admin', 'http://localhost:8088/admin/front-user', '[FrontUser(id=1, username=user, password=null, name=user, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-04-24T10:33:25, updateTime=2026-05-04T16:18:28.485733800)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:18:28', 10);
+INSERT INTO `sys_oper_log` VALUES (956, '分配角色', 'insert', 'com.example.controller.admin.AdminRoleController.assignRole()', 'POST', 'lidongsheng', '', '', '', '', 'http://localhost:8088/admin/role/assign', '[AssignRoleDTO(roleId=3, userId=[1])]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-01 21:22:57', 9);
+INSERT INTO `sys_oper_log` VALUES (957, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'scx', '', '', '', '', 'http://localhost:8088/admin/logout/18', '[18]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-01 21:26:34', 3);
+INSERT INTO `sys_oper_log` VALUES (958, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', '', '', '', '', 'http://localhost:8088/admin/user', '[User(id=null, username=null, password=null, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null)]', '', 1, 'Cannot invoke \"java.lang.Long.longValue()\" because the return value of \"com.example.system.domain.User.getId()\" is null', '2025-02-02 15:17:02', 4);
+INSERT INTO `sys_oper_log` VALUES (959, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', '', '', '', '', 'http://localhost:8088/admin/user', '[User(id=null, username=null, password=null, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null)]', '', 1, 'Cannot invoke \"java.lang.Long.longValue()\" because the return value of \"com.example.system.domain.User.getId()\" is null', '2025-02-02 15:17:09', 1);
+INSERT INTO `sys_oper_log` VALUES (960, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'lidongsheng', '', '', '', '', 'http://localhost:8088/admin/user', '[User(id=1, username=null, password=null, name=null, phone=null, email=null, imgUrl=http://139.196.196.178:8088/common/files/1737722850101-cat.jpg, createTime=null, updateTime=null)]', '', 1, '禁止操作超级管理员', '2025-02-02 15:18:45', 1);
+INSERT INTO `sys_oper_log` VALUES (961, '退出后台', 'force', 'com.example.controller.admin.AdminWebController.logout()', 'GET', 'lidongsheng', '', '', '', '', 'http://localhost:8088/admin/logout/1', '[1]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2025-02-02 15:19:01', 52);
+INSERT INTO `sys_oper_log` VALUES (962, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', '', '', '', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=podzi), org.apache.catalina.session.StandardSessionFacade@32eec554]', '', 1, '验证码错误', '2025-02-02 15:19:14', 0);
+INSERT INTO `sys_oper_log` VALUES (963, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', '', '', '', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=scx, password=20040905, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=x8mll), org.apache.catalina.session.StandardSessionFacade@32eec554]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":18,\"username\":\"scx\",\"name\":\"史晨翔\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"http://localhost:8088/common/files/1737964108818-微信图片_20250105205358.jpg\",\"createTime\":1737964050000,\"updateTime\":1737964127000,\"permissions\":[{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:person:query\"}],\"roles\":[{\"role_code\":\"user\"}]}}', 0, '', '2025-02-02 15:19:20', 21);
+INSERT INTO `sys_oper_log` VALUES (1374, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', '', '', '', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=9122n), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '', 1, '验证码错误', '2026-05-04 16:04:55', 5);
+INSERT INTO `sys_oper_log` VALUES (1375, '登录后台', 'other', 'com.example.controller.admin.AdminWebController.login()', 'POST', '', '', '', '', '', 'http://localhost:8088/admin/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=yibsz), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1737266057000,\"updateTime\":1772341123000,\"permissions\":[{\"permission_code\":\"admin:notice:add\"},{\"permission_code\":\"admin:notice:delete\"},{\"permission_code\":\"admin:notice:update\"},{\"permission_code\":\"admin:notice:query\"},{\"permission_code\":\"admin:user:add\"},{\"permission_code\":\"admin:user:delete\"},{\"permission_code\":\"admin:user:update\"},{\"permission_code\":\"admin:operLog:delete\"},{\"permission_code\":\"admin:operLog:update\"},{\"permission_code\":\"admin:operLog:query\"},{\"permission_code\":\"admin:notice:export\"},{\"permission_code\":\"admin:user:export\"},{\"permission_code\":\"admin:operLog:export\"},{\"permission_code\":\"admin:person:query\"},{\"permission_code\":\"admin:permission:query\"},{\"permission_code\":\"admin:permission:remove\"},{\"permission_code\":\"admin:permission:assign\"},{\"permission_code\":\"admin:permission:export\"},{\"permission_code\":\"admin:permission:update\"},{\"permission_code\":\"admin:permission:delete\"},{\"permission_code\":\"admin:permission:add\"},{\"permission_code\":\"admin:role:remove\"},{\"permission_code\":\"admin:role:assign\"},{\"permission_code\":\"admin:role:export\"},{\"permission_code\":\"admin:role:query\"},{\"permission_code\":\"admin:role:update\"},{\"permission_code\":\"admin:role:delete\"},{\"permission_code\":\"admin:role:add\"},{\"permission_code\":\"admin:docs:query\"},{\"permission_code\":\"admin:dict:query\"},{\"permission_code\":\"admin:com-query:query\"},{\"permission_code\":\"admin:com-query:export\"},{\"permission_code\":\"admin:com-query:update\"},{\"permission_code\":\"admin:com-query:delete\"},{\"permission_code\":\"admin:com-query:add\"},{\"permission_code\":\"admin:dict:export\"},{\"permission_code\":\"admin:dict:update\"},{\"permission_code\":\"admin:dict:delete\"},{\"permission_code\":\"admin:dict:add\"},{\"permission_code\":\"admin:front-user:add\"},{\"permission_code\":\"admin:front-user:delete\"},{\"permission_code\":\"admin:front-user:update\"},{\"permission_code\":\"admin:front-user:query\"},{\"permission_code\":\"admin:front-user:export\"},{\"permission_code\":\"admin:user:query\"}],\"roles\":[{\"role_code\":\"admin\"},{\"role_code\":\"super_admin\"},{\"role_code\":\"user\"}]}}', 0, '', '2026-05-04 16:04:58', 329);
+INSERT INTO `sys_oper_log` VALUES (1376, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', '', '', '', '', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=brb2e), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '', 1, '验证码错误', '2026-05-04 16:05:06', 1);
+INSERT INTO `sys_oper_log` VALUES (1377, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', '', '', '', '', 'http://localhost:8088/user/login', '[UserDto(id=null, username=admin, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=ctcma), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"admin\",\"name\":\"admin\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1745462005000,\"updateTime\":1772341108000,\"permissions\":[],\"roles\":[]}}', 0, '', '2026-05-04 16:05:10', 304);
+INSERT INTO `sys_oper_log` VALUES (1378, '修改个人信息', 'update', 'com.example.controller.user.UserWebController.updatePerson()', 'POST', 'admin', '', '', '', '', 'http://localhost:8088/user/person', '[User(id=1, username=user, password=null, name=user, phone=19976898057, email=208550738@qq.com, imgUrl=, createTime=2025-04-24T10:33:25, updateTime=2026-03-01T12:58:28)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:05:22', 9);
+INSERT INTO `sys_oper_log` VALUES (1379, '退出前台', 'force', 'com.example.controller.user.UserWebController.logout()', 'GET', 'admin', '', '', '', '', 'http://localhost:8088/user/logout', '[]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:05:39', 18);
+INSERT INTO `sys_oper_log` VALUES (1380, '登录前台', 'other', 'com.example.controller.user.UserWebController.login()', 'POST', 'admin', '', '', '', '', 'http://localhost:8088/user/login', '[UserDto(id=null, username=user, password=123456, name=null, phone=null, email=null, imgUrl=null, createTime=null, updateTime=null, code=5megy), org.apache.catalina.session.StandardSessionFacade@5cbba42b]', '{\"code\":200,\"msg\":\"成功\",\"data\":{\"id\":1,\"username\":\"user\",\"name\":\"user\",\"phone\":\"19976898057\",\"email\":\"208550738@qq.com\",\"imgUrl\":\"\",\"createTime\":1745462005000,\"updateTime\":1777881922000,\"permissions\":[],\"roles\":[]}}', 0, '', '2026-05-04 16:06:07', 299);
+INSERT INTO `sys_oper_log` VALUES (1381, '修改用户', 'update', 'com.example.controller.admin.AdminUserController.updateUser()', 'PUT', 'admin', '', '', '', '', 'http://localhost:8088/admin/user', '[User(id=1, username=admin, password=null, name=admin, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-01-19T13:54:17, updateTime=2026-03-01T12:58:43)]', '', 1, '禁止操作超级管理员', '2026-05-04 16:18:00', 0);
+INSERT INTO `sys_oper_log` VALUES (1382, '修改个人信息', 'update', 'com.example.controller.admin.AdminWebController.updatePerson()', 'POST', 'admin', '', '', '', '', 'http://localhost:8088/admin/person', '[User(id=1, username=admin, password=null, name=admin, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-01-19T13:54:17, updateTime=2026-03-01T12:58:43)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:18:12', 7);
+INSERT INTO `sys_oper_log` VALUES (1383, '修改前台用户', 'update', 'com.example.controller.admin.AdminFrontUserController.updateFrontUser()', 'PUT', 'admin', '', '', '', '', 'http://localhost:8088/admin/front-user', '[FrontUser(id=1, username=user, password=null, name=user, phone=15612345678, email=demo_user@example.com, imgUrl=, createTime=2025-04-24T10:33:25, updateTime=2026-05-04T16:18:28.485733800)]', '{\"code\":200,\"msg\":\"成功\"}', 0, '', '2026-05-04 16:18:28', 10);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -163,7 +192,7 @@ CREATE TABLE `sys_permission`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `permission_code`(`permission_code` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 65 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -213,6 +242,11 @@ INSERT INTO `sys_permission` VALUES (50, 'admin:front-user:delete', '删除前�
 INSERT INTO `sys_permission` VALUES (51, 'admin:front-user:update', '修改前台用户', 'update', '2025-05-28 13:31:25', '2025-05-28 13:31:25');
 INSERT INTO `sys_permission` VALUES (52, 'admin:front-user:query', '查询前台用户', 'query', '2025-05-28 13:31:36', '2025-05-28 13:31:36');
 INSERT INTO `sys_permission` VALUES (53, 'admin:front-user:export', '导出前台用户', 'export', '2025-05-28 13:31:49', '2025-05-28 13:31:49');
+INSERT INTO `sys_permission` VALUES (60, 'admin:tenant:query', '查询租户', 'query', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
+INSERT INTO `sys_permission` VALUES (61, 'admin:tenant:add', '新增租户', 'add', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
+INSERT INTO `sys_permission` VALUES (62, 'admin:tenant:update', '修改租户', 'update', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
+INSERT INTO `sys_permission` VALUES (63, 'admin:tenant:delete', '删除租户', 'delete', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
+INSERT INTO `sys_permission` VALUES (64, 'admin:tenant:export', '导出租户', 'export', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -250,7 +284,7 @@ CREATE TABLE `sys_role_permission`  (
   INDEX `permission_id`(`permission_id` ASC) USING BTREE,
   CONSTRAINT `sys_role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `sys_role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `sys_permission` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 90 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_role_permission
@@ -309,6 +343,32 @@ INSERT INTO `sys_role_permission` VALUES (73, 1, 50, '2025-05-28 13:32:02');
 INSERT INTO `sys_role_permission` VALUES (74, 1, 51, '2025-05-28 13:32:05');
 INSERT INTO `sys_role_permission` VALUES (75, 1, 52, '2025-05-28 13:32:07');
 INSERT INTO `sys_role_permission` VALUES (76, 1, 53, '2025-05-28 13:32:10');
+INSERT INTO `sys_role_permission` VALUES (83, 1, 61, '2026-05-10 20:53:49');
+INSERT INTO `sys_role_permission` VALUES (84, 1, 63, '2026-05-10 20:53:49');
+INSERT INTO `sys_role_permission` VALUES (85, 1, 64, '2026-05-10 20:53:49');
+INSERT INTO `sys_role_permission` VALUES (86, 1, 60, '2026-05-10 20:53:49');
+INSERT INTO `sys_role_permission` VALUES (87, 1, 62, '2026-05-10 20:53:49');
+
+-- ----------------------------
+-- Table structure for sys_tenant
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_tenant`;
+CREATE TABLE `sys_tenant`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '租户ID',
+  `tenant_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '租户名称',
+  `contact_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联系人',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态（0正常 1停用）',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '租户表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_tenant
+-- ----------------------------
+INSERT INTO `sys_tenant` VALUES (1, '默认租户', 'admin', '15612345678', 0, '系统默认租户', '2026-05-10 20:53:49', '2026-05-10 20:53:49');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -322,6 +382,7 @@ CREATE TABLE `sys_user`  (
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
   `img_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片路径',
+  `tenant_id` bigint NULL DEFAULT 1 COMMENT '租户ID',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
@@ -330,7 +391,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '$2b$12$t0hPX9SqUpAl0GrPWRUBQe7SypLfwiBbD9d2/lG7GKYDrekEmTnNO', 'admin', '15612345678', 'demo_user@example.com', '', '2025-01-19 13:54:17', '2026-05-04 16:18:12');
+INSERT INTO `sys_user` VALUES (1, 'admin', '$2b$12$t0hPX9SqUpAl0GrPWRUBQe7SypLfwiBbD9d2/lG7GKYDrekEmTnNO', 'admin', '15612345678', 'demo_user@example.com', '', 1, '2025-01-19 13:54:17', '2026-05-04 16:18:12');
 
 -- ----------------------------
 -- Table structure for sys_user_role

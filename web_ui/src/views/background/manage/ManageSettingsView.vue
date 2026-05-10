@@ -23,6 +23,23 @@
               <el-color-picker v-model="settingsStore.themeColor" @change="onThemeColorChange" />
             </div>
           </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="label-text">暗黑模式</span>
+              <span class="label-desc">切换深色主题，保护眼睛</span>
+            </div>
+            <el-switch v-model="settingsStore.darkMode" @change="settingsStore.applyTheme()" />
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="label-text">语言 / Language</span>
+              <span class="label-desc">切换系统界面语言</span>
+            </div>
+            <el-select v-model="settingsStore.locale" style="width: 140px" @change="onLocaleChange">
+              <el-option label="简体中文" value="zh-cn" />
+              <el-option label="English" value="en" />
+            </el-select>
+          </div>
           <el-divider />
 
           <h3 class="section-title">
@@ -198,6 +215,7 @@
 </template>
 
 <script setup lang="ts">
+import i18n from "@/i18n";
 import { useSettingsStore } from "@/store/modules/settings";
 import {
   Brush, Cpu, InfoFilled, Link, Monitor, RefreshLeft, Setting, View
@@ -252,6 +270,12 @@ const resetPersonalization = () => {
 const resetSiteInfo = () => {
   settingsStore.resetSiteInfo();
   ElMessage.success('网站信息已恢复默认');
+};
+
+const onLocaleChange = (val: string) => {
+  i18n.global.locale.value = val as 'zh-cn' | 'en';
+  localStorage.setItem('locale', val);
+  ElMessage.success(val === 'zh-cn' ? '语言已切换为中文' : 'Language changed to English');
 };
 </script>
 

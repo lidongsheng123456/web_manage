@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="login-card">
-      <div style="text-align: center; font-size: 20px; margin-bottom: 20px; color: #000000">欢迎使用东神脚手架后台</div>
+      <div class="login-title">欢迎使用东神脚手架后台</div>
       <el-form ref="formRef" :model="form" :rules="rules">
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="User"></el-input>
@@ -18,8 +18,7 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button v-no-more-click :loading="loading"
-            style="width: 100%; background: pink; border-color: #ff7b7b; color: white" @click="logIn">
+          <el-button v-no-more-click :loading="loading" type="primary" style="width: 100%" @click="logIn">
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>

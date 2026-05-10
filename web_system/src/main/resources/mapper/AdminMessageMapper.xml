@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.system.mapper.AdminMessageMapper">
+
+    <select id="queryMessageByReceiverId" resultType="com.example.system.domain.Message">
+        select * from sys_message
+        where receiver_id = #{receiverId}
+        order by is_read asc, id desc
+    </select>
+
+    <select id="countUnread" resultType="java.lang.Long">
+        select count(*) from sys_message
+        where receiver_id = #{receiverId} and is_read = 0
+    </select>
+
+    <update id="markAsRead">
+        update sys_message set is_read = 1, read_time = now()
+        where id = #{id}
+    </update>
+
+    <update id="markAllAsRead">
+        update sys_message set is_read = 1, read_time = now()
+        where receiver_id = #{receiverId} and is_read = 0
+    </update>
+
+    <insert id="addMessage">
+        insert into sys_message(title, content, msg_type, sender_id, receiver_id, is_read, create_time)
+        values (#{title}, #{content}, #{msgType}, #{senderId}, #{receiverId}, 0, now())
+    </insert>
+
+    <delete id="batchDeleteMessage">
+        delete from sys_message where id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

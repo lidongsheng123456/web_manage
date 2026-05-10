@@ -24,6 +24,7 @@ public enum ResultCodeEnum {
     DOCS_EXIST_ERROR(5008, "文档标题已存在"),
     LOG_ERROR(5009, "服务器记录日志异常，请联系管理员"),
     EXCEL_ERROR(5010, "导出excel异常"),
+    RATE_LIMIT(4290, "请求过于频繁，请稍后再试"),
     ;
 
     public final Integer code;

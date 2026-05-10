@@ -100,4 +100,9 @@ public class AdminDictServiceImpl implements AdminDictService {
         return adminDictMapper.queryDictById(id);
     }
 
+    @Override
+    public List<Dict> queryDictByType(String dictType) {
+        return adminDictMapper.queryDictByType(dictType);
+    }
+
 }

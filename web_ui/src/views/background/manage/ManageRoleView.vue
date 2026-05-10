@@ -28,8 +28,7 @@
     </div>
     <br>
     <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
-      :header-cell-style="{ 'background-color': '#f8f8f9' }" style="width: 100%"
-      @selection-change="handleSelectionChange">
+      style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column align="center" type="selection" width="55" />
       <el-table-column align="center" label="序号" prop="id" sortable width="100" />
       <el-table-column align="center" label="角色代码" prop="roleCode" show-overflow-tooltip />

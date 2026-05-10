@@ -1,3 +1,8 @@
+// 后台公共样式 - 表格表头（跟随主题）
+.el-table__header-wrapper th.el-table__cell {
+  background-color: var(--el-fill-color-light, #f5f7fa) !important;
+}
+
 // 后台公共样式 - 分页组件
 .demo-pagination-block {
   float: right;

@@ -1,11 +1,14 @@
 package com.example.controller.admin;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
 import com.example.common.annotation.Log;
 import com.example.common.entity.Result;
 import com.example.common.enums.BusinessType;
 import com.example.common.util.ExcelExportUtil;
 import com.example.system.domain.Role;
+import com.example.framework.notify.NotificationHelper;
+import com.example.framework.web.security.StpInterfaceImpl;
 import com.example.system.domain.dto.AssignRoleDTO;
 import com.example.system.domain.vo.UserVo;
 import com.example.system.service.AdminRoleService;
@@ -29,6 +32,8 @@ import java.util.List;
 public class AdminRoleController {
 
     private final AdminRoleService adminRoleService;
+    private final NotificationHelper notificationHelper;
+    private final StpInterfaceImpl stpInterface;
 
     /**
      * 新增角色
@@ -155,6 +160,14 @@ public class AdminRoleController {
     @PostMapping("/assign")
     public Result assignRole(@RequestBody @Valid AssignRoleDTO assignRoleDTO) {
         adminRoleService.assignRole(assignRoleDTO);
+        Long operatorId = StpUtil.getLoginIdAsLong();
+        Role role = adminRoleService.queryRoleById(assignRoleDTO.getRoleId());
+        String roleName = role != null ? role.getRoleName() : String.valueOf(assignRoleDTO.getRoleId());
+        for (Long userId : assignRoleDTO.getUserId()) {
+            stpInterface.clearCache(userId);
+            notificationHelper.sendMessage(operatorId, userId, "system", "角色分配通知",
+                    "您已被分配角色【" + roleName + "】，相关权限已生效。");
+        }
         return Result.success();
     }
 
@@ -170,6 +183,14 @@ public class AdminRoleController {
     @PostMapping("/remove")
     public Result removeRole(@RequestBody @Valid AssignRoleDTO assignRoleDTO) {
         adminRoleService.removeRole(assignRoleDTO);
+        Long operatorId = StpUtil.getLoginIdAsLong();
+        Role role = adminRoleService.queryRoleById(assignRoleDTO.getRoleId());
+        String roleName = role != null ? role.getRoleName() : String.valueOf(assignRoleDTO.getRoleId());
+        for (Long userId : assignRoleDTO.getUserId()) {
+            stpInterface.clearCache(userId);
+            notificationHelper.sendMessage(operatorId, userId, "system", "角色移除通知",
+                    "您的角色【" + roleName + "】已被移除，相关权限已变更。");
+        }
         return Result.success();
     }
 

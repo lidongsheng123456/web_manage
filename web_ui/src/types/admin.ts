@@ -8,6 +8,7 @@ export interface AdminUser {
   phone: string
   email: string
   imgUrl: string | null
+  tenantId?: number
   createTime?: string
   updateTime?: string
   permissions?: UserPermission[]
@@ -126,6 +127,24 @@ export interface NoticeQueryParams extends PageQueryParams {
   noticeTitle?: string | null
 }
 
+/** 租户实体 */
+export interface Tenant {
+  id?: number
+  tenantName: string
+  contactName?: string
+  contactPhone?: string
+  status?: number
+  remark?: string
+  createTime?: string
+  updateTime?: string
+}
+
+/** 租户查询参数 */
+export interface TenantQueryParams extends PageQueryParams {
+  tenantName?: string | null
+  status?: number | null
+}
+
 /** 操作日志实体 */
 export interface OperLog {
   id?: number
@@ -134,8 +153,11 @@ export interface OperLog {
   method: string
   requestMethod: string
   operName: string
-  operUrl: string
   operIp?: string
+  operLocation?: string
+  browser?: string
+  os?: string
+  operUrl: string
   operParam: string
   jsonResult: string
   status: number

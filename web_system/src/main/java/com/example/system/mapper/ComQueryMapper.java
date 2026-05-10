@@ -1,5 +1,6 @@
 package com.example.system.mapper;
 
+import com.example.common.annotation.TenantIgnore;
 import com.example.system.domain.ComQuery;
 import com.example.system.domain.Dict;
 import com.example.system.domain.vo.DictVo;
@@ -7,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+@TenantIgnore
 public interface ComQueryMapper {
     @Select("select dict_label,dict_value,tag_type from sys_dict_data where dict_type = #{dictType}")
     List<Dict> queryDictByType(String dictType);
