@@ -375,7 +375,7 @@ const svgIcon = (d, color = '#2563eb') =>
 // 核心数据指标
 const stats = [
   { value: '7 步', label: '全流程闭环' },
-  { value: '10x', label: '效率提升' },
+  { value: '14+', label: '功能模块' },
   { value: '0', label: '手动编码量' },
   { value: '100%', label: 'AI 代码覆盖' },
 ]
@@ -458,6 +458,46 @@ const archFeatures = [
     desc: '集成 OpenAPI 3 可视化接口文档，支持在线调试，前后端联调零障碍',
     icon: svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>', '#ec4899'),
   },
+  {
+    title: '暗黑模式',
+    desc: 'useDark() + Element Plus Dark Theme 全局切换，自动持久化用户偏好',
+    icon: svgIcon('<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.454z"></path>', '#6366f1'),
+  },
+  {
+    title: '页面水印',
+    desc: 'Canvas 动态生成 + MutationObserver 实时监听防删除，保障内容安全',
+    icon: svgIcon('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>', '#14b8a6'),
+  },
+  {
+    title: '在线用户 & 登录日志',
+    desc: 'Sa-Token 查询在线用户 + 强踢下线，登录日志记录 IP 归属地、浏览器/OS',
+    icon: svgIcon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>', '#f97316'),
+  },
+  {
+    title: 'Excel 导入导出',
+    desc: 'EasyExcel + el-upload 批量数据导入，模板导出，大数据量零卡顿',
+    icon: svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>', '#22c55e'),
+  },
+  {
+    title: 'WebSocket 实时通知',
+    desc: 'STOMP 协议 + el-notification 弹窗推送，消息即时触达',
+    icon: svgIcon('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>', '#3b82f6'),
+  },
+  {
+    title: '数据大屏',
+    desc: 'ECharts Dashboard 统计图表，多维度数据可视化展示',
+    icon: svgIcon('<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', '#a855f7'),
+  },
+  {
+    title: '消息中心 & 接口限流',
+    desc: '个人消息已读/未读 + 小红点提醒，Redis 注解式限流防刷保护',
+    icon: svgIcon('<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path>', '#ef4444'),
+  },
+  {
+    title: '国际化 i18n',
+    desc: 'vue-i18n + Element Plus locale 多语言切换，一键适配全球用户',
+    icon: svgIcon('<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>', '#f59e0b'),
+  },
 ]
 
 // 后端技术栈
@@ -470,6 +510,8 @@ const backTechs = [
   { name: 'MyBatis Plus', version: '3.0.3', icon: svgIcon('<path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path>', '#e8364e') },
   { name: 'Knife4j', version: '4.3.0', icon: svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', '#1890ff') },
   { name: 'Hutool', version: '5.8.26', icon: svgIcon('<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>', '#ff6b35') },
+  { name: 'EasyExcel', version: 'Latest', icon: svgIcon('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>', '#22c55e') },
+  { name: 'WebSocket', version: 'STOMP', icon: svgIcon('<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>', '#3b82f6') },
 ]
 
 // 前端技术栈
@@ -480,6 +522,8 @@ const frontTechs = [
   { name: 'Vue Router', version: '4.0.3', icon: svgIcon('<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>', '#42b883') },
   { name: 'Axios', version: '1.7.9', icon: svgIcon('<path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle>', '#5a29e4') },
   { name: 'Vanta.js', version: '3D 背景', icon: svgIcon('<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.454z"></path>', '#06b6d4') },
+  { name: 'ECharts', version: 'Latest', icon: svgIcon('<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>', '#a855f7') },
+  { name: 'vue-i18n', version: 'Latest', icon: svgIcon('<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>', '#f59e0b') },
 ]
 
 // AI 工具链

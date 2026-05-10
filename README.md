@@ -45,10 +45,19 @@
 首页热点数据缓存，采用开源中国式 **ID 列表 + 条目缓存** 策略，大幅提升查询性能。
 
 ### 字典系统
-状态/类型等枚举值统一管理 (`sys_dict_data`)，前端自动回显 `el-tag` 颜色标签，告别硬编码。
+状态/类型等枚举值统一管理 (`sys_dict_data`)，前端自动回显 `el-tag` 颜色标签，告别硬编码。Pinia Store 全局缓存字典数据，减少重复请求。
 
 ### 液态玻璃 UI 设计
 iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 3D 云层背景动画，全局响应式适配。
+
+### 暗黑模式
+`useDark()` + Element Plus Dark Theme 全局切换，自动持久化用户偏好。
+
+### 页面水印
+Canvas 动态生成水印，MutationObserver 实时监听防删除，保障内容安全。
+
+### 接口限流
+Redis + 自定义注解式限流，防止接口被恶意刷请求，保护系统稳定性。
 
 ### Knife4j 接口文档
 集成 OpenAPI 3 可视化接口文档，支持在线调试，前后端联调零障碍。
@@ -69,6 +78,8 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 | MyBatis Plus | 3.0.3 | ORM 框架 |
 | Knife4j | 4.3.0 | 接口文档 |
 | Hutool | 5.8.26 | 工具集 |
+| EasyExcel | Latest | Excel 导入导出 |
+| WebSocket (STOMP) | — | 实时消息推送 |
 
 ### 前端
 
@@ -80,6 +91,8 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 | Vue Router | 4.0.3 | 路由管理 |
 | Axios | 1.7.9 | HTTP 请求 |
 | Vanta.js | Latest | 3D 背景动画 (前台) |
+| ECharts | Latest | 数据大屏图表 |
+| vue-i18n | Latest | 国际化多语言 |
 
 ### AI 工具链
 
@@ -105,15 +118,15 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 │    admin/*  ·  user/*  ·  common/*      │
 └──────────────────┬──────────────────────┘
                    │ Sa-Token RBAC
-┌──────────┬───────▼──────┬───────────────┐
-│ Service  │   Mapper     │    Redis      │
-│ 业务逻辑  │ MyBatis Plus │    缓存       │
-└──────────┴───────┬──────┴───────────────┘
+┌──────────┬───────▼──────┬───────────┬───┐
+│ Service  │   Mapper     │  Redis    │WS │
+│ 业务逻辑  │ MyBatis Plus │  缓存/限流 │推送│
+└──────────┴───────┬──────┴───────────┴───┘
                    │ JDBC
 ┌──────────────────▼──────────────────────┐
 │             MySQL 8.0                   │
 │  业务表 · sys_permission · sys_role     │
-│  sys_dict_data · sys_user              │
+│  sys_dict_data · sys_user · message    │
 └─────────────────────────────────────────┘
 ```
 
@@ -128,10 +141,19 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 | 用户管理 | 管理后台用户账户及基本信息 |
 | 角色管理 | 多角色配置，RBAC 权限分配 |
 | 权限管理 | 接口级 + 按钮级细粒度控制 |
-| 字典管理 | 维护状态/类型枚举值，支持颜色标签 |
+| 字典管理 | 维护状态/类型枚举值，支持颜色标签，Pinia 全局缓存 |
 | 通知管理 | 后台发送通知，前台滚动展示 |
+| 在线用户管理 | Sa-Token searchTokenValue 查询在线用户，支持强制踢下线 |
+| 登录日志 | 记录登录行为，IP 归属地解析 + 浏览器/OS 信息采集 |
+| Excel 导入导出 | EasyExcel + el-upload，支持批量数据导入与模板导出 |
+| 数据大屏 | ECharts Dashboard 统计图表，多维度数据可视化 |
+| 个人消息中心 | message 表 + 已读/未读状态 + 小红点实时提醒 |
+| 文件管理器 | 可视化文件管理、在线预览、下载 |
 | 接口文档 | Knife4j 可视化接口测试 |
 | 通用查询 | 动态字典映射、外键字段转具体值 |
+| 暗黑模式 | useDark() 全局切换，Element Plus Dark Theme 适配 |
+| 页面水印 | Canvas 生成 + MutationObserver 防删除 |
+| 接口限流 | Redis + 注解式限流，防刷保护 |
 
 ### 前台展示
 
@@ -139,6 +161,8 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 |:---|:---|
 | 首页 | 液态玻璃风格，Vanta.js 3D 云层背景 |
 | 通知展示 | 顶部滚动通知栏 |
+| WebSocket 实时通知 | STOMP 协议 + el-notification 弹窗推送 |
+| 国际化 i18n | vue-i18n + Element Plus locale 多语言切换 |
 | 用户登录/注册 | 前台独立鉴权体系 |
 
 ---
@@ -162,6 +186,14 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 
 ---
 
+### 规划中功能
+
+| 功能 | 说明 |
+|:---|:---|
+| 租户/多项目隔离 | tenant_id 行级数据隔离，多租户 SaaS 架构 |
+
+---
+
 ## License
 
-&copy; 2025 东神脚手架 by 李东升. All rights reserved.
+&copy; 2025-2026 东神脚手架 by 李东升. All rights reserved.
