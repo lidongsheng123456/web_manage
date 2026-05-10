@@ -1,11 +1,13 @@
 package com.example.framework.config;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
+import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import com.example.common.util.StpUserUtil;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,6 +16,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+
+    /**
+     * 重写管理端 StpLogic，让 Cookie 名称追加 _admin 后缀
+     * 管理端: web_manage_admin  |  前台端: web_manage_user
+     */
+    @PostConstruct
+    public void configStpLogic() {
+        StpUtil.setStpLogic(new StpLogic("admin") {
+            @Override
+            public String splicingKeyTokenName() {
+                return super.splicingKeyTokenName() + "_admin";
+            }
+        });
+    }
+    
     /**
      * 注册拦截器
      *

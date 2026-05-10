@@ -144,8 +144,8 @@ const handleClickOutside = (event: MouseEvent) => {
 
 // 加载通知
 const loadNotice = () => {
-  queryNotice({ currentPage: 1, pageSize: 100 }).then(res => {
-    notice.value = res.data.list
+  queryNotice().then(res => {
+    notice.value = res.data
     let i = 0
     if (notice.value.length) {
       top.value = notice.value[0].noticeContent

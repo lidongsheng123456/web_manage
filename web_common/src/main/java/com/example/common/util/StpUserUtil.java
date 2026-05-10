@@ -26,7 +26,7 @@ public class StpUserUtil {
         // 重写 StpLogic 类下的 `splicingKeyTokenName` 函数，返回一个与 `StpUtil` 不同的token名称, 防止冲突
         @Override
         public String splicingKeyTokenName() {
-            return super.splicingKeyTokenName() + "-user";
+            return super.splicingKeyTokenName() + "_user";
         }
         // 同理你可以按需重写一些其它方法 ...
     };

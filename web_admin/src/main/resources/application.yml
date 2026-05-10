@@ -41,8 +41,8 @@ logging:
     com.example.system.mapper: debug # 替换为你的 Mapper 包路径
 
 sa-token:
-  # token 名称（同时也是 cookie 名称）
-  token-name: satoken
+  # token 名称（同时也是 cookie 名称）— 基于数据库名隔离，防止多项目 Cookie 冲突
+  token-name: ${web.datasource.database}
   # token 有效期（单位：秒） 默认30天，-1 代表永久有效
   timeout: 3600
   # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
@@ -107,15 +107,15 @@ app:
     width: 100
     height: 40
     expiration: 60000
-    session-key: captcha
+    session-key: ${web.datasource.database}:captcha
     session-date-key: date
   # 默认密码（新增用户时使用）
   default-password: "123456"
   # 缓存 key 前缀
   cache:
-    notice-prefix: "notice:"
-    perm-prefix: "sa:perm:"
-    role-prefix: "sa:role:"
+    notice-prefix: "${web.datasource.database}:notice:"
+    perm-prefix: "${web.datasource.database}:perm:"
+    role-prefix: "${web.datasource.database}:role:"
     perm-ttl-minutes: 30
   # 文件上传
   file:
