@@ -32,3 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 license_server/
+
+### VitePress ###
+docs/.vitepress/cache/
+**/docs/.vitepress/cache/

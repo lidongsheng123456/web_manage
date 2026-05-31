@@ -195,7 +195,6 @@ const getUserInfo = () => {
 onMounted(() => {
   loadNotice()
   getUserInfo()
-  // 添加点击外部区域关闭菜单的事件监听
   document.addEventListener('click', handleClickOutside)
   ElNotification.info({
     title: '东神脚手架',

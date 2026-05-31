@@ -79,6 +79,12 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/views/background/manage/ManageFrontUserView.vue')
             },
             {
+                path: 'ManageFileView',
+                name: 'ManageFileView',
+                meta: {name: '文件管理'},
+                component: () => import('@/views/background/manage/ManageFileView.vue')
+            },
+            {
                 path: 'ManageSettingsView',
                 name: 'ManageSettingsView',
                 meta: {name: '系统设置'},

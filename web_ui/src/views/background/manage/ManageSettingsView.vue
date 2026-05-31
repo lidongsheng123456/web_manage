@@ -55,6 +55,28 @@
 
           <h3 class="section-title">
             <el-icon>
+              <Stamp />
+            </el-icon>水印设置
+          </h3>
+          <div class="setting-item">
+            <div class="setting-label">
+              <span class="label-text">页面水印</span>
+              <span class="label-desc">在后台页面叠加半透明水印，防止截屏泄露</span>
+            </div>
+            <el-switch v-model="settingsStore.showWatermark" />
+          </div>
+          <div v-show="settingsStore.showWatermark" class="setting-item">
+            <div class="setting-label">
+              <span class="label-text">水印文字</span>
+              <span class="label-desc">自定义水印显示的文字内容</span>
+            </div>
+            <el-input v-model="settingsStore.watermarkText" placeholder="请输入水印文字" maxlength="20"
+              show-word-limit style="width: 220px" />
+          </div>
+          <el-divider />
+
+          <h3 class="section-title">
+            <el-icon>
               <View />
             </el-icon>辅助功能
           </h3>
@@ -200,7 +222,7 @@
 <script setup lang="ts">
 import { useSettingsStore } from "@/store/modules/settings";
 import {
-  Brush, Cpu, InfoFilled, Link, Monitor, RefreshLeft, Setting, View
+  Brush, Cpu, InfoFilled, Link, Monitor, RefreshLeft, Setting, Stamp, View
 } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";

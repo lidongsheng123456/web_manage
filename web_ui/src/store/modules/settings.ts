@@ -23,6 +23,8 @@ export const useSettingsStore = defineStore('settings', () => {
     const showTransition = ref<boolean>(saved.showTransition ?? true)
     const grayMode = ref<boolean>(saved.grayMode ?? false)
     const colorWeakMode = ref<boolean>(saved.colorWeakMode ?? false)
+    const showWatermark = ref<boolean>(saved.showWatermark ?? true)
+    const watermarkText = ref<string>(saved.watermarkText || '内部系统')
 
     // ==================== 网站信息 ====================
     const siteName = ref<string>(saved.siteName || '东神脚手架')
@@ -39,6 +41,8 @@ export const useSettingsStore = defineStore('settings', () => {
             showTransition: showTransition.value,
             grayMode: grayMode.value,
             colorWeakMode: colorWeakMode.value,
+            showWatermark: showWatermark.value,
+            watermarkText: watermarkText.value,
             siteName: siteName.value,
             siteDescription: siteDescription.value,
             siteFooter: siteFooter.value,
@@ -48,7 +52,8 @@ export const useSettingsStore = defineStore('settings', () => {
 
     // 监听所有设置变化自动持久化
     watch([themeColor, sidebarCollapse, showTagsView, showTransition,
-        grayMode, colorWeakMode, siteName, siteDescription, siteFooter, siteIcp],
+        grayMode, colorWeakMode, showWatermark, watermarkText,
+        siteName, siteDescription, siteFooter, siteIcp],
         () => persist(), { deep: true }
     )
 
@@ -112,6 +117,8 @@ export const useSettingsStore = defineStore('settings', () => {
         showTransition.value = true
         grayMode.value = false
         colorWeakMode.value = false
+        showWatermark.value = false
+        watermarkText.value = '内部系统'
     }
 
     function resetSiteInfo(): void {
@@ -123,7 +130,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     return {
         themeColor, sidebarCollapse, showTagsView, showTransition,
-        grayMode, colorWeakMode,
+        grayMode, colorWeakMode, showWatermark, watermarkText,
         siteName, siteDescription, siteFooter, siteIcp,
         applyTheme, resetPersonalization, resetSiteInfo, persist,
     }

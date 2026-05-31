@@ -1,5 +1,6 @@
 <template>
   <div class="common-layout">
+    <div v-if="settingsStore.showWatermark" class="watermark-layer" :style="watermarkStyle" />
     <el-container class="container">
       <div class="sidebar-overlay" :class="{ visible: mobileSidebarOpen }" @click="mobileSidebarOpen = false" />
       <el-aside :width="settingsStore.sidebarCollapse ? '64px' : '200px'" :class="{ 'mobile-open': mobileSidebarOpen }"
@@ -90,6 +91,12 @@
                 <Search />
               </el-icon>
               通用查询
+            </el-menu-item>
+            <el-menu-item index="/Manage/ManageFileView">
+              <el-icon>
+                <FolderOpened />
+              </el-icon>
+              文件管理
             </el-menu-item>
           </el-sub-menu>
           <el-sub-menu v-if="shouldShowFrontMenu" index="4">
@@ -199,6 +206,7 @@ import {
   Collection,
   Comment,
   Fold,
+  FolderOpened,
   HomeFilled,
   List,
   Promotion,
@@ -215,6 +223,27 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 const noImage = noImageUrl;
+
+const watermarkStyle = computed(() => {
+  const text = settingsStore.watermarkText || '内部系统';
+  const canvas = document.createElement('canvas');
+  canvas.width = 280;
+  canvas.height = 200;
+  const ctx = canvas.getContext('2d')!;
+  ctx.rotate((-22 * Math.PI) / 180);
+  ctx.font = '15px Microsoft YaHei, sans-serif';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+  ctx.textAlign = 'center';
+  ctx.fillText(text, 100, 140);
+  return {
+    position: 'fixed' as const,
+    inset: '0',
+    pointerEvents: 'none' as const,
+    zIndex: 9999,
+    backgroundImage: `url(${canvas.toDataURL('image/png')})`,
+    backgroundRepeat: 'repeat',
+  };
+});
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -439,7 +468,6 @@ const getUserInfo = () => {
 onMounted(() => {
   getUserInfo();
   settingsStore.applyTheme();
-  // 绑定右键菜单事件
   nextTick(() => {
     const tabNav = document.querySelector('.el-header-right .el-tabs__nav-wrap');
     if (tabNav) tabNav.addEventListener('contextmenu', openCtxMenu);

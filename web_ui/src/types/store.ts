@@ -15,6 +15,8 @@ export interface SettingsState {
   showTransition: boolean
   grayMode: boolean
   colorWeakMode: boolean
+  showWatermark: boolean
+  watermarkText: string
   siteName: string
   siteDescription: string
   siteFooter: string

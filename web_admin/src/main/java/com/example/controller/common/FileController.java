@@ -18,11 +18,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 文件上传
@@ -129,6 +135,39 @@ public class FileController {
         } catch (IOException e) {
             log.error("文件下载失败: {}", flag, e);
         }
+    }
+
+    @SaCheckLogin
+    @Operation(summary = "获取文件列表")
+    @GetMapping("/list")
+    public Result listFiles() {
+        File dir = new File(filePath);
+        if (!dir.exists() || !dir.isDirectory()) {
+            return Result.success(Collections.emptyList());
+        }
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return Result.success(Collections.emptyList());
+        }
+        String baseUrl = "http://" + ip + ":" + port + "/common/files/";
+        List<Map<String, Object>> list = Arrays.stream(files)
+                .filter(File::isFile)
+                .sorted(Comparator.comparingLong(File::lastModified).reversed())
+                .map(f -> {
+                    Map<String, Object> item = new LinkedHashMap<>();
+                    item.put("name", f.getName());
+                    item.put("size", f.length());
+                    item.put("url", baseUrl + f.getName());
+                    item.put("lastModified", LocalDateTime.ofInstant(
+                            Instant.ofEpochMilli(f.lastModified()), ZoneId.systemDefault()).toString());
+                    String ext = FileUtil.extName(f.getName());
+                    item.put("ext", ext != null ? ext.toLowerCase() : "");
+                    boolean isImage = ext != null && List.of("jpg", "jpeg", "png", "gif", "webp", "bmp", "svg").contains(ext.toLowerCase());
+                    item.put("isImage", isImage);
+                    return item;
+                })
+                .collect(Collectors.toList());
+        return Result.success(list);
     }
 
     @SaCheckLogin
