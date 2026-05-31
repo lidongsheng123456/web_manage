@@ -9,13 +9,18 @@
         <el-button v-no-more-click :icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-    <div>
-      <el-button v-no-more-click v-permission="'admin:operLog:delete'" :disabled="multiple" :icon="Delete" plain
-        type="danger" @click="handleDelete">删除
-      </el-button>
-      <el-button v-no-more-click v-permission="'admin:operLog:export'" :icon="Bottom" plain type="warning"
-        @click="handleExport">导出
-      </el-button>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <el-button v-no-more-click v-permission="'admin:operLog:delete'" :disabled="multiple" :icon="Delete" plain
+          type="danger" @click="handleDelete">删除
+        </el-button>
+        <el-button v-no-more-click v-permission="'admin:operLog:export'" :icon="Bottom" plain type="warning"
+          @click="handleExport">导出
+        </el-button>
+      </div>
+      <el-tooltip content="刷新" placement="top">
+        <el-button :icon="Refresh" circle @click="getList" />
+      </el-tooltip>
     </div>
     <br>
     <el-table v-loading="loading" :data="tableData" :default-sort="{ prop: 'id', order: 'descending' }"
