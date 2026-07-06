@@ -1,5 +1,6 @@
 import router from "@/router";
 import type { TabPaneName, TabsPaneContext } from "element-plus";
+import { defineStore } from "pinia";
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
@@ -12,7 +13,7 @@ export interface TabItem {
 
 const HOME_TAB = '/Manage/ManageDataView';
 
-export function useTabsView() {
+export const useTabsStore = defineStore('tabs', () => {
   const route = useRoute();
   const editableTabsValue = ref(route.path);
   const editableTabs = ref<TabItem[]>([
@@ -130,7 +131,6 @@ export function useTabsView() {
     ctxMenuVisible,
     ctxMenuX,
     ctxMenuY,
-    ctxTargetTab,
     openCtxMenu,
     closeCtxMenu,
     ctxCloseCurrent,
@@ -139,4 +139,4 @@ export function useTabsView() {
     ctxCloseRight,
     ctxCloseAll,
   };
-}
+});

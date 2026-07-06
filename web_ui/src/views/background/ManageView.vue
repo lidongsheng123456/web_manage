@@ -195,9 +195,9 @@
 <script setup lang="ts">
 import { logout } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
-import { useTabsView } from "@/composables/useTabsView";
 import router from "@/router";
 import { useSettingsStore } from "@/store/modules/settings";
+import { useTabsStore } from "@/store/modules/tabs";
 import { useUserStore } from "@/store/modules/user";
 import type { AdminUser } from "@/types";
 import {
@@ -251,7 +251,8 @@ const settingsStore = useSettingsStore();
 const mobileSidebarOpen = ref(false);
 let adminUserInfo = ref<AdminUser | Record<string, never>>({});
 
-// 标签页逻辑（已抽离到 composable）
+// 标签页逻辑（store 模块）
+const tabsStore = useTabsStore();
 const {
   editableTabs,
   editableTabsValue,
@@ -267,7 +268,7 @@ const {
   ctxCloseLeft,
   ctxCloseRight,
   ctxCloseAll,
-} = useTabsView();
+} = tabsStore;
 
 // 嵌套子路由使用父路由路径作为 key，避免子路由切换导致父组件重新挂载
 const routeKey = computed(() => {
