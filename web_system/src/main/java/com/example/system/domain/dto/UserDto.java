@@ -3,6 +3,7 @@ package com.example.system.domain.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class UserDto implements Serializable {
 
     @NotBlank(message = "密码不能为空")
     @Size(min = 6, max = 50, message = "密码长度必须在6-50之间")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "密码只能包含数字和字母")
     @Schema(description = "用户密码")
     private String password;
 

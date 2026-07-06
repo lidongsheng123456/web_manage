@@ -68,12 +68,24 @@ const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: 
   }
 };
 
+const validatePasswordFormat = (rule: unknown, value: string, callback: (error?: Error) => void) => {
+  if (!value) {
+    callback(new Error("请输入密码"));
+  } else if (value.length < 6) {
+    callback(new Error("密码长度不能少于6位"));
+  } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
+    callback(new Error("密码只能包含数字和字母"));
+  } else {
+    callback();
+  }
+};
+
 const rules = {
   username: [
     { required: true, message: '请输入账号', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' }
+    { required: true, validator: validatePasswordFormat, trigger: 'blur' }
   ],
   confirmPwd: [
     { validator: validatePassword, trigger: 'blur' }
