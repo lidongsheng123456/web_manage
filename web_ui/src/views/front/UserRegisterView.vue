@@ -58,6 +58,7 @@ const form = ref<RegisterForm>({
   code: ''
 });
 
+// 确认密码校验：两次密码一致性
 const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: Error) => void) => {
   if (confirmPwd === '') {
     callback(new Error("请确认密码"));
@@ -68,6 +69,7 @@ const validatePassword = (rule: unknown, confirmPwd: string, callback: (error?: 
   }
 };
 
+// 密码格式校验：6位以上纯数字或字母
 const validatePasswordFormat = (rule: unknown, value: string, callback: (error?: Error) => void) => {
   if (!value) {
     callback(new Error("请输入密码"));
@@ -80,6 +82,7 @@ const validatePasswordFormat = (rule: unknown, value: string, callback: (error?:
   }
 };
 
+// 表单验证规则
 const rules = {
   username: [
     { required: true, message: '请输入账号', trigger: 'blur' }
@@ -95,6 +98,7 @@ const rules = {
   ],
 };
 
+// 提交注册
 const registe = () => {
   formRef.value?.validate((valid) => {
     if (valid) {

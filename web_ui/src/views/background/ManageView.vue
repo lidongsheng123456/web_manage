@@ -162,7 +162,7 @@
           </div>
           <el-divider />
           <div v-show="settingsStore.showTagsView" class="el-header-right">
-            <el-tabs v-model="editableTabsValue" class="demo-tabs" editable type="card" @edit="handleTabsEdit"
+            <el-tabs v-model="editableTabsValue" class="demo-tabs" type="card" @tab-remove="(name: string) => handleTabsEdit(name, 'remove')"
               @tab-click="handleTabClick">
               <el-tab-pane v-for="item in editableTabs" :key="item.name" :closable="item.closable" :label="item.title"
                 :name="item.name">
@@ -288,6 +288,7 @@ const breadcrumbItems = computed(() => {
   }));
 });
 
+// 退出登录
 const logoutLogin = () => {
   ElMessageBox.confirm('确认退出?', '提示', {
     confirmButtonText: '确定',
@@ -348,6 +349,7 @@ const shouldShowFrontMenu = computed(() => {
   return hasPermission('admin:front-user:query');
 });
 
+// 获取当前登录管理员信息
 const getUserInfo = () => {
   userStore.fetchCurrentUser().then(() => {
     adminUserInfo.value = userStore.adminUserInfo

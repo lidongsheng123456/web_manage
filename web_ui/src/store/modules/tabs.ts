@@ -1,3 +1,7 @@
+/**
+ * 标签页状态管理
+ * 负责后台管理界面顶部标签页的增删切换与路由联动
+ */
 import router from "@/router";
 import type { TabPaneName, TabsPaneContext } from "element-plus";
 import { defineStore } from "pinia";
@@ -20,11 +24,13 @@ export const useTabsStore = defineStore('tabs', () => {
     { title: '首页', name: HOME_TAB, content: '数据中心', closable: false }
   ]);
 
+  /** 统一导航：同时更新激活标签和路由 */
   const navigateTo = (path: string) => {
     editableTabsValue.value = path;
     router.push(path);
   };
 
+  /** 关闭标签，自动跳转到相邻标签 */
   const handleTabsEdit = (targetName: TabPaneName | undefined, action: 'add' | 'remove') => {
     if (action === 'remove') {
       if (targetName === HOME_TAB) return;
@@ -44,16 +50,18 @@ export const useTabsStore = defineStore('tabs', () => {
     }
   };
 
+  /** 点击标签切换路由 */
   const handleTabClick = (tab: TabsPaneContext) => {
     navigateTo(tab.paneName as string);
   };
 
-  // 右键菜单状态
+  // ==================== 右键菜单 ====================
   const ctxMenuVisible = ref(false);
   const ctxMenuX = ref(0);
   const ctxMenuY = ref(0);
   const ctxTargetTab = ref('');
 
+  /** 右键打开上下文菜单 */
   const openCtxMenu = (e: MouseEvent) => {
     const tabEl = (e.target as HTMLElement)?.closest('.el-tabs__item');
     if (!tabEl) return;
@@ -67,12 +75,14 @@ export const useTabsStore = defineStore('tabs', () => {
 
   const closeCtxMenu = () => { ctxMenuVisible.value = false; };
 
+  /** 关闭当前标签 */
   const ctxCloseCurrent = () => {
     closeCtxMenu();
     if (ctxTargetTab.value === HOME_TAB) return;
     handleTabsEdit(ctxTargetTab.value, 'remove');
   };
 
+  /** 关闭其他标签（保留首页和目标标签） */
   const ctxCloseOthers = () => {
     closeCtxMenu();
     editableTabs.value = editableTabs.value.filter(
@@ -81,6 +91,7 @@ export const useTabsStore = defineStore('tabs', () => {
     navigateTo(ctxTargetTab.value);
   };
 
+  /** 关闭左侧标签 */
   const ctxCloseLeft = () => {
     closeCtxMenu();
     const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
@@ -92,6 +103,7 @@ export const useTabsStore = defineStore('tabs', () => {
     }
   };
 
+  /** 关闭右侧标签 */
   const ctxCloseRight = () => {
     closeCtxMenu();
     const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
@@ -103,6 +115,7 @@ export const useTabsStore = defineStore('tabs', () => {
     }
   };
 
+  /** 关闭所有标签（仅保留首页） */
   const ctxCloseAll = () => {
     closeCtxMenu();
     editableTabs.value = editableTabs.value.filter(t => t.name === HOME_TAB);
