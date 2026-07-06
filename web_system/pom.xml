@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -6,14 +6,14 @@
     <parent>
         <groupId>com.example</groupId>
         <artifactId>web_manage</artifactId>
-        <version>2.0.2</version>
+        <version>2.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>web_system</artifactId>
 
     <description>
-        web绯荤粺妯″潡
+        web系统模块
     </description>
 
     <dependencies>
