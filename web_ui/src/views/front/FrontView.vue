@@ -97,7 +97,7 @@ import { useUserStore } from "@/store/modules/user";
 import type { FrontUser, Notice } from "@/types";
 import { ArrowDown, Bell, Menu } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
-import { onMounted, onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 
 // 无头像图片
 const noImage = noImageUrl
@@ -190,6 +190,12 @@ const getUserInfo = () => {
     userInfo.value = userStore.frontUserInfo
   })
 }
+
+watch(() => userStore.frontUserInfo, (newVal) => {
+  if (newVal) {
+    userInfo.value = newVal
+  }
+}, { deep: true })
 
 // 钩子函数
 onMounted(() => {

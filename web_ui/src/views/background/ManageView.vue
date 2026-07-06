@@ -465,6 +465,12 @@ const getUserInfo = () => {
   })
 }
 
+watch(() => userStore.adminUserInfo, (newVal) => {
+  if (newVal) {
+    adminUserInfo.value = newVal
+  }
+}, { deep: true })
+
 onMounted(() => {
   getUserInfo();
   settingsStore.applyTheme();

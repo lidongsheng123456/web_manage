@@ -70,6 +70,7 @@
 <script setup lang="ts">
 import { logout, queryCurrentFrontUserInfo, updatePerson, validateFormerPassword } from "@/api/front_request/WebRequest";
 import router from "@/router";
+import { useUserStore } from "@/store/modules/user";
 import type { FrontUser, UploadResponse } from "@/types";
 import { ArrowLeft } from "@element-plus/icons-vue";
 import type { FormInstance, UploadRawFile } from "element-plus";
@@ -81,6 +82,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import noImageUrl from '@/assets/img/no_image.png';
 const noImage = noImageUrl
 const uploadUrl = import.meta.env.VUE_APP_BASEURL
+const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const pwdFormRef = ref<FormInstance>()
 // 对话框显示
@@ -180,6 +182,10 @@ const handleAvatarSuccess = (response: UploadResponse) => {
     return
   }
   form.value.imgUrl = response.data;
+  updatePerson({ imgUrl: form.value.imgUrl } as any).then(() => {
+    ElMessage.success('头像修改成功')
+    userStore.fetchCurrentFrontUserInfo()
+  }).catch(() => {})
 };
 
 // 上传之前验证文件
@@ -230,6 +236,7 @@ const submit = () => {
     if (valid) {
       updatePerson(form.value).then(res => {
         ElMessage.success('修改成功')
+        userStore.fetchCurrentFrontUserInfo()
       }).catch(() => {
       })
     }
