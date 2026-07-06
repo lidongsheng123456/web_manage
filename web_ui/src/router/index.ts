@@ -131,6 +131,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/front/UserRegisterView.vue')
     },
     {
+        path: '/SimulatePay',
+        name: 'SimulatePay',
+        meta: {name: '模拟支付'},
+        component: () => import('@/views/front/home/SimulatePayView.vue')
+    },
+    {
         path: '/Front',
         name: 'Front',
         component: () => import('@/views/front/FrontView.vue'),
