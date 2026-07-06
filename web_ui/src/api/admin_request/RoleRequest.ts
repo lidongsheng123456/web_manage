@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 角色管理接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, Role, RoleQueryParams, RoleUserQueryParams, AdminUser, AssignRoleDTO } from "@/types"
 import type { AxiosResponse } from "axios"

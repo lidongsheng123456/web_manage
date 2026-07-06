@@ -1,7 +1,10 @@
+/**
+ * 后台管理 - 认证与用户接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, AdminUser, UserDto } from "@/types"
 
-//登录
+// 管理员登录
 export function login(data: UserDto): Promise<ApiResponse<null>> {
     return adminRequest({
         url: '/admin/login',

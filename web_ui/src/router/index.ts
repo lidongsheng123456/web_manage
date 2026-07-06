@@ -1,3 +1,7 @@
+/**
+ * 路由配置
+ * 区分后台管理 (/Manage) 和前台用户 (/Front) 两套路由
+ */
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [

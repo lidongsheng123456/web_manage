@@ -1,3 +1,6 @@
+/**
+ * 前台用户 - 首页通知接口
+ */
 import userRequest from "@/utils/UserRequest"
 import type { ApiResponse, Notice } from "@/types"
 

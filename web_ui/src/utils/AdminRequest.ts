@@ -1,3 +1,7 @@
+/**
+ * 后台管理 Axios 请求实例
+ * 统一处理 401 登录过期、错误提示等逻辑
+ */
 import router from "@/router"
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 import { ElMessage, ElMessageBox } from "element-plus"

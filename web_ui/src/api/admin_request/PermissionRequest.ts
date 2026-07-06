@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 权限管理接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, Permission, PermissionQueryParams, PermissionRoleQueryParams, Role, AssignPermissionDTO } from "@/types"
 import type { AxiosResponse } from "axios"

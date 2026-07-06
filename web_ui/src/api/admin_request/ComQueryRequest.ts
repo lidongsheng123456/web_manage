@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 通用查询配置 CRUD 接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, ComQuery, ComQueryQueryParams } from "@/types"
 

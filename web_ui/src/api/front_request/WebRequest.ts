@@ -1,7 +1,10 @@
+/**
+ * 前台用户 - 认证与个人信息接口
+ */
 import userRequest from "@/utils/UserRequest"
 import type { ApiResponse, FrontUser, FrontUserDto } from "@/types"
 
-//登录
+// 前台登录
 export function login(data: FrontUserDto): Promise<ApiResponse<null>> {
     return userRequest({
         url: '/user/login',

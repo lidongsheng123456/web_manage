@@ -1,3 +1,8 @@
+/**
+ * 系统设置状态管理
+ * 管理主题色、侧边栏、标签页、灰色模式、水印等个性化配置
+ * 自动持久化到 localStorage
+ */
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
 import type { SettingsState } from '@/types'

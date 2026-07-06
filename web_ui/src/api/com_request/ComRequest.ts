@@ -1,3 +1,6 @@
+/**
+ * 公共接口 - 字典查询与通用查询
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, DictVo } from "@/types"
 

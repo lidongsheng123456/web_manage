@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 操作日志查询接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, OperLog, OperLogQueryParams } from "@/types"
 

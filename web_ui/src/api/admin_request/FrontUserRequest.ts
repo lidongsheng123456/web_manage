@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 前台用户 CRUD 接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, FrontUser, FrontUserQueryParams } from "@/types"
 

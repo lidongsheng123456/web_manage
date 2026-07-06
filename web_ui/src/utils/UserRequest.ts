@@ -1,3 +1,7 @@
+/**
+ * 前台用户 Axios 请求实例
+ * 统一处理 401 跳转登录、错误提示等逻辑
+ */
 import router from "@/router"
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 import { ElMessage } from "element-plus"

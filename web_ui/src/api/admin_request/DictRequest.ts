@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 字典管理 CRUD 接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, Dict, DictQueryParams } from "@/types"
 

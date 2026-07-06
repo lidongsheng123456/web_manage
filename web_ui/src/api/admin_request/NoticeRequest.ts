@@ -1,3 +1,6 @@
+/**
+ * 后台管理 - 通知公告 CRUD 接口
+ */
 import adminRequest from "@/utils/AdminRequest"
 import type { ApiResponse, PageResult, Notice, NoticeQueryParams } from "@/types"
 
