@@ -26,7 +26,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$root = Split-Path $PSScriptRoot -Parent
+$root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 
 # 读取当前版本
 $pkgFile = Join-Path $root "web_ui/package.json"
