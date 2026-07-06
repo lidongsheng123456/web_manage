@@ -195,6 +195,7 @@
 <script setup lang="ts">
 import { logout } from "@/api/admin_request/WebRequest";
 import noImageUrl from '@/assets/img/no_image.png';
+import { useTabsView } from "@/composables/useTabsView";
 import router from "@/router";
 import { useSettingsStore } from "@/store/modules/settings";
 import { useUserStore } from "@/store/modules/user";
@@ -218,7 +219,6 @@ import {
   User,
   UserFilled
 } from "@element-plus/icons-vue";
-import type { TabPaneName, TabsPaneContext } from "element-plus";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -250,22 +250,24 @@ const userStore = useUserStore();
 const settingsStore = useSettingsStore();
 const mobileSidebarOpen = ref(false);
 let adminUserInfo = ref<AdminUser | Record<string, never>>({});
-interface TabItem {
-  title: string
-  name: string
-  content: string
-  closable?: boolean
-}
-let tabIndex = 2;
-const editableTabsValue = ref(route.path);
-const editableTabs = ref<TabItem[]>([
-  {
-    title: '首页',
-    name: '/Manage/ManageDataView',
-    content: '数据中心',
-    closable: true
-  }
-]);
+
+// 标签页逻辑（已抽离到 composable）
+const {
+  editableTabs,
+  editableTabsValue,
+  handleTabsEdit,
+  handleTabClick,
+  ctxMenuVisible,
+  ctxMenuX,
+  ctxMenuY,
+  openCtxMenu,
+  closeCtxMenu,
+  ctxCloseCurrent,
+  ctxCloseOthers,
+  ctxCloseLeft,
+  ctxCloseRight,
+  ctxCloseAll,
+} = useTabsView();
 
 // 嵌套子路由使用父路由路径作为 key，避免子路由切换导致父组件重新挂载
 const routeKey = computed(() => {
@@ -284,107 +286,6 @@ const breadcrumbItems = computed(() => {
     to: route.path
   }));
 });
-
-const handleTabsEdit = (targetName: TabPaneName | undefined, action: 'add' | 'remove') => {
-  if (action === 'add') {
-    const newTabName = `${++tabIndex}`;
-    editableTabs.value.push({
-      title: '新标签',
-      name: newTabName,
-      content: '新标签内容',
-      closable: true,
-    });
-    editableTabsValue.value = newTabName;
-  } else if (action === 'remove') {
-    const tabs = editableTabs.value;
-    let activeName = editableTabsValue.value;
-    if (activeName === targetName) {
-      tabs.forEach((tab, index) => {
-        if (tab.name === targetName) {
-          const nextTab = tabs[index + 1] || tabs[index - 1];
-          if (nextTab) {
-            activeName = nextTab.name;
-          }
-        }
-      });
-    }
-
-    editableTabsValue.value = activeName;
-    editableTabs.value = tabs.filter(tab => tab.name !== targetName);
-  }
-};
-
-const handleTabClick = (tab: TabsPaneContext) => {
-  router.push(tab.paneName as string);
-};
-
-// ==================== 标签右键菜单 ====================
-const ctxMenuVisible = ref(false);
-const ctxMenuX = ref(0);
-const ctxMenuY = ref(0);
-const ctxTargetTab = ref('');
-
-const openCtxMenu = (e: MouseEvent) => {
-  // 查找被右键的 tab 元素
-  const tabEl = (e.target as HTMLElement)?.closest('.el-tabs__item');
-  if (!tabEl) return;
-  e.preventDefault();
-  const tabId = tabEl.id;
-  // el-tabs 生成的 id 格式为 tab-<name>
-  const tabName = tabId.replace(/^tab-/, '');
-  ctxTargetTab.value = tabName;
-  ctxMenuX.value = e.clientX;
-  ctxMenuY.value = e.clientY;
-  ctxMenuVisible.value = true;
-};
-
-const closeCtxMenu = () => { ctxMenuVisible.value = false; };
-
-const ctxCloseCurrent = () => {
-  closeCtxMenu();
-  if (ctxTargetTab.value === '/Manage/ManageDataView') return; // 首页不关闭
-  handleTabsEdit(ctxTargetTab.value, 'remove');
-};
-
-const ctxCloseOthers = () => {
-  closeCtxMenu();
-  editableTabs.value = editableTabs.value.filter(
-    t => t.name === '/Manage/ManageDataView' || t.name === ctxTargetTab.value
-  );
-  editableTabsValue.value = ctxTargetTab.value;
-  router.push(ctxTargetTab.value);
-};
-
-const ctxCloseLeft = () => {
-  closeCtxMenu();
-  const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
-  editableTabs.value = editableTabs.value.filter(
-    (t, i) => t.name === '/Manage/ManageDataView' || i >= idx
-  );
-  if (!editableTabs.value.find(t => t.name === editableTabsValue.value)) {
-    editableTabsValue.value = ctxTargetTab.value;
-    router.push(ctxTargetTab.value);
-  }
-};
-
-const ctxCloseRight = () => {
-  closeCtxMenu();
-  const idx = editableTabs.value.findIndex(t => t.name === ctxTargetTab.value);
-  editableTabs.value = editableTabs.value.filter(
-    (t, i) => t.name === '/Manage/ManageDataView' || i <= idx
-  );
-  if (!editableTabs.value.find(t => t.name === editableTabsValue.value)) {
-    editableTabsValue.value = ctxTargetTab.value;
-    router.push(ctxTargetTab.value);
-  }
-};
-
-const ctxCloseAll = () => {
-  closeCtxMenu();
-  editableTabs.value = editableTabs.value.filter(t => t.name === '/Manage/ManageDataView');
-  editableTabsValue.value = '/Manage/ManageDataView';
-  router.push('/Manage/ManageDataView');
-};
 
 const logoutLogin = () => {
   ElMessageBox.confirm('确认退出?', '提示', {
@@ -405,23 +306,10 @@ const logoutLogin = () => {
   })
 };
 
-// 监听路由变化
-watch(() => route.path, (newPath) => {
+// 路由变化时关闭移动端侧边栏
+watch(() => route.path, () => {
   mobileSidebarOpen.value = false;
-  const tabExists = editableTabs.value.some(tab => tab.name === newPath);
-  if (!tabExists) {
-    const routeMeta = route.meta;
-    editableTabs.value.push({
-      title: (routeMeta.name as string) || newPath,
-      name: newPath,
-      content: `${routeMeta.name} 内容`,
-      closable: true,
-    });
-  }
-  editableTabsValue.value = newPath;
-},
-  { immediate: true } // 立即执行一次
-);
+});
 
 // 检查用户是否有指定权限
 const hasPermission = (permission: string) => {
