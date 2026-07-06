@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>web_manage</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,7 +22,7 @@
         <module>web_system</module>
     </modules>
 
-    <description>东神脚手架</description>
+    <description>涓滅鑴氭墜鏋?/description>
 
     <properties>
         <java.version>17</java.version>
@@ -41,14 +41,14 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- MySQL Connector/J: 用于连接MySQL数据库 -->
+            <!-- MySQL Connector/J: 鐢ㄤ簬杩炴帴MySQL鏁版嵁搴?-->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
 
-            <!-- Lombok: 简化Java代码，减少样板代码 -->
+            <!-- Lombok: 绠€鍖朖ava浠ｇ爜锛屽噺灏戞牱鏉夸唬鐮?-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -56,63 +56,63 @@
                 <scope>provided</scope>
             </dependency>
 
-            <!-- Hutool: 一个Java工具类库，简化开发 -->
+            <!-- Hutool: 涓€涓狫ava宸ュ叿绫诲簱锛岀畝鍖栧紑鍙?-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
             </dependency>
 
-            <!-- Apache POI: 用于操作Excel文件 -->
+            <!-- Apache POI: 鐢ㄤ簬鎿嶄綔Excel鏂囦欢 -->
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${poi-ooxml.version}</version>
             </dependency>
 
-            <!-- 内部模块：web_common -->
+            <!-- 鍐呴儴妯″潡锛歸eb_common -->
             <dependency>
                 <groupId>com.example</groupId>
                 <artifactId>web_common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- 内部模块：web_framework -->
+            <!-- 鍐呴儴妯″潡锛歸eb_framework -->
             <dependency>
                 <groupId>com.example</groupId>
                 <artifactId>web_framework</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- 内部模块：web_system -->
+            <!-- 鍐呴儴妯″潡锛歸eb_system -->
             <dependency>
                 <groupId>com.example</groupId>
                 <artifactId>web_system</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- Sa-Token Spring Boot Starter: 用于集成Sa-Token权限认证框架 -->
+            <!-- Sa-Token Spring Boot Starter: 鐢ㄤ簬闆嗘垚Sa-Token鏉冮檺璁よ瘉妗嗘灦 -->
             <dependency>
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-spring-boot3-starter</artifactId>
                 <version>${sa-token.version}</version>
             </dependency>
 
-            <!-- Sa-Token JWT支持 -->
+            <!-- Sa-Token JWT鏀寔 -->
             <dependency>
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-jwt</artifactId>
                 <version>${sa-token.version}</version>
             </dependency>
 
-            <!-- Sa-Token Redis和Jackson支持 -->
+            <!-- Sa-Token Redis鍜孞ackson鏀寔 -->
             <dependency>
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-redis-jackson</artifactId>
                 <version>${sa-token.version}</version>
             </dependency>
 
-            <!-- PageHelper Spring Boot Starter: 用于分页查询 -->
+            <!-- PageHelper Spring Boot Starter: 鐢ㄤ簬鍒嗛〉鏌ヨ -->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -125,7 +125,7 @@
                 </exclusions>
             </dependency>
 
-            <!-- knife4j在线文档 -->
+            <!-- knife4j鍦ㄧ嚎鏂囨。 -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
@@ -139,7 +139,7 @@
                 <version>${mybatis-plus-boot-starter.version}</version>
             </dependency>
 
-            <!-- 敏感词过滤工具 -->
+            <!-- 鏁忔劅璇嶈繃婊ゅ伐鍏?-->
             <dependency>
                 <groupId>com.github.houbb</groupId>
                 <artifactId>sensitive-word</artifactId>
@@ -148,7 +148,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- 阻止其他没有主类的模块尝试打包成可执行的jar包 不然其他通用模块会报错Unable to find main class -->
+    <!-- 闃绘鍏朵粬娌℃湁涓荤被鐨勬ā鍧楀皾璇曟墦鍖呮垚鍙墽琛岀殑jar鍖?涓嶇劧鍏朵粬閫氱敤妯″潡浼氭姤閿橴nable to find main class -->
     <build>
         <plugins>
             <plugin>
