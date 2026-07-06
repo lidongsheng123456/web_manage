@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+#!/usr/bin/env powershell
 <#
 .SYNOPSIS
     东神脚手架一键发版脚本
