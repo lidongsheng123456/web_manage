@@ -222,6 +222,7 @@ import {
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
 const noImage = noImageUrl;
 
 const watermarkStyle = computed(() => {
@@ -256,11 +257,13 @@ const tabsStore = useTabsStore();
 const {
   editableTabs,
   editableTabsValue,
-  handleTabsEdit,
-  handleTabClick,
   ctxMenuVisible,
   ctxMenuX,
   ctxMenuY,
+} = storeToRefs(tabsStore);
+const {
+  handleTabsEdit,
+  handleTabClick,
   openCtxMenu,
   closeCtxMenu,
   ctxCloseCurrent,
