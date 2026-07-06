@@ -23,13 +23,6 @@ jobs:
       - name: Maven 构建
         run: mvn clean package -DskipTests
 
-      - name: 上传后端产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-jar
-          path: web_admin/target/*.jar
-          retention-days: 7
-
   build-frontend:
     name: 构建前端
     runs-on: ubuntu-latest
@@ -51,10 +44,3 @@ jobs:
 
       - name: 构建前端
         run: npm run build
-
-      - name: 上传前端产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: web_ui/dist
-          retention-days: 7
