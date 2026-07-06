@@ -1,3 +1,8 @@
+/**
+ * 权限指令 v-permission
+ * 根据当前用户的权限列表控制元素显隐
+ * 用法: v-permission="'admin:user:add'"
+ */
 import { useUserStore } from "@/store/modules/user"
 import { watch, type Directive, type DirectiveBinding } from "vue"
 
