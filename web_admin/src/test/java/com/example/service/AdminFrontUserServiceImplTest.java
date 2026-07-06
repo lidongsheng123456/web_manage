@@ -4,6 +4,7 @@ import com.example.system.domain.FrontUser;
 import com.example.system.domain.vo.FrontUserVo;
 import com.example.system.mapper.AdminFrontUserMapper;
 import com.example.system.service.impl.AdminFrontUserServiceImpl;
+import com.example.common.config.AppConfig;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,11 +28,14 @@ class AdminFrontUserServiceImplTest {
     @Mock
     private AdminFrontUserMapper adminFrontUserMapper;
 
+    @Mock
+    private AppConfig appConfig;
+
     private AdminFrontUserServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new AdminFrontUserServiceImpl(adminFrontUserMapper);
+        service = new AdminFrontUserServiceImpl(adminFrontUserMapper, appConfig);
     }
 
     @Test

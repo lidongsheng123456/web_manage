@@ -8,7 +8,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$root = $PSScriptRoot
+$root = Split-Path $PSScriptRoot -Parent
 
 Write-Host ">>> 升级版本到 v$Version" -ForegroundColor Cyan
 
