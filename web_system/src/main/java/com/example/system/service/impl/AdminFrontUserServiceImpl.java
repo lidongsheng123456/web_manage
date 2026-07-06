@@ -1,7 +1,9 @@
 package com.example.system.service.impl;
 
+import cn.hutool.crypto.digest.BCrypt;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.common.config.AppConfig;
 import com.example.system.domain.FrontUser;
 import com.example.system.domain.vo.FrontUserVo;
 import com.example.system.mapper.AdminFrontUserMapper;
@@ -19,6 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminFrontUserServiceImpl extends ServiceImpl<AdminFrontUserMapper, FrontUser> implements AdminFrontUserService {
     private final AdminFrontUserMapper adminFrontUserMapper;
+    private final AppConfig appConfig;
+
+    @Override
+    public boolean save(FrontUser frontUser) {
+        if (frontUser.getPassword() == null || frontUser.getPassword().isBlank()) {
+            frontUser.setPassword(BCrypt.hashpw(appConfig.getDefaultPassword()));
+        } else {
+            frontUser.setPassword(BCrypt.hashpw(frontUser.getPassword()));
+        }
+        return super.save(frontUser);
+    }
 
     @Override
     public PageInfo<FrontUserVo> queryFrontUser(FrontUser frontUser, Integer currentPage, Integer pageSize) {
