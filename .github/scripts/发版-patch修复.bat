@@ -12,7 +12,7 @@ for /f "tokens=2 delims=:, " %%a in ('findstr /C:"\"version\"" web_ui\package.js
 echo.
 echo   Git commit + tag v%ver% ...
 git add -A
-git commit -m "chore: release v%ver%"
+git commit -m "chore: 版本升级到 %ver%"
 git tag "v%ver%"
 echo   Push to GitHub ...
 git push github master
