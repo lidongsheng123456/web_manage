@@ -10,7 +10,7 @@
 
 - **作者**：李东升
 - **架构**：Spring Boot 3 (后端) + Vue 3 (前端) 前后端分离
-- **仓库**：[Gitee](https://gitee.com/li-dongshenger/web_manage)
+- **仓库**：[Gitee](https://gitee.com/li-dongshenger/web_manage) | [GitHub](https://github.com/lidongsheng123456/web_manage)
 - **运行环境下载**：[百度网盘](https://pan.baidu.com/s/1zU8TWzNMtv5kNSL5H9Q5_w?pwd=ys73)
 
 ---
@@ -143,14 +143,60 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 
 ---
 
+## CI/CD 自动发布
+
+本项目集成 GitHub Actions 实现自动构建与发布。
+
+### 工作流说明
+
+| 工作流 | 触发条件 | 作用 |
+|:---|:---|:---|
+| CI Build | push 到 master 或 PR | 自动编译检查前后端 |
+| Release | push `v*` tag | 构建通过后自动创建 GitHub Release |
+
+### 一键发版
+
+在 `.github/scripts/` 目录下提供双击即用的发版脚本：
+
+| 脚本 | 版本变化 | 适用场景 |
+|:---|:---|:---|
+| `发版-patch修复.bat` | 2.0.1 → 2.0.2 | 日常修复、微调 |
+| `发版-minor新功能.bat` | 2.0.1 → 2.1.0 | 新增功能、优化 |
+| `发版-major大重构.bat` | 2.0.1 → 3.0.0 | 重大重构、不兼容变更 |
+
+也可通过命令行运行：
+
+```powershell
+.\.github\scripts\release.ps1 patch   # 小版本
+.\.github\scripts\release.ps1 minor   # 中版本
+.\.github\scripts\release.ps1 major   # 大版本
+.\.github\scripts\release.ps1 2.5.0   # 指定版本
+```
+
+### 发布流程
+
+```
+双击 bat / 运行命令
+    → 自动读取当前版本号
+    → 更新 package.json + 5 个 pom.xml
+    → git commit + git tag
+    → push 到 GitHub
+    → GitHub Actions 自动构建
+    → 前后端都编译成功
+    → 创建 Release + 上传 JAR / dist 附件
+```
+
+---
+
 ## AI 工作流
 
-本项目集成 `.windsurf` 目录下的 AI 工作流配置：
+本项目集成 `.cursor` 和 `.windsurf` 目录下的 AI 工作流配置：
 
-| 命令 | 说明 |
+| 命令/工作流 | 说明 |
 |:---|:---|
 | `/fullstack-project-dev` | 全栈业务模块开发 7 步工作流 |
 | `/ui-ux-pro-max` | UI/UX 设计系统搜索与实现 |
+| `web-manage-fullstack` Skill | 业务模块全栈二次开发 |
 
 ### 工作流核心能力
 
@@ -164,4 +210,4 @@ iOS 26 Liquid Glass 设计语言，`backdrop-filter` 毛玻璃效果 + Vanta.js 
 
 ## License
 
-&copy; 2025 东神脚手架 by 李东升. All rights reserved.
+&copy; 2025-2026 东神脚手架 by 李东升. All rights reserved.
